@@ -1,8 +1,7 @@
 
-export default function header(){
+export default function Header(){
     return(
-        <div className="text-[400px]" >KONTOL</div>
+        <div className="text-[400px]">KONTOL</div>
     )
-
 
 }

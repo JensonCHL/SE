@@ -4,12 +4,12 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Home from './pages/home/Home'
 import Navbar from './components/Navbar'
+import Header from './pages/Header'
 
-function App() {
+export default function App() {
   return (
-    // <Navbar/>
-    <Home/>
+    <Header/>
+    // <Home/>
   )
 }
 
-export default App
