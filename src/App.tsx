@@ -7,11 +7,15 @@ import Navbar from './components/Navbar'
 import Header from './pages/Header'
 
 export default function App() {
-  return <div className="max-h-screen flex flex-col " >
+  return <div className="max-h-screen flex flex-col" >
     <Header />
     <div></div>
-    {/* <Home/> */}
+    <Home></Home>
   </div>
+
+
+  
+
 
   // <Home/>
 

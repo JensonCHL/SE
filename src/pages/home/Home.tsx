@@ -1,6 +1,6 @@
 const Home = () => {
     return (
-        <div>Test</div>
+        <div className="max-h-screen">Test</div>
     ) 
 }
 
