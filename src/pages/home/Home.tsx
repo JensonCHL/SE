@@ -1,5 +1,10 @@
-import { FaSmile } from 'react-icons/fa';
+import { FaRegCheckCircle, FaSmile } from 'react-icons/fa';
 import Dropdown from './components/dropdown'
+import { CiCircleCheck, CiLocationOn } from 'react-icons/ci';
+import RepeatButton from './components/RepeatButton';
+import ReminderButton from './components/ReminderButton';
+import { RxCrossCircled } from 'react-icons/rx';
+import { FaRegCircleCheck } from 'react-icons/fa6';
 
 let basicStyle = "flex flex-row flex-shrink-0";
 const Home = () => {
@@ -38,18 +43,22 @@ const Home = () => {
                     <div>time</div>
                 </div>
                 {/* location */}
-                <div className="flex flex-row gap-4">
-                    <div>logo</div>
-                    <div>forms</div>
+                <div className="flex flex-row items-center bg-[#F4F4F4]">
+                    <div className='px-2 py-1'>
+                        <CiLocationOn />
+
+                    </div>
+                    <input className='bg-[#F4F4F4] py-1' type="text" value="Title" />
                 </div>
                 {/* Repeat Reminder */}
                 <div className="flex flex-row gap-4" >
-                    <div>repeat</div>
-                    <div>reminder</div>
+                    <RepeatButton />
+                    <ReminderButton />
                 </div>
                 {/* Desc */}
                 <div className="flex flex-row gap-4" >
-                    add description
+                    <input className='bg-[#F4F4F4] py-1 px-2 rounded-md' type="text" value="Add Description" />
+
                 </div>
                 {/* Checkbox */}
                 <div className="flex flex-row gap-4" >
@@ -57,15 +66,20 @@ const Home = () => {
                     <div>flexible</div>
                 </div>
                 {/* Recomendation */}
-                <div className="flex flex-row gap-4" >
-                    <div>Recom</div>
-                    <div>check</div>
-                    <div>cross</div>
+                <div className="flex flex-row gap-1" >
+                    <input className=' bg-[#F4F4F4] py-1 px-2 rounded-md' type="text" value="Recommendation" />
+                    <button>
+                        <FaRegCircleCheck />
+                    </button>
+                    <button>
+                        <RxCrossCircled />
+
+                    </button>
                 </div>
                 {/* Save & cancel */}
                 <div className="flex flex-row gap-4">
-                    <div>Save</div>
-                    <div>Cancel</div>
+                    <button className='bg-[#3A86FF] px-5 py-1 rounded-md' >Save</button>
+                    <button className='text-red-700 border border-[#E54B49] px-4 py-1 rounded-md' >Cancel</button>
                 </div>
 
             </div>
