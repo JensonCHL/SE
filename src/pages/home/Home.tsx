@@ -1,4 +1,4 @@
-
+import Dropdown from './components/dropdown'
 
 let basicStyle = "flex flex-row flex-shrink-0";
 const Home = () => {
@@ -7,11 +7,7 @@ const Home = () => {
             {/* Add event */}
             <div className={basicStyle} >
                 <div>ADD NEW</div>
-                <div>
-                    <select name="Event" id="">
-                        <option value=""></option>
-                    </select>
-                </div>
+                <Dropdown />
             </div>
 
             {/* Title */}
