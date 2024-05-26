@@ -8,7 +8,9 @@ const Home = () => {
             <div className={basicStyle} >
                 <div>ADD NEW</div>
                 <div>
-                    <input type="list" />Event
+                    <select name="Event" id="">
+                        <option value=""></option>
+                    </select>
                 </div>
             </div>
 
