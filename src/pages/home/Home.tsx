@@ -51,7 +51,7 @@ const Home = () => {
                     <input className='bg-[#F4F4F4] py-1' type="text" value="Title" />
                 </div>
                 {/* Repeat Reminder */}
-                <div className="flex flex-row gap-4" >
+                <div className="flex flex-row gap-4 justify-center" >
                     <RepeatButton />
                     <ReminderButton />
                 </div>
@@ -77,7 +77,7 @@ const Home = () => {
                     </button>
                 </div>
                 {/* Save & cancel */}
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-row gap-4 justify-center">
                     <button className='bg-[#3A86FF] px-5 py-1 rounded-md' >Save</button>
                     <button className='text-red-700 border border-[#E54B49] px-4 py-1 rounded-md' >Cancel</button>
                 </div>
