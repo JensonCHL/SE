@@ -21,9 +21,9 @@ const Home = () => {
                     <input className='bg-[#F4F4F4] py-1' type="text" value="Title" />
                 </div>
                 {/* All day */}
-                <div className="flex flex-row gap-4" >
+                <div className="flex flex-row gap-2" >
                     <div>All-day</div>
-                    <input type="toogle" />
+                    <input type="togle" />
                 </div>
                 {/* Starts   */}
                 <div className="flex flex-row gap-4" >
