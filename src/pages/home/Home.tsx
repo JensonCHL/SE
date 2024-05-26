@@ -9,11 +9,11 @@ import { FaRegCircleCheck } from 'react-icons/fa6';
 let basicStyle = "flex flex-row flex-shrink-0";
 const Home = () => {
     return (
-        <div className='bg-white w-[300px] px-10 py-4 m-4 rounded-xl' >
+        <div className='bg-white w-[350px] px-10 py-4 m-4 rounded-xl' >
             <div className="flex flex-col gap-y-3 mr-1">
                 {/* Add event */}
                 <div className="flex flex-row gap-2 items-center m-1" >
-                    <div>Add New</div>
+                    <div className='font-bold' >Add New</div>
                     <Dropdown />
 
                 </div>
@@ -27,20 +27,20 @@ const Home = () => {
                 </div>
                 {/* All day */}
                 <div className="flex flex-row gap-2" >
-                    <div>All-day</div>
-                    <input type="togle" />
+                    <div className='font-bold' >All-day</div>
+                    <div>toggle</div>
                 </div>
                 {/* Starts   */}
                 <div className="flex flex-row gap-4" >
-                    <div>starts</div>
-                    <div>calender </div>
-                    <div>time</div>
+                    <div className='font-bold' >Starts</div>
+                    <input className='focus:outline-none focus:border-none' type="date" value=""/>
+                    <input className='focus:outline-none focus:border-none' type="time" />
                 </div>
                 {/* Ends   */}
                 <div className="flex flex-row gap-4" >
-                    <div>ends</div>
-                    <div>calender </div>
-                    <div>time</div>
+                    <div className='font-bold' >Ends</div>
+                    <input className='focus:outline-none focus:border-none' type="date" />
+                    <input className='focus:outline-none focus:border-none' type="time" />
                 </div>
                 {/* location */}
                 <div className="flex flex-row items-center bg-[#F4F4F4]">
@@ -48,7 +48,7 @@ const Home = () => {
                         <CiLocationOn />
 
                     </div>
-                    <input className='bg-[#F4F4F4] py-1' type="text" value="Title" />
+                    <input className='bg-[#F4F4F4] py-1' type="text" value="Location" />
                 </div>
                 {/* Repeat Reminder */}
                 <div className="flex flex-row gap-4 justify-center" >
@@ -61,9 +61,12 @@ const Home = () => {
 
                 </div>
                 {/* Checkbox */}
-                <div className="flex flex-row gap-4" >
+                <div className="flex flex-row gap-2 items-center" >
+                    <input  className='rounded-full' type="radio" />
                     <div>fixed</div>
+                    <input className='ml-2' type="radio" />
                     <div>flexible</div>
+                    
                 </div>
                 {/* Recomendation */}
                 <div className="flex flex-row gap-1" >
