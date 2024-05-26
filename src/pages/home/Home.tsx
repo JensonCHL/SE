@@ -65,6 +65,7 @@ const Home = () => {
             <div className="flex flex-row gap-4">
                 <div>Save</div>
                 <div>Cancel</div>
+                <div>NIGGA</div>
             </div>
 
         </div>

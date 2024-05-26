@@ -13,11 +13,6 @@ export default function App() {
     <Home></Home>
   </div>
 
-
-  
-
-
   // <Home/>
 
 }
-
