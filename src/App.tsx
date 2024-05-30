@@ -5,6 +5,8 @@ import './App.css'
 import Home from './pages/home/Home'
 import Navbar from './components/Navbar'
 import Header from './components/Header'
+import AddEvent from './components/addEvent';
+import Calendar from './components/Calendar';
 
 export default function App() {
   return <div className="max-h-screen flex flex-col" >
@@ -12,7 +14,10 @@ export default function App() {
     <div></div>
 
     {/* Router dom */}
-    <Home></Home>
+    {/* <Home></Home> */}
+    {/* <AddEvent /> */}
+    <div></div>
+    <Calendar />
   </div>
 
   // <Home/>
