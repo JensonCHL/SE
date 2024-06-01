@@ -3,7 +3,7 @@ import FullCalendar, { DateSelectArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import axios from 'axios';
 import moment from "moment";
-import AddEvent from './addEvent';
+import AddEvent from './Addevent';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 interface CalendarProps {}

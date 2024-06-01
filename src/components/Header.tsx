@@ -5,7 +5,7 @@ import { GoHome } from "react-icons/go";
 import { MdWbSunny } from "react-icons/md";
 import { SlCalender } from "react-icons/sl";
 
-export default function Header() {
+const Header = () => {
     return (
         <div className="flex flex-row justify-between gap-10 mx-10 mt-5" >
             {/* left navbar */}
@@ -21,19 +21,19 @@ export default function Header() {
                 <div className="flex flex-row gap-14 align-right items-center px-16 rounded-full bg-white">
                     <a className="flex gap-1 justify-center items-center" >
                         <GoHome />
-                        <a href="" className="hover:text-[#FB5607] duration-100" >Home</a>
+                        <a href="/" className="hover:text-[#FB5607] duration-100" >Home</a>
                     </a>
                     <a className="flex gap-1 justify-center items-center" >
                         <SlCalender />
-                        <a href="" className="hover:text-[#FB5607] duration-100" >Calender</a>
+                        <a href="/Calender" className="hover:text-[#FB5607] duration-100" >Calender</a>
                     </a>
                     <a className="flex gap-1 justify-center items-center" >
                         <BsSmartwatch />
-                        <a href="" className="hover:text-[#FB5607] duration-100" >Activity</a>
+                        <a href="/Activity" className="hover:text-[#FB5607] duration-100" >Activity</a>
                     </a>
                     <a className="flex gap-1 justify-center items-center" >
                         <BsGear />
-                        <a href="" className="hover:text-[#FB5607] duration-100" >Settings</a>
+                        <a href="/Settings" className="hover:text-[#FB5607] duration-100" >Settings</a>
                     </a>
 
                 </div>
@@ -52,3 +52,5 @@ export default function Header() {
     )
 
 }
+
+export default Header;

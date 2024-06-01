@@ -58,7 +58,7 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
                             <FaSmile />
                         </div>
                         <input
-                            className='bg-[#F4F4F4] py-1 w-full'
+                            className='bg-[#F4F4F4] py-1 w-full focus:outline-none focus:border-none'
                             type="text"
                             placeholder="Title"
                             value={title}
@@ -67,7 +67,7 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
                     </div>
 
                     {/* All day */}
-                    <div className="flex flex-row gap-2">
+                    <div className="flex flex-row gap-2 focus:outline-none focus:border-none">
                         <div className='font-bold'>All-day</div>
                         <div>toggle</div>
                     </div>
@@ -96,7 +96,7 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
                             <CiLocationOn />
                         </div>
                         <input
-                            className='bg-[#F4F4F4] py-1'
+                            className='bg-[#F4F4F4] py-1 focus:outline-none focus:border-none'
                             type="text"
                             value={location}
                             onChange={e => setLocation(e.target.value)}
@@ -113,7 +113,7 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
                     {/* Description */}
                     <div className="flex flex-row gap-4">
                         <input
-                            className='bg-[#F4F4F4] py-1 px-2 rounded-md w-full'
+                            className='bg-[#F4F4F4] py-1 px-2 rounded-md w-full focus:outline-none focus:border-none'
                             type="text"
                             placeholder="Add Description"
                             value={desc}
@@ -133,7 +133,7 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
                         />
                         <div>Fixed</div>
                         <input
-                            className='ml-2'
+                            className='ml-2 focus:outline-none focus:border-none'
                             type="radio"
                             name="timeType"
                             value="flexible"
@@ -145,19 +145,19 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
 
                     {/* Recommendation */}
                     <div className="flex flex-row gap-1 bg-[#F4F4F4] rounded-full">
-                        <input className='bg-[#F4F4F4] py-1 px-2 rounded-full w-full' type="text" value="Recommendation" readOnly />
+                        <input className='bg-[#F4F4F4] py-1 px-2 rounded-full w-full focus:outline-none focus:border-none' type="text" value="Recommendation" readOnly />
                         <button>
-                            <FaRegCircleCheck />
+                            <FaRegCircleCheck color='green' size="1.4em"/>
                         </button>
-                        <button>
-                            <RxCrossCircled />
+                        <button className='mr-2' > 
+                            <RxCrossCircled color='red' size="1.5em" />
                         </button>
                     </div>
 
                     {/* Save & Cancel */}
                     <div className="flex flex-row gap-4 justify-center">
-                        <button className='bg-[#3A86FF] px-5 py-1 rounded-md' type='submit'>Save</button>
-                        <button className='text-red-700 border border-[#E54B49] px-4 py-1 rounded-md'>Cancel</button>
+                        <button className='bg-[#3A86FF] w-full px-5 py-1 rounded-md' type='submit'>Save</button>
+                        <button className='text-red-700 w-full border border-[#E54B49] px-4 py-1 rounded-md'>Cancel</button>
                     </div>
                 </div>
             </div>
