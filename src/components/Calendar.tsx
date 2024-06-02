@@ -98,6 +98,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                         right: 'next today',
                         center: 'title',
                         left: 'dayGridMonth,timeGridWeek prev'
+                    
                     }}
                     views={{
                         dayGridMonth: {
