@@ -20,6 +20,7 @@ interface EventData {
     desc: string;
     location: string;
     timeType: string;
+    color: string
 }
 
 const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
@@ -38,7 +39,8 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
             end: new Date(end),
             location,
             desc,
-            timeType
+            timeType,
+            color: '#E6D7FB'
         });
     };
 

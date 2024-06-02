@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import FullCalendar, { DateSelectArg, EventContentArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import axios from 'axios';
@@ -7,11 +7,8 @@ import AddEvent from './addEvent';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // Import interaction plugin
 
-const eventColorMap = {
-    type1: '#FFBE0B', 
-    type2: '#E6D7FB', 
-    type3: '#FFCCE2'  
-};
+const defaultColor = '#D3D3D3';  // Default color (grey)
+const addColor = '#E6D7FB';
 
 interface CalendarProps {}
 
@@ -30,20 +27,24 @@ const Calendar: React.FC<CalendarProps> = () => {
                 end: moment(event.end).toISOString(),
                 description: event.desc,
                 priority: event.timeType,
-                location: event.location
+                location: event.location,
+                color: event.color || defaultColor
             });
         }
     };
     
     async function handleEventAdd(data: { event: any }) {
         try {
+            const color = addColor; // Use the provided color or default color
+
             const eventData = {
                 title: data.event.title,
                 start: moment(data.event.start).toISOString(),
                 end: moment(data.event.end).toISOString(),
                 description: data.event.extendedProps.description,
                 priority: data.event.extendedProps.priority,
-                location: data.event.extendedProps.location
+                location: data.event.extendedProps.location,
+                color: color
             };
             await axios.post("http://localhost:5001/api/calendar/create-event", eventData);
         } catch (error) {
@@ -54,7 +55,12 @@ const Calendar: React.FC<CalendarProps> = () => {
     async function handleDateSet(data: DateSelectArg) {
         try {
             const response = await axios.get(`http://localhost:5001/api/calendar/get-events?start=${moment(data.start).toISOString()}&end=${moment(data.end).toISOString()}`);
-            setEvents(response.data);
+            console.log("Fetched events:", response.data); // Log fetched events
+            const eventsWithColors = response.data.map((event: any) => ({
+                ...event,
+                color: event.color
+            }));
+            setEvents(eventsWithColors);
         } catch (error) {
             console.error("Error fetching events:", error);
         }
@@ -64,15 +70,21 @@ const Calendar: React.FC<CalendarProps> = () => {
         const isStart = eventContent.isStart;
         const event = eventContent.event;
         const isFirstInstance = event.start.toISOString() === eventContent.view.activeStart.toISOString();
-        
         return (
-            
             <div className="flex flex-col">
                 <div>{event.title}</div>
-                
             </div>
         );
     };
+
+    useEffect(() => {
+        // Fetch initial events when the component mounts
+        if (calendarRef.current) {
+            let calendarApi = calendarRef.current.getApi();
+            const currentDate = calendarApi.getDate();
+            handleDateSet({ start: moment(currentDate).startOf('month').toDate(), end: moment(currentDate).endOf('month').toDate() });
+        }
+    }, []);
 
     return (
         <section>
@@ -90,7 +102,8 @@ const Calendar: React.FC<CalendarProps> = () => {
                     views={{
                         dayGridMonth: {
                             titleFormat: { month: 'long', year: 'numeric' },
-                            columnHeaderFormat: { weekday: 'long' }
+                            columnHeaderFormat: { weekday: 'long' },
+                            dayMaxEventRows: 3
                         },
                         timeGridWeek: {
                             titleFormat: { month: 'long', year: 'numeric' },
@@ -99,13 +112,11 @@ const Calendar: React.FC<CalendarProps> = () => {
                         }                   
                     }}
                     
-                    eventColor='#FFCCE2'
                     eventTextColor="black"
                     initialView="dayGridMonth"
                     eventAdd={handleEventAdd}
                     datesSet={handleDateSet}
                     eventContent={renderEventContent} // Use eventContent for custom rendering
-
                 />
             </div>
         </section>

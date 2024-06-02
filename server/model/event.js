@@ -6,7 +6,8 @@ const eventSchema = mongoose.Schema({
     end: { type: Date, required: true },
     description: {type: String},
     location: {type: String},
-    priority: {type: String}
+    priority: {type: String},
+    color: {type: String}
 });
 
 const Event = mongoose.model('Event', eventSchema);
