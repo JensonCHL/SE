@@ -10,6 +10,8 @@ import 'react-datetime/css/react-datetime.css';
 import DateTime from 'react-datetime';
 import Toggle from './Toggle';
 
+
+
 interface AddEventProps {
     onEventAdded: (event: EventData) => void; // Define the type for onEventAdded function
 }
@@ -24,7 +26,7 @@ interface EventData {
     color: string
 }
 
-const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
+const Habit = () => {
     const [title, setTitle] = useState<string>('');
     const [start, setStart] = useState<Date>(new Date());
     const [end, setEnd] = useState<Date>(new Date());
@@ -44,10 +46,9 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
             color: '#E6D7FB'
         });
     };
-
     return (
-        <form onSubmit={onSubmit}>
-            <div className='bg-white w-[350px] px-10 py-4 m-4 rounded-xl'>
+        <form onSubmit={onSubmit} >
+            <div className='bg-white w-[350px] h-[450px] px-10 py-4 m-4 rounded-xl'>
                 <div className="flex flex-col gap-y-3 mr-1">
                     {/* Add event */}
                     <div className="flex flex-row gap-2 items-center m-1">
@@ -109,8 +110,14 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
 
                     {/* Repeat Reminder */}
                     <div className="flex flex-row gap-4 justify-center">
-                        <RepeatButton />
-                        <ReminderButton />
+                        <div className='w-full' >
+                            <RepeatButton />
+                        </div>
+                        <div className='w-full' >
+                            <ReminderButton />
+                        </div>
+
+
                     </div>
 
                     {/* Description */}
@@ -124,35 +131,15 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
                         />
                     </div>
 
-                    {/* Radio Buttons */}
-                    <div className="flex flex-row gap-2 items-center justify-center">
-                        <input
-                            className='rounded-full'
-                            type="radio"
-                            name="timeType"
-                            value="fixed"
-                            checked={timeType === 'fixed'}
-                            onChange={e => setTimeType(e.target.value)}
-                        />
-                        <div>Fixed</div>
-                        <input
-                            className='ml-2 focus:outline-none focus:border-none'
-                            type="radio"
-                            name="timeType"
-                            value="flexible"
-                            checked={timeType === 'flexible'}
-                            onChange={e => setTimeType(e.target.value)}
-                        />
-                        <div>Flexible</div>
-                    </div>
+
 
                     {/* Recommendation */}
                     <div className="flex flex-row gap-1 bg-[#F4F4F4] rounded-full">
                         <input className='bg-[#F4F4F4] py-1 px-2 rounded-full w-full focus:outline-none focus:border-none' type="text" value="Recommendation" readOnly />
                         <button>
-                            <FaRegCircleCheck color='green' size="1.4em"/>
+                            <FaRegCircleCheck color='green' size="1.4em" />
                         </button>
-                        <button className='mr-2' > 
+                        <button className='mr-2' >
                             <RxCrossCircled color='red' size="1.5em" />
                         </button>
                     </div>
@@ -166,7 +153,12 @@ const AddEvent: React.FC<AddEventProps> = ({ onEventAdded }) => {
             </div>
         </form>
     );
-    // aaa
+
 }
 
-export default AddEvent;
+export default Habit;
+
+function onEventAdded(arg0: { title: string; start: Date; end: Date; location: string; desc: string; timeType: string; color: string; }) {
+    throw new Error('Function not implemented.');
+}
+

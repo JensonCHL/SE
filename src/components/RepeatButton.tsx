@@ -19,7 +19,7 @@ const Dropdown: React.FC = () => {
     }
 
     return (
-        <select className='form-select bg-gray-300 px-2 py-1 rounded-md items-center ' onChange={handleSelect} value={value}>
+        <select className='form-select w-full bg-gray-300 px-2 py-1 rounded-md items-center ' onChange={handleSelect} value={value}>
             {options.map(option => (
                 <option key={option.value} value={option.value}>
                     {option.label}

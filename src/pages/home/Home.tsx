@@ -7,16 +7,19 @@ import { RxCrossCircled } from 'react-icons/rx';
 import { FaRegCircleCheck } from 'react-icons/fa6';
 import AddEvent from '../../components/Addevent';
 import Calendar from '../../components/Calendar';
+import Todo from '../../components/Todo';
+import Habit from '../../components/Habit';
 
 
 let basicStyle = "flex flex-row flex-shrink-0";
 const Home = () => {
 
     return (
-        <div>
-            {/* <AddEvent onEventAdded={function (event: EventData): void {
-                throw new Error('Function not implemented.');
-            } }/> */}
+        <div >
+            <div className='flex'>
+                <Todo></Todo>
+                <Habit></Habit>
+            </div>
 
             <Calendar></Calendar>
         </div>
