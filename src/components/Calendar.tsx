@@ -15,6 +15,7 @@ interface CalendarProps {}
 const Calendar: React.FC<CalendarProps> = () => {
     const calendarRef = useRef<FullCalendar>(null);
     const [events, setEvents] = useState<any[]>([]);
+    const [selectedType, setSelectedType] = useState<number>(1);
 
     const onEventAdded = (event: any) => {
         console.log("Event to be added:", event);
@@ -89,7 +90,7 @@ const Calendar: React.FC<CalendarProps> = () => {
     return (
         <section>
             <div style={{ position: 'relative', zIndex: 0 }}>
-                <AddEvent onEventAdded={onEventAdded} />
+                <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />
                 <FullCalendar
                     ref={calendarRef}
                     events={events}

@@ -40,7 +40,7 @@ const Header = () => {
             </div>
 
             {/* right navbar */}
-            <div className="flex py-2 gap-4 justify-between items-center bg-white rounded-full px-3">
+            <div className="flex py-2 gap-4 justify-between items-center bg-white rounded-full px-3 cursor-pointer">
                 <div className="rounded-full bg-[#F4F4F4] px-2 py-2">
                     <FaRegBell />
                 </div>
