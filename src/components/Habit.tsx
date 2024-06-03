@@ -12,8 +12,6 @@ import Toggle from './Toggle';
 import Todo from './Todo';
 import AddEvent from './addEvent';
 
-
-
 interface AddEventProps {
     selectedType: number;
     setSelectedType: (value: number) => void;
@@ -169,6 +167,3 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
 }
 
 export default Habit;
-
-
-

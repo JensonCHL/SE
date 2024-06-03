@@ -12,7 +12,6 @@ import Toggle from './Toggle';
 import AddEvent from './addEvent';
 import Habit from './Habit';
 
-
 interface AddEventProps {
     selectedType: number;
     setSelectedType: (value: number) => void;
@@ -26,11 +25,10 @@ interface EventData {
     desc: string;
     location: string;
     timeType: string;
-    color: string
+    color: string;
 }
 
 const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventAdded }) => {
-
     const [title, setTitle] = useState<string>('');
     const [start, setStart] = useState<Date>(new Date());
     const [end, setEnd] = useState<Date>(new Date());
@@ -42,24 +40,25 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
         event.preventDefault();
         onEventAdded({
             title,
-            start: new Date(start),
-            end: new Date(end),
+            start,
+            end,
             location,
             desc,
             timeType,
             color: '#E6D7FB'
         });
     };
+
     return (
         <div>
             {selectedType === 1 && <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
             {selectedType === 2 && (
-                <form >
-                    <div className='bg-white w-[350px] h-[450px] px-10 py-4 m-4 rounded-xl'>
+                <form onSubmit={onSubmit}>
+                    <div className='bg-white w-[350px] h-[500px] px-10 py-4 m-4 rounded-xl'>
                         <div className="flex flex-col gap-y-3 mr-1">
                             {/* Add event */}
                             <div className="flex flex-row gap-2 items-center m-1">
-                                <div className='font-bold'>To do</div>
+                                <div className='font-bold'>ToDo</div>
                                 <Dropdown onSelect={setSelectedType} />
                             </div>
 
@@ -72,17 +71,25 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
                                     className='bg-[#F4F4F4] py-1 w-full focus:outline-none focus:border-none'
                                     type="text"
                                     placeholder="Title"
-
+                                    value={title}
+                                    onChange={e => setTitle(e.target.value)}
                                 />
                             </div>
 
                             {/* All day */}
                             <div className="flex flex-row gap-2 focus:outline-none focus:border-none">
                                 <div className='font-bold'>All-day</div>
-                                <Toggle></Toggle>
+                                <Toggle />
                             </div>
 
                             {/* Starts */}
+                            <div className="flex flex-row gap-4">
+                                <div className='font-bold'>Starts</div>
+                                <DateTime
+                                    value={start}
+                                    onChange={(date: any) => setStart(date.toDate())}
+                                />
+                            </div>
 
                             {/* Ends */}
                             <div className="flex flex-row gap-4">
@@ -90,6 +97,20 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
                                 <DateTime
                                     value={end}
                                     onChange={(date: any) => setEnd(date.toDate())}
+                                />
+                            </div>
+
+                            {/* Location */}
+                            <div className="flex flex-row items-center bg-[#F4F4F4]">
+                                <div className='px-2 py-1'>
+                                    <CiLocationOn />
+                                </div>
+                                <input
+                                    className='bg-[#F4F4F4] py-1 focus:outline-none focus:border-none'
+                                    type="text"
+                                    value={location}
+                                    onChange={e => setLocation(e.target.value)}
+                                    placeholder='Location'
                                 />
                             </div>
 
@@ -107,10 +128,8 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
                                     placeholder="Add Description"
                                     value={desc}
                                     onChange={e => setDesc(e.target.value)}
-
                                 />
                             </div>
-
 
                             {/* Recommendation */}
                             <div className="flex flex-row gap-1 bg-[#F4F4F4] rounded-full">
@@ -118,7 +137,7 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
                                 <button>
                                     <FaRegCircleCheck color='green' size="1.4em" />
                                 </button>
-                                <button className='mr-2' >
+                                <button className='mr-2'>
                                     <RxCrossCircled color='red' size="1.5em" />
                                 </button>
                             </div>
@@ -126,18 +145,15 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
                             {/* Save & Cancel */}
                             <div className="flex flex-row gap-4 justify-center mt-8">
                                 <button className='bg-[#3A86FF] w-full px-5 py-1 rounded-md' type='submit'>Save</button>
-                                <button className='text-red-700 w-full border border-[#E54B49] px-4 py-1 rounded-md'>Cancel</button>
+                                <button className='text-red-700 w-full border border-[#E54B49] px-4 py-1 rounded-md' type='button' onClick={() => setSelectedType(0)}>Cancel</button>
                             </div>
                         </div>
                     </div>
                 </form>
             )}
             {selectedType === 3 && <Habit onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
-
         </div>
-
-    )
-
-}
+    );
+};
 
 export default Todo;
