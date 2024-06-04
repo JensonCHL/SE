@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { FaRegCheckCircle, FaSmile } from 'react-icons/fa';
-import { CiCircleCheck, CiLocationOn } from 'react-icons/ci';
+import React, { useState, useEffect } from 'react';
+import { FaSmile } from 'react-icons/fa';
+import { CiLocationOn } from 'react-icons/ci';
 import { RxCrossCircled } from 'react-icons/rx';
 import { FaRegCircleCheck } from 'react-icons/fa6';
 import Dropdown from './dropdown';
@@ -14,8 +14,8 @@ import Habit from './Habit';
 
 interface AddEventProps {
     selectedType: number;
-    setSelectedType: (value: number) => void;   
-    onEventAdded: (event: EventData) => void; // Define the type for onEventAdded function
+    setSelectedType: (value: number) => void;
+    onEventAdded: (event: EventData) => void;
 }
 
 interface EventData {
@@ -25,19 +25,54 @@ interface EventData {
     desc: string;
     location: string;
     timeType: string;
-    color: string
+    types: string;
+    color: string;
 }
 
-const AddEvent: React.FC<AddEventProps> = ({ selectedType,setSelectedType, onEventAdded }) => {
+const getTypeString = (types: number) => {
+    switch(types) {
+        case 1:
+            return 'event';
+        case 2:
+            return 'todo';
+        case 3:
+            return 'habit';
+        default:
+            return 'unknown';
+    }
+}
+
+const getEventColor = (types: number) => {
+    switch(types) {
+        case 1:
+            return '#E6D7FB';
+        case 2:
+            return '#FFCCE2';
+        case 3:
+            return '#FFF2CE';
+        default:
+            return 'unknown';
+    }
+}
+
+const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventAdded }) => {
     const [title, setTitle] = useState<string>('');
     const [start, setStart] = useState<Date>(new Date());
     const [end, setEnd] = useState<Date>(new Date());
     const [desc, setDesc] = useState<string>('');
     const [location, setLocation] = useState<string>('');
-    const [timeType, setTimeType] = useState<string>('');
+    const [timeType, setTimeType] = useState<string>('fixed');
+    const [types, setTypes] = useState<string>(getTypeString(selectedType));
+    const [color, setColor] = useState<string>(getEventColor(selectedType));
+
+    useEffect(() => {
+        setTypes(getTypeString(selectedType));
+        setColor(getEventColor(selectedType));
+    }, [selectedType]);
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         onEventAdded({
             title,
             start: new Date(start),
@@ -45,11 +80,18 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType,setSelectedType, onEve
             location,
             desc,
             timeType,
-            color: '#E6D7FB'
+            types,
+            color
         });
+
+        // Clear the form after submission
+        setTitle('');
+        setStart(new Date());
+        setEnd(new Date());
+        setDesc('');
+        setLocation('');
+        setTimeType('fixed');
     };
-
-
 
     return (
         <div>
@@ -80,7 +122,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType,setSelectedType, onEve
                             {/* All day */}
                             <div className="flex flex-row gap-2 focus:outline-none focus:border-none">
                                 <div className='font-bold'>All-day</div>
-                                <Toggle></Toggle>
+                                <Toggle />
                             </div>
 
                             {/* Starts */}
@@ -157,10 +199,10 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType,setSelectedType, onEve
                             {/* Recommendation */}
                             <div className="flex flex-row gap-1 bg-[#F4F4F4] rounded-full">
                                 <input className='bg-[#F4F4F4] py-1 px-2 rounded-full w-full focus:outline-none focus:border-none' type="text" value="Recommendation" readOnly />
-                                <button>
+                                <button type="button">
                                     <FaRegCircleCheck color='green' size="1.4em" />
                                 </button>
-                                <button className='mr-2' >
+                                <button type="button" className='mr-2'>
                                     <RxCrossCircled color='red' size="1.5em" />
                                 </button>
                             </div>
@@ -168,7 +210,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType,setSelectedType, onEve
                             {/* Save & Cancel */}
                             <div className="flex flex-row gap-4 justify-center">
                                 <button className='bg-[#3A86FF] w-full px-5 py-1 rounded-md' type='submit'>Save</button>
-                                <button className='text-red-700 w-full border border-[#E54B49] px-4 py-1 rounded-md'>Cancel</button>
+                                <button className='text-red-700 w-full border border-[#E54B49] px-4 py-1 rounded-md' type='button' onClick={() => setSelectedType(0)}>Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -177,9 +219,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType,setSelectedType, onEve
             {selectedType === 2 && <Todo onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
             {selectedType === 3 && <Habit onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
         </div>
-
     );
-    // aaa
 }
 
 export default AddEvent;

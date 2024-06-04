@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { FaRegCheckCircle, FaSmile } from 'react-icons/fa';
-import { CiCircleCheck, CiLocationOn } from 'react-icons/ci';
+import React, { useState, useEffect } from 'react';
+import { FaSmile } from 'react-icons/fa';
+import { CiLocationOn } from 'react-icons/ci';
 import { RxCrossCircled } from 'react-icons/rx';
 import { FaRegCircleCheck } from 'react-icons/fa6';
 import Dropdown from './dropdown';
@@ -10,12 +10,13 @@ import 'react-datetime/css/react-datetime.css';
 import DateTime from 'react-datetime';
 import Toggle from './Toggle';
 import Todo from './Todo';
-import AddEvent from './addEvent';
+// import Habit from './Habit';
+
 
 interface AddEventProps {
     selectedType: number;
     setSelectedType: (value: number) => void;
-    onEventAdded: (event: EventData) => void; // Define the type for onEventAdded function
+    onEventAdded: (event: EventData) => void;
 }
 
 interface EventData {
@@ -25,8 +26,35 @@ interface EventData {
     desc: string;
     location: string;
     timeType: string;
-    color: string
+    types: string;
+    color: string;
 }
+
+const getTypeString = (types: number) => {
+    switch (types) {
+        case 1:
+            return 'event';
+        case 2:
+            return 'todo';
+        case 3:
+            return 'habit';
+        default:
+            return 'unknown';
+    }
+};
+
+const getEventColor = (types: number) => {
+    switch (types) {
+        case 1:
+            return '#E6D7FB';
+        case 2:
+            return '#FFCCE2';
+        case 3:
+            return '#FFF2CE';
+        default:
+            return 'unknown';
+    }
+};
 
 const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventAdded }) => {
     const [title, setTitle] = useState<string>('');
@@ -35,30 +63,49 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
     const [desc, setDesc] = useState<string>('');
     const [location, setLocation] = useState<string>('');
     const [timeType, setTimeType] = useState<string>('');
+    const [types, setTypes] = useState<string>(getTypeString(selectedType));
+    const [color, setColor] = useState<string>(getEventColor(selectedType));
+
+    // Update types and color when selectedType changes
+    useEffect(() => {
+        setTypes(getTypeString(selectedType));
+        setColor(getEventColor(selectedType));
+    }, [selectedType]);
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        // Call onEventAdded with the current state values
         onEventAdded({
             title,
-            start: new Date(start),
-            end: new Date(end),
+            start,
+            end,
             location,
             desc,
             timeType,
-            color: '#E6D7FB'
+            types, // Use the updated state value here
+            color, // Use the updated state value here
         });
+
+        // Clear form inputs after submission
+        setTitle('');
+        setStart(new Date());
+        setEnd(new Date());
+        setLocation('');
+        setDesc('');
+        setTimeType('');
     };
+
     return (
         <div>
             {selectedType === 1 && <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
             {selectedType === 2 && <Todo onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
             {selectedType === 3 && (
-                <form onSubmit={onSubmit} >
+                <form onSubmit={onSubmit}>
                     <div className='bg-white w-[350px] h-[450px] px-10 py-4 m-4 rounded-xl'>
                         <div className="flex flex-col gap-y-3 mr-1">
                             {/* Add event */}
                             <div className="flex flex-row gap-2 items-center m-1">
-                                <div className='font-bold'>Habits</div>
+                                <div className='font-bold'>Add New</div>
                                 <Dropdown onSelect={setSelectedType} />
                             </div>
 
@@ -79,7 +126,7 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
                             {/* All day */}
                             <div className="flex flex-row gap-2 focus:outline-none focus:border-none">
                                 <div className='font-bold'>All-day</div>
-                                <Toggle></Toggle>
+                                <Toggle />
                             </div>
 
                             {/* Starts */}
@@ -122,8 +169,6 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
                                 <div className='w-full' >
                                     <ReminderButton />
                                 </div>
-
-
                             </div>
 
                             {/* Description */}
@@ -136,8 +181,6 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
                                     onChange={e => setDesc(e.target.value)}
                                 />
                             </div>
-
-
 
                             {/* Recommendation */}
                             <div className="flex flex-row gap-1 bg-[#F4F4F4] rounded-full">
@@ -159,11 +202,8 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
                     </div>
                 </form>
             )}
-            
         </div>
-
     );
-
-}
+};
 
 export default Habit;
