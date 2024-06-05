@@ -9,8 +9,8 @@ import ReminderButton from './ReminderButton';
 import 'react-datetime/css/react-datetime.css';
 import DateTime from 'react-datetime';
 import Toggle from './Toggle';
-// import Todo from './Todo';
 import Habit from './Habit';
+import AddEvent from './addEvent';
 
 interface AddEventProps {
     selectedType: number;

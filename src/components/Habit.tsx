@@ -10,6 +10,7 @@ import 'react-datetime/css/react-datetime.css';
 import DateTime from 'react-datetime';
 import Toggle from './Toggle';
 import Todo from './Todo';
+import AddEvent from './addEvent';
 // import Habit from './Habit';
 
 
