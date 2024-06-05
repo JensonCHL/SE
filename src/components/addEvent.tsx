@@ -97,8 +97,8 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
         <div>
             {selectedType === 1 && (
                 <form onSubmit={onSubmit}>
-                    <div className='bg-white w-[350px] px-10 py-4 m-4 rounded-xl'>
-                        <div className="flex flex-col gap-y-3 mr-1">
+                    <div className='bg-white w-auto px-10 py-4 rounded-xl'>
+                        <div className="flex flex-col gap-y-1.5 mr-1">
                             {/* Add event */}
                             <div className="flex flex-row gap-2 items-center m-1">
                                 <div className='font-bold'>Add New</div>

@@ -4,8 +4,7 @@ import Todo from "../../components/Todo";
 const CalenderPage = () => {
     return(
         <div className="flex">
-            <Todo/>
-            <Habit></Habit>
+            
         </div>
         
 
