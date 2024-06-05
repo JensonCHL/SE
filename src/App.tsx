@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Settings from './pages/settings/Settings';
 import CalenderPage from './pages/Calender/CalenderPage';
 import Calendar from './components/Calendar';
+import Activity from './pages/Activity/Activity';
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/Calender' element={<CalenderPage />} />
+        <Route path='/Activity' element={<Activity />} />
         <Route path='/Settings' element={<Settings />} />
       </Routes>
     </Router>

@@ -10,7 +10,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onSelect }) => {
         { label: 'To-Do', value: 2 },
         { label: 'Habit', value: 3 },
     ];
-    const [value, setValue] = useState<number>(options[0].value);
+    const [value, setValue] = useState<number>(options[1].value);
 
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = Number(event.target.value);
