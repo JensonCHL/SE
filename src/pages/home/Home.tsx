@@ -37,13 +37,6 @@ const Calendar: React.FC<CalendarProps> = () => {
         }
     };
 
-    const renderDay = (info) => {
-        if (info.date.getDay() === 0) { // 0 is Sunday
-          info.el.style.backgroundColor = 'red';
-          info.el.style.color = 'white';
-        }
-      };
-
     async function handleEventAdd(data: { event: any }) {
         try {
             const eventData = {
@@ -85,6 +78,8 @@ const Calendar: React.FC<CalendarProps> = () => {
         );
     };
 
+    const [today, setToday] = useState(new Date());
+
     useEffect(() => {
         // Fetch initial events when the component mounts
         if (calendarRef.current) {
@@ -125,7 +120,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                             }
                         }}
                         eventTextColor="black"
-                        initialView="timeGridWeek"
+                        initialView="dayGridMonth"
                         eventAdd={handleEventAdd}
                         datesSet={handleDateSet}
                         eventContent={renderEventContent} // Use eventContent for custom rendering
@@ -136,7 +131,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                             }
                             return '';
                           }}
-                          dayHeaderClassNames={(arg) => {
+                        dayHeaderClassNames={(arg) => {
                             if (arg.dow === 0) { // 0 is Sunday
                               return 'fc-sunday-header';
                             }
