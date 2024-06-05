@@ -5,7 +5,7 @@ import Event from "./Event";
 const DailySummary = () => {
 
     return (
-        <div className="flex flex-col w-[70%] h-[95%] bg-white rounded-lg overflow-hidden">
+        <div className="flex flex-col w-[70%] h-[95%] bg-white rounded-[40px] overflow-hidden p-5">
             
             <div className="flex flex-row w-auto justify-between m-4" >
                 {/* Heading */}

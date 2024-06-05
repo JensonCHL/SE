@@ -1,15 +1,10 @@
-import DailySummary from "../../ComponentPage2/DailySummary";
-import Habit from "../../components/Habit";
-import Header from "../../components/Header";
-import Todo from "../../components/Todo";
+import DailySummary from "../../ComponentPage2/DailySummary"
 
 const Activity = () => {
-    return(
-        <div className="flex h-screen mt-4">
+    return (
+        <div className="flex h-screen m-4">
             <DailySummary></DailySummary>
         </div>
-        
-
     )
 
 }
