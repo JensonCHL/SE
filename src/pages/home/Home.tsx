@@ -7,6 +7,7 @@ import AddEvent from '../../components/addEvent';
 import Recomendation from '../../components/Recomendation';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // Import interaction plugin
+import '../../index.css'
 
 interface CalendarProps { }
 
@@ -93,7 +94,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                     <Recomendation />
                     <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />
                 </div>
-                <div className="h-auto w-9/12 bg-white m-4 p-6 rounded-lg">
+                <div className="h-auto w-9/12 bg-white m-4 pt-4 pb-6 pr-6 pl-6 rounded-lg">
                     <FullCalendar
                         ref={calendarRef}
                         events={events}
@@ -121,6 +122,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                         eventAdd={handleEventAdd}
                         datesSet={handleDateSet}
                         eventContent={renderEventContent} // Use eventContent for custom rendering
+                        aspectRatio={2}
                     />
                 </div>
             </div>
