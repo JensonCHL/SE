@@ -7,7 +7,7 @@ import AddEvent from '../../components/addEvent';
 import Recomendation from '../../components/Recomendation';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // Import interaction plugin
-import '../../index.css'
+
 
 interface CalendarProps { }
 

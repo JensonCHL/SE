@@ -71,3 +71,7 @@
   .fc-sunday-header {
     color: red;
   }
+  .fc-today-button.fc-button.fc-button-primary {
+    color: black;
+    font-weight:bold;
+}
