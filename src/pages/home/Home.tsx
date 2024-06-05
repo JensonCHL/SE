@@ -37,6 +37,13 @@ const Calendar: React.FC<CalendarProps> = () => {
         }
     };
 
+    const renderDay = (info) => {
+        if (info.date.getDay() === 0) { // 0 is Sunday
+          info.el.style.backgroundColor = 'red';
+          info.el.style.color = 'white';
+        }
+      };
+
     async function handleEventAdd(data: { event: any }) {
         try {
             const eventData = {
@@ -123,6 +130,18 @@ const Calendar: React.FC<CalendarProps> = () => {
                         datesSet={handleDateSet}
                         eventContent={renderEventContent} // Use eventContent for custom rendering
                         aspectRatio={2}
+                        dayCellClassNames={(arg) => {
+                            if (arg.date.getDay() === 0) { // 0 is Sunday
+                              return 'fc-sunday';
+                            }
+                            return '';
+                          }}
+                          dayHeaderClassNames={(arg) => {
+                            if (arg.dow === 0) { // 0 is Sunday
+                              return 'fc-sunday-header';
+                            }
+                            return '';
+                          }}
                     />
                 </div>
             </div>

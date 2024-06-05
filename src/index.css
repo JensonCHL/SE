@@ -54,9 +54,20 @@
 
 .fc-day-today {
     background-color: transparent !important;
-    color: #3182ce; /* Adjust text color to blue */
+    color: darkgreen; /* Adjust text color to blue */
+    font-weight: bold; 
     border: 2px solid #3182ce; /* Add a blue border */
     border-radius: 50%; /* Make the cell circular */
     padding: 4px; /* Add padding inside the cell */
     box-sizing: border-box; /* Include padding in width/height */
 }
+
+/* Make the day number of Sundays red */
+.fc-sunday .fc-daygrid-day-number {
+    color: red;
+  }
+  
+  /* Make the Sunday header text red */
+  .fc-sunday-header {
+    color: red;
+  }
