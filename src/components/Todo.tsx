@@ -101,8 +101,8 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
             {selectedType === 1 && <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
             {selectedType === 2 && (
                 <form onSubmit={onSubmit}>
-                    <div className='bg-white w-[350px] h-[500px] px-10 py-4 m-4 rounded-xl'>
-                        <div className="flex flex-col gap-y-3 mr-1">
+                    <div className='bg-white w-auto h-auto px-10 py-4 rounded-xl'>
+                        <div className="flex flex-col gap-y-1">
                             {/* Add event */}
                             <div className="flex flex-row gap-2 items-center m-1">
                                 <div className='font-bold'>Add New</div>
@@ -162,7 +162,7 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
                             </div>
 
                             {/* Repeat Reminder */}
-                            <div className="flex flex-col gap-4 justify-center">
+                            <div className="flex flex-col gap-y-1 justify-center">
                                 <RepeatButton />
                                 <ReminderButton />
                             </div>
@@ -190,7 +190,7 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
                             </div>
 
                             {/* Save & Cancel */}
-                            <div className="flex flex-row gap-4 justify-center mt-8">
+                            <div className="flex flex-row gap-4 justify-center mt-2">
                                 <button className='bg-[#3A86FF] w-full px-5 py-1 rounded-md' type='submit'>Save</button>
                                 <button className='text-red-700 w-full border border-[#E54B49] px-4 py-1 rounded-md' type='button' onClick={() => setSelectedType(0)}>Cancel</button>
                             </div>

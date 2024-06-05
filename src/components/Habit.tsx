@@ -101,8 +101,8 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
             {selectedType === 2 && <Todo onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
             {selectedType === 3 && (
                 <form onSubmit={onSubmit}>
-                    <div className='bg-white w-[350px] h-[450px] px-10 py-4 m-4 rounded-xl'>
-                        <div className="flex flex-col gap-y-3 mr-1">
+                    <div className='bg-white w-full h-auto px-10 py-4 rounded-xl'>
+                        <div className="flex flex-col gap-y-2">
                             {/* Add event */}
                             <div className="flex flex-row gap-2 items-center m-1">
                                 <div className='font-bold'>Add New</div>

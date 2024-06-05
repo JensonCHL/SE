@@ -89,7 +89,7 @@ const Calendar: React.FC<CalendarProps> = () => {
     return (
         <section>
             <div style={{ position: 'relative', zIndex: 0 }} className="flex">
-                <div className="flex flex-col m-4 gap-y-4 w-auto" >
+                <div className="flex flex-col m-4 gap-y-4 w-30" >
                     <Recomendation />
                     <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />
                 </div>
