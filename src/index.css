@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Adjusting margin for FullCalendar toolbar */
 .fc-toolbar {
     margin-top: 0 !important;
 }
@@ -12,40 +11,37 @@
     margin-bottom: 1em!important;
 }
 
-/* Styling FullCalendar primary buttons */
 .fc .fc-button-primary { 
-    color: #D9D9D9; /* Adjusted the text color */
+    color: #D9D9D9; 
     background-color: #F4F4F4 !important;
     border: none;
 }
 
 .fc-dayGridMonth-button-active, .fc-timeGridWeek-button-active{ 
-    color: #D9D9D9; /* Adjusted the text color */
+    color: #D9D9D9; 
     background-color: #F4F4F4 !important;
     border: none;
 }
 
-/* Styling active FullCalendar buttons */
+
 .fc-button-primary.fc-button-active { 
-    color: #FFFFFF; /* Adjusted text color for active state */
-    background-color: #3485FF !important; /* Light up blue background for active state */
+    color: #FFFFFF; 
+    background-color: #3485FF !important; 
 }
 
 .fc-dayGridMonth-button-active, .fc-timeGridWeek-button-active, .fc-button-acive{ 
-    color: #FFFFFF; /* Adjusted text color for active state */
-    background-color: #3485FF !important; /* Light up blue background for active state */
+    color: #FFFFFF; 
+    background-color: #3485FF !important;
 }
 
-/* Styling FullCalendar header month font */
 .fc-toolbar-title {
     font-size: 1rem;
     font-weight: bold;
-    color: black; /* Adjusted the color */
+    color: black; 
 }
 
-/* Styling chevron icons for previous and next buttons */
 .fc-icon-chevron-left, .fc-icon-chevron-right {
-    color: black; /* Set the desired color for chevron icons */
+    color: black;
 }
 
 .fc-event-main{
@@ -54,20 +50,19 @@
 
 .fc-day-today {
     background-color: transparent !important;
-    color: darkgreen; /* Adjust text color to blue */
+    color: darkgreen;
     font-weight: bold; 
-    border: 2px solid #3182ce; /* Add a blue border */
-    border-radius: 50%; /* Make the cell circular */
-    padding: 4px; /* Add padding inside the cell */
-    box-sizing: border-box; /* Include padding in width/height */
+    border: 2px solid #3182ce;
+    border-radius: 50%; 
+    padding: 4px; 
+    box-sizing: border-box;
 }
 
-/* Make the day number of Sundays red */
 .fc-sunday .fc-daygrid-day-number {
     color: red;
   }
   
-  /* Make the Sunday header text red */
   .fc-sunday-header {
     color: red;
   }
+  

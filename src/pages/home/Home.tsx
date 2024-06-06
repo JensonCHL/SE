@@ -7,7 +7,11 @@ import AddEvent from '../../components/addEvent';
 import Recomendation from '../../components/Recomendation';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // Import interaction plugin
-import '../../index.css'
+import '../../index2.css'
+import Lists from '../../components/Lists';
+import timelinePlugin from '@fullcalendar/timeline';
+
+
 
 interface CalendarProps { }
 
@@ -93,18 +97,21 @@ const Calendar: React.FC<CalendarProps> = () => {
         <section>
             <div style={{ position: 'relative', zIndex: 0 }} className="flex">
                 <div className="flex flex-col m-4 gap-y-4 w-30" >
-                    <Recomendation />
-                    <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />
+                    <AddEvent onEventAdded={handleEventAdd} selectedType={selectedType} setSelectedType={setSelectedType} />
                 </div>
-                <div className="h-auto w-9/12 bg-white m-4 pt-4 pb-6 pr-6 pl-6 rounded-lg">
-                    <FullCalendar
+                <div>
+                    <Lists />
+                </div>
+            </div>
+            <div>
+            <FullCalendar
                         ref={calendarRef}
                         events={events}
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                         headerToolbar={{
-                            right: 'next today',
+                            right: 'next',
                             center: 'title',
-                            left: 'dayGridMonth,timeGridWeek prev'
+                            left: 'prev'
 
                         }}
                         views={{
@@ -113,12 +120,8 @@ const Calendar: React.FC<CalendarProps> = () => {
                                 columnHeaderFormat: { weekday: 'long' },
                                 dayMaxEventRows: 3
                             },
-                            timeGridWeek: {
-                                titleFormat: { month: 'long', year: 'numeric' },
-                                slotLabelFormat: { hour: 'numeric', minute: '2-digit', meridiem: 'short' },
-                                columnHeaderFormat: { weekday: 'short', day: 'numeric' }
-                            }
                         }}
+                        
                         eventTextColor="black"
                         initialView="dayGridMonth"
                         eventAdd={handleEventAdd}
@@ -138,7 +141,18 @@ const Calendar: React.FC<CalendarProps> = () => {
                             return '';
                           }}
                     />
-                </div>
+            </div>
+            <div>
+            
+            <FullCalendar
+            plugins={[timelinePlugin]}
+            initialView="timelineDay"
+            headerToolbar={{
+                left: 'title',
+            }}
+            scrollTime="00:00:00"
+            // You can customize other properties as required
+        />
             </div>
         </section>
     );
