@@ -4,14 +4,14 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import axios from 'axios';
 import moment from "moment";
 import AddEvent from '../../components/addEvent';
-import Recomendation from '../../components/Recomendation';
+import Quotes from '../../components/randomQuote';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // Import interaction plugin
 import '../../index2.css'
+// import '../../timeline.css'
+
 import Lists from '../../components/Lists';
 import timelinePlugin from '@fullcalendar/timeline';
-
-
 
 interface CalendarProps { }
 
@@ -94,17 +94,11 @@ const Calendar: React.FC<CalendarProps> = () => {
     }, []);
 
     return (
-        <section>
-            <div style={{ position: 'relative', zIndex: 0 }} className="flex">
-                <div className="flex flex-col m-4 gap-y-4 w-30" >
-                    <AddEvent onEventAdded={handleEventAdd} selectedType={selectedType} setSelectedType={setSelectedType} />
-                </div>
-                <div>
-                    <Lists />
-                </div>
-            </div>
-            <div>
-            <FullCalendar
+        <section className="flex flex-row m-3">
+            <div className="w-3/4 bg-white p-2 rounded-2xl">
+            <div className="flex flex-row m-4">
+                <div className="w-3/4 mr-6">
+                    <FullCalendar
                         ref={calendarRef}
                         events={events}
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -126,34 +120,55 @@ const Calendar: React.FC<CalendarProps> = () => {
                         initialView="dayGridMonth"
                         eventAdd={handleEventAdd}
                         datesSet={handleDateSet}
-                        eventContent={renderEventContent} // Use eventContent for custom rendering
-                        aspectRatio={2}
+                        eventContent={renderEventContent}
+                        aspectRatio={3}
                         dayCellClassNames={(arg) => {
-                            if (arg.date.getDay() === 0) { // 0 is Sunday
+                            if (arg.date.getDay() === 0) {
                               return 'fc-sunday';
                             }
                             return '';
                           }}
                         dayHeaderClassNames={(arg) => {
-                            if (arg.dow === 0) { // 0 is Sunday
+                            if (arg.dow === 0) { 
                               return 'fc-sunday-header';
                             }
                             return '';
                           }}
                     />
+                    </div>
+
+                    <div className="w-2/5">
+                        <Lists />
+                    </div>
             </div>
-            <div>
-            
+            <div className="mb-2 ml-2 mr-2">
             <FullCalendar
             plugins={[timelinePlugin]}
             initialView="timelineDay"
             headerToolbar={{
                 left: 'title',
             }}
-            scrollTime="00:00:00"
-            // You can customize other properties as required
-        />
+            scrollTime="00:01:00"
+            events={events}
+            height={330}
+            eventAdd={handleEventAdd}
+            datesSet={handleDateSet}
+            eventContent={renderEventContent}
+            eventTextColor="black"
+            slotDuration='00:15:00'
+             />
             </div>
+            </div>
+
+            <div style={{ position: 'relative', zIndex: 0 }} className="w-1/4">
+                <div className="flex flex-col m-1 ml-6 w-30" >
+                    <AddEvent onEventAdded={handleEventAdd} selectedType={selectedType} setSelectedType={setSelectedType} />
+                </div>
+                <div className="mt-8 ml-6">
+                    <Quotes/>
+                </div>
+            </div>
+
         </section>
     );
 }

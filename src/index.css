@@ -65,4 +65,23 @@
   .fc-sunday-header {
     color: red;
   }
-  
+.fc-today-button.fc-button.fc-button-primary {
+    color: black;
+    font-weight:bold;
+}
+
+.view-more{
+    font-size: 12px;
+}
+
+/* custom-calendar.css */
+
+/* Hide the day grid lines */
+.fc-daygrid-body .fc-row .fc-bg {
+    border: none !important;
+}
+
+/* Hide the time grid lines in timeline view */
+.fc-timeline-body .fc-divider {
+    display: none !important;
+}

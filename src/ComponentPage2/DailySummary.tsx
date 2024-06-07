@@ -27,8 +27,8 @@ const DailySummary = () => {
             {/* Container */}
             <div className="flex flex-row w-auto h-full m-4 justify-between" >
                 <Habit></Habit>
-                <Event></Event>
                 <Todo></Todo>
+                <Event></Event>
             </div>
 
         </div>

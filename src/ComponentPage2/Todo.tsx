@@ -6,7 +6,7 @@ const Todo = () => {
                 <span className="items-center m-4 text-lg font-bold" >To-do</span>
             </div>
             {/* Checkbox */}
-            <div className="flex flex-col h-full gap-3 px-4 py-4 bg-[#E6D7FB] w-full rounded-b-[20px]">
+            <div className="flex flex-col h-full gap-3 px-4 py-4 bg-[#FFCCE2] w-full rounded-b-[20px]">
                 <div className="flex justify-between ">
                     <div className="flex flex-col" >
                         <span className="font-bold" >To-do1</span>
