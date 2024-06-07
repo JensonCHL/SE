@@ -80,7 +80,7 @@ const Lists = () => {
         <div className="h-88 w-96">
             <div className="h-46 w-96 bg-white rounded-2xl pl-5 pr-5 pt-2 pb-2 outline">
                 {onGoingEvent.length === 0 ? (
-                    <div className="flex items-center justify-center h-screen text-center">You don't even have anything to do?</div>
+                    <div className="flex items-center justify-center text-center">You don't even have anything to do?</div>
                 ) : (
         <>
             <h2 className="font-bold text-sm mb-0-0">On Going: </h2>
