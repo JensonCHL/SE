@@ -1,54 +1,225 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import moment from 'moment';
+import Datetime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
+
 const Event = () => {
+    const [users, setUsers] = useState([]);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [formData, setFormData] = useState({
+        title: '',
+        desc: '',
+        start: '',
+        end: '',
+        location: '',
+    });
+    const [modalOpen, setModalOpen] = useState(false);
+
+    // Fetch users from API on component mount
+    useEffect(() => {
+        axios.get('http://localhost:5001/api/calendar/get-users')
+            .then(response => {
+                setUsers(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    }, []);
+
+    // Filter and format ongoing events
+    const onGoingEvent = users
+        .filter((user) => user.types === "event")
+        .map((user) => ({
+            ...user,
+            start: moment(user.start).add(7, "hours").format("HH:mm"),
+            date: moment(user.start).add(7, "hours").format("YYYY-MM-DD"),
+            end: moment(user.end).add(7, "hours").format("HH:mm"),
+        }));
+
+    // Modal open and close functions
+    const openModal = (event) => {
+        setSelectedEvent(event);
+        setFormData({
+            title: event.title,
+            desc: event.desc || '',
+            start: moment(event.start).toDate(), // Convert to JavaScript Date object
+            end: moment(event.end).toDate(), // Convert to JavaScript Date object
+            location: event.location,
+        });
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setSelectedEvent(null);
+        setFormData({
+            title: '',
+            desc: '',
+            start: '',
+            end: '',
+            location: '',
+        });
+        setModalOpen(false);
+    };
+
+    // Handle form field changes
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    // Handle form submission to update event
+    const handleUpdateEvent = async (e) => {
+        e.preventDefault();
+
+        // Check if any form field is empty or unchanged
+        if (
+            formData.title === '' ||
+            formData.start === '' ||
+            formData.end === '' ||
+            (selectedEvent.desc === null && formData.desc === '') || // Handle null description case
+            formData.location === ''
+        ) {
+            console.error('Please fill out all required fields.');
+            return;
+        }
+
+        // Check if form data is unchanged
+        if (
+            selectedEvent.title === formData.title &&
+            selectedEvent.desc === formData.desc &&
+            moment(selectedEvent.start).toISOString() === moment(formData.start).toISOString() &&
+            moment(selectedEvent.end).toISOString() === moment(formData.end).toISOString() &&
+            selectedEvent.location === formData.location
+        ) {
+            console.log('No changes detected.');
+            closeModal();
+            return;
+        }
+
+        try {
+            const updatedEvent = {
+                ...selectedEvent,
+                title: formData.title,
+                desc: formData.desc,
+                start: moment(formData.start).toISOString(),
+                end: moment(formData.end).toISOString(),
+                location: formData.location,
+            };
+            await axios.put(`http://localhost:5001/api/calendar/update-event/${selectedEvent._id}`, updatedEvent);
+            // Update the event in the state or refetch events
+            const updatedUsers = users.map(user => user._id === selectedEvent._id ? updatedEvent : user);
+            setUsers(updatedUsers);
+            closeModal(); // Close the modal after successful update
+        } catch (error) {
+            console.error('Error updating event:', error);
+        }
+    };
+
+    // Handle checkbox change to delete event
+    const handleCheckboxChange = async (userId) => {
+        try {
+            await axios.delete(`http://localhost:5001/api/calendar/delete-user/${userId}`);
+            setUsers(users.filter(user => user._id !== userId));
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
+
     return (
-        <div className="flex flex-col  w-[30%] h-auto rounded-b-full" >
-            {/* header Habit container */}
-            <div className="flex items-center justify-center bg-green-100 rounded-t-[20px] bg-[#E6D7FE] overflow-hidden" >
-                <span className="items-center m-4 text-lg font-bold" >Event</span>
+        <div className="flex flex-col w-[30%] h-full rounded-b-full">
+            {/* Header Event container */}
+            <div className="flex items-center justify-center bg-[#E6D7FE] rounded-t-[20px]">
+                <span className="items-center m-4 text-lg font-bold text-[#8338EC]">Event</span>
             </div>
-            {/* Checkbox */}
-            <div className="flex flex-col h-full gap-3 px-4 py-4 bg-[#E6D7FE]  w-full rounded-b-[20px]">
-                <div className="flex justify-between ">
-                    <div className="flex flex-col" >
-                        <span className="font-bold" >Event1</span>
-                        <span>07:00</span>
-                    </div>
-                    <label className="flex items-center gap-2 mr-4 ">
-                        <input className="bg-[#FFF2CE]"  type="checkbox" />
-                    </label>
-                </div>
-                <div className="flex justify-between ">
-                    <div className="flex flex-col" >
-                        <span className="font-bold" >Event1</span>
-                        <span>07:00</span>
-                    </div>
-                    <label className="flex items-center gap-2 mr-4">
-                        <input type="checkbox" />
-                    </label>
-                </div>
-                <div className="flex justify-between ">
-                    <div className="flex flex-col" >
-                        <span className="font-bold" >Event1</span>
-                        <span>07:00</span>
-                    </div>
-                    <label className="flex items-center gap-2 mr-4">
-                        <input type="checkbox" />
-                    </label>
-                </div>
-                <div className="flex justify-between ">
-                    <div className="flex flex-col" >
-                        <span className="font-bold" >Event1</span>
-                        <span>07:00</span>
-                    </div>
-                    <label className="flex items-center gap-2 mr-4">
-                        <input type="checkbox" />
-                    </label>
-                </div>
+            {/* Event list */}
+            <div className="flex flex-col gap-3 px-4 py-4 bg-[#E6D7FE] w-full rounded-b-[10px] bg-opacity-45 overflow-auto">
+                {onGoingEvent.length === 0 ? (
+                    <div>No ongoing events</div>
+                ) : (
+                    onGoingEvent.map((event, index) => (
+                        <li key={event._id} className="list-none flex flex-row justify-between">
+                            <div>
+                                <div className='text-bold text-medium'>{event.title}</div>
+                                <div className='text-normal text-xs'>Start: {event.start}, {event.date}</div>
+                            </div>
+                            <div className='flex flex-row'>
+                                <input type="button" value="Click Me!" onClick={() => openModal(event)} />
 
+                                <label>
+                                    <input type="checkbox" name="todo" value={event._id}
+                                        onChange={() => handleCheckboxChange(event._id)} />
+                                </label>
+                            </div>
+                        </li>
+                    ))
+                )}
             </div>
 
+            {/* Modal for updating event */}
+            {selectedEvent && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
+                    <div className="bg-white p-6 rounded-lg z-10">
+                        <h2 className="text-lg font-bold mb-4">The Details (You can also update your event!)</h2>
+                        <form onSubmit={handleUpdateEvent}>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">Title *</label>
+                                <input type="text" name="title" value={formData.title} onChange={handleChange} required className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea name="desc" value={formData.desc} onChange={handleChange} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" rows="3"></textarea>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">Location *</label>
+                                <input type="text" name="location" value={formData.location} onChange={handleChange} required className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">Start *</label>
+                                <Datetime
+                                    name="start"
+                                    value={formData.start}
+                                    onChange={value => handleChange({ target: { name: 'start', value } })}
+                                    dateFormat="YYYY-MM-DD"
+                                    timeFormat="HH:mm"
+                                    inputProps={{
+                                        className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+                                        required: true
+                                    }}
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">End *</label>
+                                <Datetime
+                                    name="end"
+                                    value={formData.end}
+                                    onChange={value => handleChange({ target: { name: 'end', value } })}
+                                    dateFormat="YYYY-MM-DD"
+                                    timeFormat="HH:mm"
+                                    inputProps={{
+                                        className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+                                        required: true
+                                    }}
+                                />
+                            </div>
+                            <div className="flex justify-end">
+                                <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Update Event
+                                </button>
+                                <button type="button" onClick={closeModal} className="ml-3 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
-    )
-
-}
+    );
+};
 
 export default Event;

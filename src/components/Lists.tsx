@@ -5,6 +5,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import '../index.css';
+import { BrowserRouter as Router } from 'react-router-dom';
+// import Acticity from '../pages/Activity/Acticity'
+import Activity from '../pages/Activity/Activity';
+import { Link } from 'react-router-dom';
+
 
 const Lists = () => {
     const [users, setUsers] = useState([]);
@@ -28,92 +33,138 @@ const Lists = () => {
         }
     };
 
-    const filteredEvent = users
+    const onGoingEvent = users
         .filter((user) => user.types === "event")
-        .slice(0, 2)
+        .slice(0, 1)
         .map((user) => ({
             ...user,
             start: moment(user.start).add(7, "hours").format("HH:mm"),
             date: moment(user.start).add(7, "hours").format("YYYY-MM-DD"),
+            end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
+
+        }));
+    
+    const upComingEvent = users
+        .filter((user) => user.types === "event")
+        .slice(1, 2)
+        .map((user) => ({
+            ...user,
+            start: moment(user.start).add(7, "hours").format("HH:mm"),
+            date: moment(user.start).add(7, "hours").format("YYYY-MM-DD"),
+            end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
+
         }));
 
     const filteredTodo = users
         .filter((user) => user.types === "todo")
-        .slice(0, 2)
         .map((user) => ({
             ...user,
             start: moment(user.start).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
+            end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
+
             date: moment(user.start).add(7, "hours").format("YYYY-MM-DD"), // Convert to GMT+7 and format date only
         }));
 
     const filteredHabit = users
         .filter((user) => user.types === "habit")
-        .slice(0, 2)
         .map((user) => ({
             ...user,
+            end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
+
             start: moment(user.start).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
             date: moment(user.start).add(7, "hours").format("YYYY-MM-DD"), // Convert to GMT+7 and format date only
+            
         }));
 
     return (
-        <div>
-            <div className="h-full w-auto bg-white rounded-2xl p-5 outline">
-                <h2 className="font-bold">On Going: </h2>
-                <ul>
-                    {filteredEvent.map((user, index) => (
-                        <tr key={user._id} style={index === 0 ? { color: 'black', fontSize: '20px', fontWeight: 'bold'} : {}}>
-                            <span>{index === 0 ? `${user.title}` : user.title} - </span>
-                            <td>{user.start} - </td>
-                            <td>{user.date}</td>
-                        </tr>
-                    ))}
-                </ul>
-            </div>
-            <div className="flex flex-row m-3">
-            <div className="h- w-40 bg-white rounded-2xl p-3 outline mr-2">
-                <h2>Dont forget to do:  </h2>
+        <div className="h-88 w-96">
+            <div className="h-46 w-96 bg-white rounded-2xl pl-5 pr-5 pt-2 pb-2 outline">
+                {onGoingEvent.length === 0 ? (
+                    <div className="flex items-center justify-center h-screen text-center">You don't even have anything to do?</div>
+                ) : (
+        <>
+            <h2 className="font-bold text-sm mb-0-0">On Going: </h2>
+            <ul>
+                {onGoingEvent.map((user, index) => (
+                    <li className="text-base font-bold m-0 p-0" key={user._id}>
+                        <span>{user.title}<br /></span>
+                        <span>{user.start} - {user.end} </span>
+                        <span>{user.date}</span>
+                    </li>
+                ))}
+            </ul>
+        </>
+    )}
+    <h2 className="text-sm ml-2 text-gray-500">Upcoming: </h2>
+<ul>
+    {upComingEvent.length === 0 ? (
+        <div className="text-sm ml-2 text-gray-500">You don't have any upcoming event, make sure you have one!</div>
+    ) : (
+        upComingEvent.map((user, index) => (
+            <li className="text-sm ml-2 text-gray-500" key={user._id}>
+                <span>{user.title}<br /></span>
+                <span>{user.start} - {user.end}, </span>
+                <span>{user.date}</span>
+            </li>
+        ))
+    )}
+</ul>
+
+</div>
+
+            <div className="flex flex-row mt-4">
+            <div className=" bg-white rounded-2xl pt-1  pl-2 outline mr-2 w-52 h-32">
+                <h2 className="text-bold">Dont forget to do:  </h2>
                 <form>
+                {filteredTodo.length === 0 ? (
+                    <div className="text-sm font-normal">No work to do?</div>
+                ) : (
                     <ul>
-                        {filteredTodo.map(user => (
+                        {filteredTodo.slice(0, 2).map(user => (
                             <li key={user._id}>
-                                <div className="flex flex-row">
-                                <label>
-                                    <input type="checkbox" name="todo" value={user._id} 
-                                    onChange={() => handleCheckboxChange(user._id)}/>
-                                </label>
-                                <div>
-                                    <div>{user.title}</div>
-                                    <div>{user.start}</div>
-                                </div>
+                                <div className="flex flex-row text-sm mt-0.2 ml-2">
+                                    <label>
+                                        <input type="checkbox" name="todo" value={user._id}
+                                            onChange={() => handleCheckboxChange(user._id)} />
+                                    </label>
+                                    <div>
+                                        <div>{user.title}</div>
+                                        <div>{user.start}</div>
+                                    </div>
                                 </div>
                             </li>
                         ))}
                     </ul>
+                )}
                 </form>
-                <span>VIEW MORE</span>
+                {filteredTodo.length >= 2 && <Link to="/Activity" className="view-more text-right text-bold">VIEW MORE</Link>}
             </div>
 
-            <div className="h- w-40 bg-white rounded-2xl p-3 outline mr-2">
-                <h2>Daily Habits: </h2>
-                <form>
+            <div className=" bg-white rounded-2xl pt-1 pl-2 outline ml-2 w-52 h-32">
+                <h2 className="text-bold ">Daily Habits: </h2>
+                <form >
+                {filteredHabit.length === 0 ? (
+                    <div className="text-sm font-normal">No habits found!</div>
+                ) : (
                     <ul>
-                        {filteredHabit.map(user => (
+                        {filteredHabit.slice(0, 3).map(user => (
                             <li key={user._id}>
-                                <div className="flex flex-row">
-                                <label>
-                                    <input type="checkbox" name="todo" value={user._id}
-                                    onChange={() => handleCheckboxChange(user._id)}/>
-                                </label>
-                                <div>
-                                    <div>{user.title}</div>
-                                    <div>{user.start}</div>
-                                </div>
+                                <div className="flex flex-row text-sm mt-1.5 ml-2">
+                                    <label>
+                                        <input type="checkbox" name="todo" value={user._id}
+                                            onChange={() => handleCheckboxChange(user._id)} />
+                                    </label>
+                                    <div>
+                                        <div>{user.title}</div>
+                                        {/* <div>{user.date}</div> */}
+                                    </div>
                                 </div>
                             </li>
                         ))}
                     </ul>
-                </form>
-                <span>VIEW MORE</span>
+                )}
+            </form>
+                {filteredHabit.length >= 4 && <Link to="/Activity" className="view-more text-right text-bold ">VIEW MORE</Link>}
             </div>
             </div>
         </div>
