@@ -96,7 +96,7 @@ const CalendarPage: React.FC<CalendarProps> = () => {
                     <Recomendation />
                     <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />
                 </div>
-                <div className="h-auto w-9/12 bg-white m-4 pt-4 pb-6 pr-6 pl-6 rounded-lg">
+                <div className="w-9/12 bg-white m-4 pt-4 pb-6 pr-6 pl-6 rounded-lg">
                     <FullCalendar
                         ref={calendarRef}
                         events={events}

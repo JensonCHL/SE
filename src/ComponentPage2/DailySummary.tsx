@@ -8,7 +8,7 @@ const DailySummary = () => {
     const today = moment();
 
     return (
-        <div className="flex flex-col w-[70%] h-[85%] bg-white rounded-[40px] p-5">
+        <div className="flex flex-col w-[70%] h-auto bg-white rounded-[40px] p-5">
             <div className="flex flex-row w-auto justify-between m-4">
                 {/* Heading */}
                 <div className="flex text-3xl">

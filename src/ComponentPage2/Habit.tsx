@@ -130,11 +130,11 @@ const Habit = () => {
 
 
     return (
-        <div className="flex flex-col w-[30%] h-5/6 rounded-b-full" >
+        <div className="flex flex-col w-[30%] h-full rounded-b-full" >
             <div className="flex items-center justify-center bg-[#FFF2CE] rounded-t-[20px] overflow-hidden bg-opacity-95" >
                 <span className="items-center m-4 text-lg font-bold text-[#FFBE0B]" >Habit</span>
             </div>
-            <div className="flex flex-col h-full gap-3 px-4 py-4 bg-[#FFF2CE] bg-opacity-45 w-full rounded-b-[10px]">
+            <div className="flex flex-col h-[75%] gap-3 px-4 py-4 bg-[#FFF2CE] bg-opacity-45 w-full rounded-b-[10px] overflow-y-scroll">
             {onGoingEvent.length === 0 ? (
                     <div>No ongoing events</div>
                 ) : (

@@ -9,7 +9,7 @@ const Todo = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
-        description: '', 
+        description: '',
         start: '',
         end: '',
         location: '',
@@ -39,9 +39,9 @@ const Todo = () => {
         setSelectedEvent(event);
         setFormData({
             title: event.title,
-            description: event.description, 
-            start: moment(event.start).toDate(), 
-            end: moment(event.end).toDate(), 
+            description: event.description,
+            start: moment(event.start).toDate(),
+            end: moment(event.end).toDate(),
             location: event.location,
         });
         setModalOpen(true);
@@ -51,7 +51,7 @@ const Todo = () => {
         setSelectedEvent(null);
         setFormData({
             title: '',
-            description: '', 
+            description: '',
             start: '',
             end: '',
             location: '',
@@ -81,7 +81,7 @@ const Todo = () => {
             formData.title === '' ||
             formData.start === '' ||
             formData.end === '' ||
-            formData.description ==='' || 
+            formData.description === '' ||
             formData.location === ''
         ) {
             console.error('Please fill out all required fields.');
@@ -90,7 +90,7 @@ const Todo = () => {
 
         if (
             selectedEvent.title === formData.title &&
-            selectedEvent.description === formData.description && 
+            selectedEvent.description === formData.description &&
             moment(selectedEvent.start).toISOString() === moment(formData.start).toISOString() &&
             moment(selectedEvent.end).toISOString() === moment(formData.end).toISOString() &&
             selectedEvent.location === formData.location
@@ -112,7 +112,7 @@ const Todo = () => {
             await axios.put(`http://localhost:5001/api/calendar/update-event/${selectedEvent._id}`, updatedEvent);
             const updatedUsers = users.map(user => user._id === selectedEvent._id ? updatedEvent : user);
             setUsers(updatedUsers);
-            closeModal(); 
+            closeModal();
         } catch (error) {
             console.error('Error updating event:', error);
         }
@@ -128,15 +128,15 @@ const Todo = () => {
     };
 
     return (
-        <div className="flex flex-col  w-[30%] h-5/6 rounded-b-full" >
+        <div className="flex flex-col  w-[30%] h-full rounded-b-full" >
             {/* header Habit container */}
             <div className="flex items-center justify-center bg-[#FFCCE2] rounded-t-[20px] overflow-hidden" >
                 <span className="items-center m-4 text-lg font-bold text-[#FF006E]">To-do</span>
             </div>
             {/* Checkbox */}
-            <div className="flex flex-col h-full gap-3 px-4 py-4 bg-[#FFCCE2] w-full rounded-b-[10px] bg-opacity-40">
-                
-            {onGoingEvent.length === 0 ? (
+            <div className="flex flex-col h-[75%] gap-3 px-4 py-4 bg-[#FFCCE2] w-full rounded-b-[10px] bg-opacity-40 overflow-y-scroll">
+
+                {onGoingEvent.length === 0 ? (
                     <div>No ongoing events</div>
                 ) : (
                     onGoingEvent.map((event, index) => (
