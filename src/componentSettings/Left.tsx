@@ -2,7 +2,7 @@ import { MdOutlinePhotoCamera } from "react-icons/md";
 
 const Left = () => {
     return (
-        <div className="flex flex-col bg-white w-full rounded-lg h-full gap-y-10" >
+        <div className="flex flex-col bg-white w-full rounded-[15px] h-full gap-y-10" >
             <div className="flex flex-col items-center justify-center pt-6" >
                 <div className="p-5 bg-[#D9D9D9] rounded-full" >
                     <MdOutlinePhotoCamera size="5em" color="white" />
