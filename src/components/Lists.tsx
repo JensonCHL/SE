@@ -111,7 +111,6 @@ const Lists = () => {
 </ul>
 
 </div>
-
             <div className="flex flex-row mt-4">
             <div className=" bg-white rounded-2xl pt-1  pl-2 outline mr-2 w-52 h-32">
                 <h2 className="text-bold">Dont forget to do:  </h2>

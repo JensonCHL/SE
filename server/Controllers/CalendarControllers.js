@@ -35,7 +35,7 @@ router.get('/get-events', async (req, res) => {
 // Get all users (events)
 router.get('/get-users', async (req, res) => {
     try {
-        const users = await Event.find();
+        const users = await Event.find().sort({ start: 'asc' });
         res.json(users);
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -58,10 +58,10 @@ router.delete('/delete-user/:id', async (req, res) => {
 // Update an event by ID
 router.put('/update-event/:id', async (req, res) => {
     try {
-        const { title, desc, start, end, location } = req.body;
+        const { title, description, start, end, location } = req.body;
         const updatedEvent = await Event.findByIdAndUpdate(req.params.id, {
             title,
-            desc,
+            description,
             start,
             end,
             location
@@ -77,5 +77,6 @@ router.put('/update-event/:id', async (req, res) => {
         res.status(500).send({ error: 'Failed to update event' });
     }
 });
+
 
 module.exports = router;

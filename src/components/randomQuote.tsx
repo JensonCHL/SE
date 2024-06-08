@@ -54,7 +54,7 @@ const QuoteFetcher: React.FC = () => {
     };
 
     return (
-        <div className='w-84 h-28 bg-white rounded-xl flex flex-col items-center justify-center h-screen p-6'>
+        <div className='w-84 h-48 bg-white rounded-xl flex flex-col items-center justify-center p-6'>
             <h1 className='font-bold'>Random Quote</h1>
             {randomQuote && (
                 <div>

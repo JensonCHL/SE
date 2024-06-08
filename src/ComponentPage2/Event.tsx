@@ -9,7 +9,7 @@ const Event = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
-        desc: '',
+        description: '', // Updated to match backend field
         start: '',
         end: '',
         location: '',
@@ -42,7 +42,7 @@ const Event = () => {
         setSelectedEvent(event);
         setFormData({
             title: event.title,
-            desc: event.desc || '',
+            description: event.description, // Updated to match backend field
             start: moment(event.start).toDate(), // Convert to JavaScript Date object
             end: moment(event.end).toDate(), // Convert to JavaScript Date object
             location: event.location,
@@ -54,7 +54,7 @@ const Event = () => {
         setSelectedEvent(null);
         setFormData({
             title: '',
-            desc: '',
+            description: '', // Updated to match backend field
             start: '',
             end: '',
             location: '',
@@ -71,6 +71,14 @@ const Event = () => {
         });
     };
 
+    // Handle date/time changes
+    const handleDateChange = (name, value) => {
+        setFormData({
+            ...formData,
+            [name]: value.toDate(), // Ensure we are converting moment object to Date
+        });
+    };
+
     // Handle form submission to update event
     const handleUpdateEvent = async (e) => {
         e.preventDefault();
@@ -80,7 +88,7 @@ const Event = () => {
             formData.title === '' ||
             formData.start === '' ||
             formData.end === '' ||
-            (selectedEvent.desc === null && formData.desc === '') || // Handle null description case
+            formData.description ==='' || // Updated to match backend field
             formData.location === ''
         ) {
             console.error('Please fill out all required fields.');
@@ -90,7 +98,7 @@ const Event = () => {
         // Check if form data is unchanged
         if (
             selectedEvent.title === formData.title &&
-            selectedEvent.desc === formData.desc &&
+            selectedEvent.description === formData.description && // Updated to match backend field
             moment(selectedEvent.start).toISOString() === moment(formData.start).toISOString() &&
             moment(selectedEvent.end).toISOString() === moment(formData.end).toISOString() &&
             selectedEvent.location === formData.location
@@ -104,7 +112,7 @@ const Event = () => {
             const updatedEvent = {
                 ...selectedEvent,
                 title: formData.title,
-                desc: formData.desc,
+                description: formData.description, // Updated to match backend field
                 start: moment(formData.start).toISOString(),
                 end: moment(formData.end).toISOString(),
                 location: formData.location,
@@ -172,7 +180,7 @@ const Event = () => {
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Description</label>
-                                <textarea name="desc" value={formData.desc} onChange={handleChange} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" rows="3"></textarea>
+                                <textarea name="description" value={formData.description} onChange={handleChange} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Location *</label>
@@ -183,7 +191,7 @@ const Event = () => {
                                 <Datetime
                                     name="start"
                                     value={formData.start}
-                                    onChange={value => handleChange({ target: { name: 'start', value } })}
+                                    onChange={value => handleDateChange('start', value)}
                                     dateFormat="YYYY-MM-DD"
                                     timeFormat="HH:mm"
                                     inputProps={{
@@ -196,8 +204,8 @@ const Event = () => {
                                 <label className="block text-sm font-medium text-gray-700">End *</label>
                                 <Datetime
                                     name="end"
-                                    value={formData.end}
-                                    onChange={value => handleChange({ target: { name: 'end', value } })}
+                                    value={moment(formData.end)}
+                                    onChange={value => handleDateChange('end', value)}
                                     dateFormat="YYYY-MM-DD"
                                     timeFormat="HH:mm"
                                     inputProps={{
