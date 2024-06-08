@@ -90,7 +90,7 @@ const CalendarPage: React.FC<CalendarProps> = () => {
     }, []);
 
     return (
-        <section>
+        <section className="overflow-hidden">
             <div style={{ position: 'relative', zIndex: 0 }} className="flex">
                 <div className="flex flex-col m-4 gap-y-4 w-30" >
                     <Recomendation />

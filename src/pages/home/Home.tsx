@@ -109,10 +109,10 @@ const Calendar: React.FC<CalendarProps> = () => {
     }, []);
 
     return (
-        <section className="flex flex-row m-3">
-            <div className="w-3/4 bg-white p-2 rounded-2xl">
-                <div className="flex flex-row m-4">
-                    <div className="w-3/4 mr-6">
+        <section className="flex flex-row m-3 h-full overflow-hidden">
+            <div className="flex flex-col w-3/4 bg-white p-2 rounded-2xl h-[50%]">
+                <div className="flex flex-row m-4 justify-between">
+                    <div className="w-2/4 mr-6">
                         <FullCalendar
                             ref={calendarRef}
                             events={events}
@@ -171,12 +171,12 @@ const Calendar: React.FC<CalendarProps> = () => {
                     />
                 </div>
             </div>
-            <div style={{ position: 'relative', zIndex: 0 }} className="w-1/4">
-                <div className="flex flex-col m-1 ml-6 w-30" >
+            <div style={{ position: 'relative', zIndex: 0 }} className="w-[23%] flex flex-col m-auto gap-4 h-auto">
+                <div className="flex flex-col  w-auto h-full" >
                     {/* Pass handleEventAdd function to AddEvent component */}
                     <AddEvent onEventAdded={handleEventAdd} selectedType={selectedType} setSelectedType={setSelectedType} />
                 </div>
-                <div className="mt-8 ml-6">
+                <div className="h-full">
                     <Quotes/>
                 </div>
             </div>
