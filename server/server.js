@@ -3,18 +3,27 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const userModel = require('./model/event'); // Correct import for userModel
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = 5001;
 
-var cors = require('cors');
+const cors = require('cors');
 app.use(cors());
-
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
 
 const calendarController = require('./Controllers/CalendarControllers');
-
 app.use('/api/calendar', calendarController);
 
 mongoose.connect(process.env.MONGODB_URL, {

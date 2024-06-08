@@ -39,7 +39,7 @@ const Lists = () => {
         .map((user) => ({
             ...user,
             start: moment(user.start).add(7, "hours").format("HH:mm"),
-            date: moment(user.start).add(7, "hours").format("YYYY-MM-DD"),
+            date: moment(user.end).add(7, "hours").format("YYYY-MM-DD"),
             end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
 
         }));
@@ -50,7 +50,7 @@ const Lists = () => {
         .map((user) => ({
             ...user,
             start: moment(user.start).add(7, "hours").format("HH:mm"),
-            date: moment(user.start).add(7, "hours").format("YYYY-MM-DD"),
+            date: moment(user.end).add(7, "hours").format("YYYY-MM-DD"),
             end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
 
         }));
@@ -62,7 +62,7 @@ const Lists = () => {
             start: moment(user.start).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
             end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
 
-            date: moment(user.start).add(7, "hours").format("YYYY-MM-DD"), // Convert to GMT+7 and format date only
+            date: moment(user.end).add(7, "hours").format("YYYY-MM-DD"), // Convert to GMT+7 and format date only
         }));
 
     const filteredHabit = users
@@ -72,7 +72,7 @@ const Lists = () => {
             end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
 
             start: moment(user.start).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
-            date: moment(user.start).add(7, "hours").format("YYYY-MM-DD"), // Convert to GMT+7 and format date only
+            date: moment(user.end).add(7, "hours").format("YYYY-MM-DD"), // Convert to GMT+7 and format date only
 
         }));
 
