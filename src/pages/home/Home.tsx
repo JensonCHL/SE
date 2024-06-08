@@ -112,7 +112,7 @@ const Calendar: React.FC<CalendarProps> = () => {
         <section className="flex flex-row m-3 h-full overflow-hidden">
             <div className="flex flex-col w-3/4 bg-white p-2 rounded-2xl h-[50%]">
                 <div className="flex flex-row m-4 justify-between">
-                    <div className="w-2/4 mr-6">
+                    <div className="w-[55%]">
                         <FullCalendar
                             ref={calendarRef}
                             events={events}
