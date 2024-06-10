@@ -1,6 +1,8 @@
+import { TbDoorExit } from "react-icons/tb";
+
 const Right = () => {
     return (
-        <div className="flex flex-col bg-white w-full h-full rounded" >
+        <div className="flex flex-col bg-white w-full h-full rounded-[15px]" >
             <div className="flex flex-col m-[5%] gap-y-10 flex-grow ">
                 <div className="flex">
                     {/* Profile */}
@@ -34,14 +36,18 @@ const Right = () => {
                     </div>
                 </div>
                 {/* Lower Section */}
-                <div className="flex flex-row items-start justify-between mt-auto" >
+                <div className="flex flex-row items-center justify-between mt-auto" >
                     {/* Change Emaail/Password */}
                     <div className="flex flex-col cursor-pointer" >
                         <button className="text-left" >Change email</button>
                         <button>Change Password</button>
                     </div>
-                    <div>
-                        <button>Logout</button>
+                    <div className="flex items-center cursor-pointer" >
+                        <button className="flex items-center gap-2 " ><span className="font-bold" >Logout
+                            </span>
+                            <TbDoorExit />
+                        </button>
+                        
                     </div>
                 </div>
                 
