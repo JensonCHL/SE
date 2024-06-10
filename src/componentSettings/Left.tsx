@@ -14,7 +14,7 @@ const Left = () => {
 
 
             <div>
-                <div className="flex w-auto bg-[#8E8E8E] rounded m-4 px-2 py-2">
+                <div className="flex w-auto bg-[#8E8E8E] bg-opacity-15 rounded m-4 px-2 py-2">
                     Profile
                 </div>
                 <div className="flex w-auto text-[#A8A8A8] rounded m-4 px-2 py-2" >

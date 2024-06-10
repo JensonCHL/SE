@@ -28,7 +28,7 @@ const Recomendation = () => {
                 </span>
                 <span className="font-bold text-sm">
                     Activity 1
-                    {event.title}
+                    {/* {event.title} */}
                 </span>
             </div>
             {/* Time */}
@@ -39,7 +39,7 @@ const Recomendation = () => {
             <div className='flex items-center gap-1'>
                 <CiLocationOn />
                 <span>Location 1
-                    {event.location}
+                    {/* {event.location} */}
                 </span>
             </div>
             {/* Event Description */}
