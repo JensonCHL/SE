@@ -1,36 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from './axiosConfig'; // Import your Axios instance
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string>(''); // State to handle error messages
-
   const navigate = useNavigate();
 
-  // Handle changes in the name input field
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
-
-  // Handle changes in the email input field
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  // Handle changes in the password input field
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  // Handle form submission
   const handleSubmitReg = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const result = await axios.post('http://localhost:5001/api/calendar/create-user', { name, email, password });
+      const result = await axiosInstance.post('/create-user', { name, email, password });
       console.log(result.data); // Log the response for debugging
       navigate('/login'); // Redirect to login page on successful registration
     } catch (error) {
@@ -65,7 +48,7 @@ const SignUp: React.FC = () => {
                 autoComplete="off"
                 name="name"
                 value={name}
-                onChange={handleNameChange}
+                onChange={(e) => setName(e.target.value)}
                 className="form-input mt-1 block w-full border border-gray-300 rounded-md p-2"
               />
             </div>
@@ -81,7 +64,7 @@ const SignUp: React.FC = () => {
                 autoComplete="off"
                 name="email"
                 value={email}
-                onChange={handleEmailChange}
+                onChange={(e) => setEmail(e.target.value)}
                 className="form-input mt-1 block w-full border border-gray-300 rounded-md p-2"
               />
             </div>
@@ -97,7 +80,7 @@ const SignUp: React.FC = () => {
                 autoComplete="off"
                 name="password"
                 value={password}
-                onChange={handlePasswordChange}
+                onChange={(e) => setPassword(e.target.value)}
                 className="form-input mt-1 block w-full border border-gray-300 rounded-md p-2"
               />
             </div>
@@ -114,6 +97,6 @@ const SignUp: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default SignUp;

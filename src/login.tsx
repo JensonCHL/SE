@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from './axiosConfig';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string>(''); // State to handle error messages
   const navigate = useNavigate();
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,7 +17,7 @@ const Login: React.FC = () => {
       console.log(response.data);
 
       if (response.data.message === 'Login successful') {
-        navigate('/home'); // Navigate to home route on successful login
+        navigate('/'); // Navigate to home route on successful login
       } else {
         setError('Incorrect email or password'); // Set error message if login fails
       }

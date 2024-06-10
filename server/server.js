@@ -10,7 +10,11 @@ const app = express();
 const port = 5001;
 
 const cors = require('cors');
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['POST', 'GET'],
+    credentials: true
+}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
