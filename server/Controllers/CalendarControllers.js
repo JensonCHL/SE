@@ -81,6 +81,20 @@ router.get('/get-events', async (req, res) => {
     }
 });
 
+router.get('/get-past-events', async (req, res) => {
+    try {
+        const { start, end } = req.query;
+        const events = await Event.find();
+
+        // Code buat sort based on frequent
+
+        res.json(events);
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        res.status(500).send({ error: 'Failed to fetch events' });
+    }
+});
+
 // Get all users
 router.get('/get-users', async (req, res) => {
     try {
