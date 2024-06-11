@@ -15,9 +15,11 @@ const Login: React.FC = () => {
     try {
       const response = await axios.post('http://localhost:5001/api/calendar/loginUser', { email, password });
       console.log(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data));
+      // const session = JSON.parse(localStorage.getItem('user'));
 
       if (response.data.message === 'Login successful') {
-        navigate('/'); // Navigate to home route on successful login
+        navigate('/home'); // Navigate to home route on successful login
       } else {
         setError('Incorrect email or password'); // Set error message if login fails
       }

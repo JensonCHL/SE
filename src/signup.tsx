@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axiosInstance from './axiosConfig'; // Import your Axios instance
+import axios from './axiosConfig'; // Import your Axios instance
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState('');
@@ -13,7 +13,7 @@ const SignUp: React.FC = () => {
     e.preventDefault();
 
     try {
-      const result = await axiosInstance.post('/create-user', { name, email, password });
+      const result = await axios.post('http://localhost:5001/api/calendar/create-user', { name, email, password });
       console.log(result.data); // Log the response for debugging
       navigate('/login'); // Redirect to login page on successful registration
     } catch (error) {
