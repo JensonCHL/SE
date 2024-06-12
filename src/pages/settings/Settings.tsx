@@ -1,5 +1,6 @@
 import Left from "../../componentSettings/Left"
 import Right from "../../componentSettings/Right"
+import System from "../../componentSettings/System"
 
 const Settings = () => {
     return (
@@ -8,7 +9,7 @@ const Settings = () => {
                 <Left></Left>
             </div>
             <div className="w-3/4"  >
-                <Right></Right>
+                <System></System>
             </div>
 
 
