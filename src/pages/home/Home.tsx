@@ -114,32 +114,7 @@ const Calendar: React.FC<CalendarProps> = () => {
         }
     }, []);
 
-    const YourComponent = () => {
-        const [data, setData] = useState(null);
-
-        useEffect(() => {
-            const fetchData = async () => {
-                try {
-                    const response = await axios.get('your-api-endpoint'); // Replace 'your-api-endpoint' with your actual API endpoint
-                    setData(response.data);
-                } catch (error) {
-                    console.error('Error fetching data:', error);
-                }
-            };
-
-            fetchData();
-        }, []);
-        useEffect(() => {
-            if (data) {
-                const currentTime = new Date().getTime(); // Get current time in milliseconds
-                const databaseTime = new Date(data.time).getTime(); // Assuming 'time' is the property in your database
-
-                if (currentTime === databaseTime) {
-                    // Trigger the pop-up alert
-                    alert('Alert: Time matched!');
-                }
-            }
-        }, [data]);
+    
 
         return (
             <section className="flex m-3 md:flex-row h-full overflow-hidden">
