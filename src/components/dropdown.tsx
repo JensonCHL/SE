@@ -5,23 +5,31 @@ interface DropdownProps {
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ onSelect }) => {
+    const [value, setValue] = useState<number>(1);
     const options = [
         { label: 'Event', value: 1 },
         { label: 'To-Do', value: 2 },
         { label: 'Habit', value: 3 },
     ];
-    const [value, setValue] = useState<number>(options[1].value);
+    
+    // const [options, setOptions] = useState<{ label: string; value: number }[]>([
+    //     { label: 'Event', value: 1 },
+    //     { label: 'To-Do', value: 2 },
+    //     { label: 'Habit', value: 3 },
+    // ]);
+    
 
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = Number(event.target.value);
         setValue(selectedValue);
         onSelect(selectedValue);
+        updateOptions(selectedValue);
     }
 
     return (
-        <select 
-            className='form-select font-bold bg-gray-300 px-2 py-1 rounded-md items-center' 
-            onChange={handleSelect} 
+        <select
+            className='form-select font-bold bg-gray-300 px-2 py-1 rounded-md items-center'
+            onChange={handleSelect}
             value={value}
         >
             {options.map(option => (
@@ -34,3 +42,7 @@ const Dropdown: React.FC<DropdownProps> = ({ onSelect }) => {
 }
 
 export default Dropdown;
+function updateOptions(selectedValue: number) {
+    throw new Error('Function not implemented.');
+}
+

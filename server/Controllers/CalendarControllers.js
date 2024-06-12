@@ -86,6 +86,7 @@ router.get('/get-past-events', async (req, res) => {
         // Code buat sort based on frequent
 
         const mostFrequentTitle = await Event.aggregate([
+            { $match: { types: { $in: ["todo", "habit"] } } },
             { $group: { _id: "$title", count: { $sum: 1 }, firstEvent: { $first: "$$ROOT" } } },
             { $sort: { count: -1 } },
             { $limit: 1 }

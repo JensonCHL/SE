@@ -139,13 +139,13 @@ const Habit = () => {
                     <div>No ongoing events</div>
                 ) : (
                     onGoingEvent.map((event, index) => (
-                        <li key={event._id} className="list-none flex flex-row justify-between">
+                        <li key={event._id} className="list-none flex flex-row justify-between items-center">
                             <div>
                                 <div className='text-bold text-medium'>{event.title}</div>
                                 <div className='text-normal text-xs'>Start: {event.start}, {event.date}</div>
                             </div>
-                            <div className='flex flex-row'>
-                                <input type="button" value="Click Me!" onClick={() => openModal(event)} />
+                            <div className='flex flex-row gap-2'>
+                                <input type="button" value="Detail " onClick={() => openModal(event)} />
 
                                 <label>
                                     <input type="checkbox" name="todo" value={event._id}

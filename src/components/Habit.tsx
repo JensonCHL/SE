@@ -185,13 +185,7 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
 
                             {/* Recommendation */}
                             <div className="flex flex-row gap-1 bg-[#F4F4F4] rounded-full">
-                                <input className='bg-[#F4F4F4] py-1 px-2 rounded-full w-full focus:outline-none focus:border-none' type="text" value="Recommendation" readOnly />
-                                <button>
-                                    <FaRegCircleCheck color='green' size="1.4em" />
-                                </button>
-                                <button className='mr-2' >
-                                    <RxCrossCircled color='red' size="1.5em" />
-                                </button>
+                                
                             </div>
 
                             {/* Save & Cancel */}
