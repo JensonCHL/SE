@@ -12,7 +12,7 @@ import Settings from './pages/settings/Settings';
 export default function App() {
   return (
     <div className="max-h-screen flex flex-col">
-      <Header></Header>
+      {location.pathname !== '/login' && <Header />}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

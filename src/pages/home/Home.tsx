@@ -11,6 +11,7 @@ import '../../index2.css'; // Import custom styles
 
 import Lists from '../../components/Lists';
 import timelinePlugin from '@fullcalendar/timeline';
+import { useNavigate } from "react-router-dom";
 
 interface CalendarProps {}
 
@@ -97,9 +98,14 @@ const Calendar: React.FC<CalendarProps> = () => {
 
     // Initial state for today's date
     const [today, setToday] = useState(new Date());
-
+    const navigate = useNavigate()
     // Effect to fetch initial events when component mounts
     useEffect(() => {
+        
+        if (true){
+            navigate("/login")
+        }
+
         if (calendarRef.current) {
             let calendarApi = calendarRef.current.getApi();
             const currentDate = calendarApi.getDate();
@@ -109,9 +115,10 @@ const Calendar: React.FC<CalendarProps> = () => {
     }, []);
 
     return (
-        <section className="flex flex-row m-3 h-full overflow-hidden">
-            <div className="flex flex-col w-3/4 bg-white p-2 rounded-2xl h-[50%]">
-                <div className="flex flex-row m-4 justify-between">
+        <section className="flex m-3 md:flex-row h-full overflow-hidden">
+            <div className="flex flex-col w-3/4 bg-white p-2 rounded-2xl h-[50%]
+                            ">
+                <div className="flex flex-col md:flex-row m-4 justify-between">
                     <div className="w-[55%]">
                         <FullCalendar
                             ref={calendarRef}

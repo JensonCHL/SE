@@ -21,7 +21,7 @@ const Header = () => {
                 <div className="flex flex-row gap-14 align-right items-center px-16 rounded-full bg-white">
                     <a className="flex gap-1 justify-center items-center" >
                         <GoHome />
-                        <a href="/Home" className="hover:text-[#FB5607] duration-100" >Home</a>
+                        <a href="/home" className="hover:text-[#FB5607] duration-100" >Home</a>
                     </a>
                     <a className="flex gap-1 justify-center items-center" >
                         <SlCalender />

@@ -4,12 +4,27 @@ import DateTime from 'react-datetime';
 import { CiLocationOn } from 'react-icons/ci';
 
 
+interface EventData {
+    title: string;
+    start: Date;
+    end: Date;
+    desc: string;
+    location: string;
+    timeType: string;
+    types: string;
+    color: string;
+}
+
 const Recomendation = () => {
-    const [event, setEvents] = useState<any>();
+    const [event, setEvents] = useState<{ title: string, location: string, types: string; } | null>(null);
+    // const [event, setEvents] = useState<Event[]>([]);
+    // 
+
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await axios.get('/api/get-past-events');
+                const response = await axios.get('http://localhost:5001/api/calendar/get-past-events');
+                console.log(response)
                 setEvents(response.data); // Assuming API returns an array of Event objects
             } catch (error) {
                 console.error('Error fetching events:', error);
@@ -27,8 +42,7 @@ const Recomendation = () => {
                     
                 </span>
                 <span className="font-bold text-sm">
-                    Activity 1
-                    {/* {event.title} */}
+                    {event?.title}
                 </span>
             </div>
             {/* Time */}
@@ -38,8 +52,8 @@ const Recomendation = () => {
             {/* Location */}
             <div className='flex items-center gap-1'>
                 <CiLocationOn />
-                <span>Location 1
-                    {/* {event.location} */}
+                <span>
+                    {event?.location}
                 </span>
             </div>
             {/* Event Description */}
