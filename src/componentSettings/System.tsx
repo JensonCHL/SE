@@ -1,17 +1,25 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+// import { useHistory } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
-const System = () => {
+
+const System: React.FC = () => {
+    const navigate = useNavigate()
   const options = [
     { label: 'Event', value: 1 },
     { label: 'To-Do', value: 2 },
     { label: 'Habit', value: 3 },
   ];
   const [value, setValue] = useState<number>(options[0].value);
+//   const history = useHistory();
 
   const handleLogout = () => {
-    // Handle logout functionality here
-    console.log('Logging out...');
+    // Clear localStorage
+    localStorage.removeItem('user');
+
+    // Navigate to login page
+    navigate('/login'); // Redirect to login page on successful registration
+
   };
 
   return (
