@@ -106,5 +106,3 @@ const Recomendation = () => {
 }
 
 export default Recomendation;
-
-

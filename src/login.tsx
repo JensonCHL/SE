@@ -15,10 +15,13 @@ const Login: React.FC = () => {
     try {
       const response = await axios.post('http://localhost:5001/api/calendar/loginUser', { email, password });
       console.log(response.data);
-      localStorage.setItem('user', JSON.stringify(response.data));
       // const session = JSON.parse(localStorage.getItem('user'));
+      localStorage.setItem('user', JSON.stringify(response.data.user._id));
+      console.log(localStorage.getItem('user'))
 
       if (response.data.message === 'Login successful') {
+        // localStorage.setItem('user', JSON.stringify(response.data.id));
+
         navigate('/home'); // Navigate to home route on successful login
       } else {
         setError('Incorrect email or password'); // Set error message if login fails
@@ -73,7 +76,7 @@ const Login: React.FC = () => {
             </button>
           </form>
           <p className="mt-4 text-center">Don't have an account?</p>
-          <Link to="/register" className="block bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200 mt-2 text-center w-full">
+          <Link to="/signup" className="block bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200 mt-2 text-center w-full">
             Register
           </Link>
         </div>

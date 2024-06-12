@@ -21,22 +21,25 @@ router.post('/create-event', async (req, res) => {
 // Login user
 router.post('/loginUser', async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const user = await Register.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ error: 'Incorrect password' });
-        }
-        res.json({ message: 'Login successful', user });
+      const { email, password } = req.body;
+      const user = await Register.findOne({ email });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+  
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: 'Incorrect password' });
+      }
+  
+      res.json({ message: 'Login successful', user });
     } catch (error) {
-        console.error('Error logging in:', error);
-        res.status(500).send({ error: 'Failed to login' });
+      console.error('Error logging in:', error);
+      res.status(500).send({ message: 'Failed to login' });
     }
-});
+  });
 
 // Create user
 router.post('/create-user', async (req, res) => {
