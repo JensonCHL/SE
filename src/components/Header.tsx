@@ -12,7 +12,7 @@ const Header = () => {
             <div className="flex flex-row gap-40 justify-between py-1">
 
 
-                <a className="flex gap-1 items-center flex-row justify-center bg-white rounded-full px-3 cursor-pointer border-2 border-white transition duration-200 ease-in-out hover:border-blue-500 hover:text-[#FB5607] duration-400">
+                <a className="flex gap-1 items-center flex-row justify-center bg-white rounded-full px-3 cursor-pointer border-2 border-white transition duration-200 ease-in-ou hover:text-[#FB5607] duration-400">
                     <div className="py-1" ><MdWbSunny/></div>
                     <div>timeposible</div>
                 </a>
