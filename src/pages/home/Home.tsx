@@ -102,9 +102,9 @@ const Calendar: React.FC<CalendarProps> = () => {
     // Effect to fetch initial events when component mounts
     useEffect(() => {
 
-        // if (true){
-        //     navigate("/login")
-        // }
+        if (!localStorage.getItem('user')){
+            navigate("/login")
+        }
 
         if (calendarRef.current) {
             let calendarApi = calendarRef.current.getApi();

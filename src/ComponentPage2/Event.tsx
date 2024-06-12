@@ -156,7 +156,7 @@ const Event = () => {
                             </div>
                             <div className='flex flex-row gap-2'>
                                 <input className='cursor-pointer'  type="button" value="Detail" onClick={() => openModal(event)} />
-
+                                
                                 <label>
                                     <input type="checkbox" name="todo" value={event._id}
                                         onChange={() => handleCheckboxChange(event._id)} />
