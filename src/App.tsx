@@ -16,11 +16,6 @@ export default function App() {
       {location.pathname !== '/login' && <Header />}
       <BrowserRouter>
         <Routes>
-<<<<<<< HEAD
-          <Route path="/" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-=======
           <Route path="/" element={<Home />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Calender" element={<CalenderPage />} />
@@ -28,12 +23,6 @@ export default function App() {
           <Route path="/Settings" element={<Settings />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-<<<<<<< HEAD
-          
->>>>>>> d877f26a132ba9271a00f47aa11292f9fd4d7403
-=======
-
->>>>>>> 354738cf3094220853a36ef6be347f5d063222a1
         </Routes>
       </BrowserRouter>
     </div>

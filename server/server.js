@@ -5,31 +5,21 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const app = express();
 const port = 5001;
 
-const cors = require('cors');
-app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['POST', 'GET'],
-    credentials: true
-}));
+// Middleware
+app.use(cors()); // Call cors as a function to enable it
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false,
-        maxAge: 1000 * 60 * 60 * 24
-    }
-}));
 
+// Import controllers
 const calendarController = require('./Controllers/CalendarControllers');
 app.use('/api/calendar', calendarController);
 
+// Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URL, {
     useUnifiedTopology: true,
     useNewUrlParser: true

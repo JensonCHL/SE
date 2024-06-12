@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from './axiosConfig'; // Import your Axios instance
+import axios from 'axios'; // Import your Axios instance
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState('');
