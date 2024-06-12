@@ -13,7 +13,7 @@ import Lists from '../../components/Lists';
 import timelinePlugin from '@fullcalendar/timeline';
 import { useNavigate } from "react-router-dom";
 
-interface CalendarProps {}
+interface CalendarProps { }
 
 const Calendar: React.FC<CalendarProps> = () => {
     const calendarRef = useRef<FullCalendar>(null);
@@ -101,10 +101,10 @@ const Calendar: React.FC<CalendarProps> = () => {
     const navigate = useNavigate()
     // Effect to fetch initial events when component mounts
     useEffect(() => {
-        
-        if (true){
-            navigate("/login")
-        }
+
+        // if (true){
+        //     navigate("/login")
+        // }
 
         if (calendarRef.current) {
             let calendarApi = calendarRef.current.getApi();
@@ -114,82 +114,84 @@ const Calendar: React.FC<CalendarProps> = () => {
         }
     }, []);
 
-    return (
-        <section className="flex m-3 md:flex-row h-full overflow-hidden">
-            <div className="flex flex-col w-3/4 bg-white p-2 rounded-2xl h-[50%]
+    
+
+        return (
+            <section className="flex m-3 md:flex-row h-full overflow-hidden">
+                <div className="flex flex-col w-3/4 bg-white p-2 rounded-2xl h-[50%]
                             ">
-                <div className="flex flex-col md:flex-row m-4 justify-between">
-                    <div className="w-[55%]">
+                    <div className="flex flex-col md:flex-row m-4 justify-between">
+                        <div className="w-[55%]">
+                            <FullCalendar
+                                ref={calendarRef}
+                                events={events}
+                                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                                headerToolbar={{
+                                    right: 'next',
+                                    center: 'title',
+                                    left: 'prev'
+                                }}
+                                views={{
+                                    dayGridMonth: {
+                                        titleFormat: { month: 'long', year: 'numeric' },
+                                        columnHeaderFormat: { weekday: 'long' },
+                                        dayMaxEventRows: 3
+                                    },
+                                }}
+                                eventTextColor="black"
+                                initialView="dayGridMonth"
+                                eventAdd={handleEventAdd}
+                                datesSet={handleDateSet}
+                                eventContent={renderEventContent}
+                                aspectRatio={3}
+                                dayCellClassNames={(arg) => {
+                                    if (arg.date.getDay() === 0) {
+                                        return 'fc-sunday';
+                                    }
+                                    return '';
+                                }}
+                                dayHeaderClassNames={(arg) => {
+                                    if (arg.dow === 0) {
+                                        return 'fc-sunday-header';
+                                    }
+                                    return '';
+                                }}
+
+                            />
+                        </div>
+                        <div className="w-2/5">
+                            <Lists />
+                        </div>
+                    </div>
+                    <div className="mb-2 ml-2 mr-2">
                         <FullCalendar
-                            ref={calendarRef}
-                            events={events}
-                            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                            plugins={[timelinePlugin]}
+                            initialView="timelineDay"
                             headerToolbar={{
-                                right: 'next',
-                                center: 'title',
-                                left: 'prev'
+                                left: 'title',
                             }}
-                            views={{
-                                dayGridMonth: {
-                                    titleFormat: { month: 'long', year: 'numeric' },
-                                    columnHeaderFormat: { weekday: 'long' },
-                                    dayMaxEventRows: 3
-                                },
-                            }}
-                            eventTextColor="black"
-                            initialView="dayGridMonth"
+                            scrollTime="00:01:00"
+                            events={events}
+                            height={330}
                             eventAdd={handleEventAdd}
                             datesSet={handleDateSet}
                             eventContent={renderEventContent}
-                            aspectRatio={3}
-                            dayCellClassNames={(arg) => {
-                                if (arg.date.getDay() === 0) {
-                                    return 'fc-sunday';
-                                }
-                                return '';
-                            }}
-                            dayHeaderClassNames={(arg) => {
-                                if (arg.dow === 0) {
-                                    return 'fc-sunday-header';
-                                }
-                                return '';
-                            }}
-
+                            eventTextColor="black"
+                            slotDuration='00:15:00'
                         />
                     </div>
-                    <div className="w-2/5">
-                        <Lists />
+                </div>
+                <div style={{ position: 'relative', zIndex: 0 }} className="w-[23%] flex flex-col m-auto gap-4 h-auto">
+                    <div className="flex flex-col  w-auto h-full" >
+                        {/* Pass handleEventAdd function to AddEvent component */}
+                        <AddEvent onEventAdded={handleEventAdd} selectedType={selectedType} setSelectedType={setSelectedType} />
+                    </div>
+                    <div className="h-full">
+                        <Quotes />
                     </div>
                 </div>
-                <div className="mb-2 ml-2 mr-2">
-                    <FullCalendar
-                        plugins={[timelinePlugin]}
-                        initialView="timelineDay"
-                        headerToolbar={{
-                            left: 'title',
-                        }}
-                        scrollTime="00:01:00"
-                        events={events}
-                        height={330}
-                        eventAdd={handleEventAdd}
-                        datesSet={handleDateSet}
-                        eventContent={renderEventContent}
-                        eventTextColor="black"
-                        slotDuration='00:15:00'
-                    />
-                </div>
-            </div>
-            <div style={{ position: 'relative', zIndex: 0 }} className="w-[23%] flex flex-col m-auto gap-4 h-auto">
-                <div className="flex flex-col  w-auto h-full" >
-                    {/* Pass handleEventAdd function to AddEvent component */}
-                    <AddEvent onEventAdded={handleEventAdd} selectedType={selectedType} setSelectedType={setSelectedType} />
-                </div>
-                <div className="h-full">
-                    <Quotes/>
-                </div>
-            </div>
-        </section>
-    );
-}
+            </section>
+        );
+    }
 
-export default Calendar;
+    export default Calendar;
