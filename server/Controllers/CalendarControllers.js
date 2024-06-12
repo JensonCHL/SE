@@ -87,15 +87,16 @@ router.get('/get-past-events', async (req, res) => {
         // Code buat sort based on frequent
 
         const mostFrequentTitle = await Event.aggregate([
-            { $group: { _id: "$title", count: { $sum: 1 }, location: { $first: "$location" } } },
+            { $group: { _id: "$title", count: { $sum: 1 }, firstEvent: { $first: "$$ROOT" } } },
             { $sort: { count: -1 } },
             { $limit: 1 }
         ]);
         // const events = await Event.findOne()
         console.log(events)
         if (mostFrequentTitle.length > 0) {
-            res.json({ title: mostFrequentTitle[0]._id, location: mostFrequentTitle[0].location });
-            // res.json(mostFrequentEvent[0].events)
+            // res.json({ title: mostFrequentTitle[0]._id, location: mostFrequentTitle[0].location,
+            //  });
+            res.json(mostFrequentTitle[0].firstEvent)
         } else {
             res.status(404).send({ error: 'No events found' });
         }
