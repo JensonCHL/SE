@@ -15,17 +15,18 @@ const Event = () => {
         location: '',
     });
     const [modalOpen, setModalOpen] = useState(false);
+    const userId = localStorage.getItem('user')
 
     // Fetch users from API on component mount
     useEffect(() => {
-        axios.get('http://localhost:5001/api/calendar/get-users')
+        axios.get(`http://localhost:5001/api/calendar/get-users?id=${userId}`)
             .then(response => {
                 setUsers(response.data);
             })
             .catch(error => {
                 console.error('Error fetching users:', error);
             });
-    }, []);
+    }, [userId]); // Fetch users whenever userId changes
 
     // Filter and format ongoing events
     const onGoingEvent = users

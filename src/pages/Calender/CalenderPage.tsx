@@ -6,8 +6,7 @@ import moment from "moment";
 import AddEvent from '../../components/addEvent';
 import Recomendation from '../../components/Recomendation';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction'; // Import interaction plugin
-
+import interactionPlugin from '@fullcalendar/interaction';
 
 interface CalendarProps { }
 
@@ -15,31 +14,12 @@ const CalendarPage: React.FC<CalendarProps> = () => {
     const calendarRef = useRef<FullCalendar>(null);
     const [events, setEvents] = useState<any[]>([]);
     const [selectedType, setSelectedType] = useState<number>(1);
+    const userId = localStorage.getItem('user');
 
-    const onEventAdded = (event: any) => {
-        console.log("Event to be added:", event);
-
-        if (calendarRef.current) {
-            let calendarApi = calendarRef.current.getApi();
-            calendarApi.addEvent({
-                title: event.title,
-                start: moment(event.start).toISOString(),
-                end: moment(event.end).toISOString(),
-                extendedProps: {
-                    description: event.desc,
-                    location: event.location,
-                    priority: event.timeType,
-                    types: event.types,
-                    color: event.color,
-                },
-                color: event.color,
-            });
-        }
-    };
-
-    async function handleEventAdd(data: { event: any }) {
+    const handleEventAdd = async (data: { event: any }) => {
         try {
             const eventData = {
+                id: userId,
                 title: data.event.title,
                 start: moment(data.event.start).toISOString(),
                 end: moment(data.event.end).toISOString(),
@@ -54,21 +34,24 @@ const CalendarPage: React.FC<CalendarProps> = () => {
         } catch (error) {
             console.error("Error adding event:", error);
         }
-    }
+    };
 
-    async function handleDateSet(data: DateSelectArg) {
+    const handleDateSet = async (data: DateSelectArg) => {
         try {
-            const response = await axios.get(`http://localhost:5001/api/calendar/get-events?start=${moment(data.start).toISOString()}&end=${moment(data.end).toISOString()}`);
-            // console.log("Fetched events:", response.data); // Log fetched events
-            const eventsWithColors = response.data.map((event: any) => ({
-                ...event,
-                color: event.color
-            }));
-            setEvents(eventsWithColors);
+            if (userId) {
+                const response = await axios.get(
+                    `http://localhost:5001/api/calendar/get-events?id=${userId}&start=${moment(data.start).toISOString()}&end=${moment(data.end).toISOString()}`
+                );
+                const eventsWithColors = response.data.map((event: any) => ({
+                    ...event,
+                    color: event.color
+                }));
+                setEvents(eventsWithColors);
+            }
         } catch (error) {
             console.error("Error fetching events:", error);
         }
-    }
+    };
 
     const renderEventContent = (eventContent: EventContentArg) => {
         return (
@@ -78,10 +61,7 @@ const CalendarPage: React.FC<CalendarProps> = () => {
         );
     };
 
-    const [today, setToday] = useState(new Date());
-
     useEffect(() => {
-        // Fetch initial events when the component mounts
         if (calendarRef.current) {
             let calendarApi = calendarRef.current.getApi();
             const currentDate = calendarApi.getDate();
@@ -94,7 +74,7 @@ const CalendarPage: React.FC<CalendarProps> = () => {
             <div style={{ position: 'relative', zIndex: 0 }} className="flex">
                 <div className="flex flex-col m-4 gap-y-4 w-30" >
                     <Recomendation />
-                    <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />
+                    <AddEvent onEventAdded={handleEventAdd} selectedType={selectedType} setSelectedType={setSelectedType} />
                 </div>
                 <div className="w-9/12 bg-white m-4 pt-4 pb-6 pr-6 pl-6 rounded-lg">
                     <FullCalendar
@@ -105,7 +85,6 @@ const CalendarPage: React.FC<CalendarProps> = () => {
                             right: 'next today',
                             center: 'title',
                             left: 'dayGridMonth,timeGridWeek prev'
-
                         }}
                         views={{
                             dayGridMonth: {
@@ -123,20 +102,20 @@ const CalendarPage: React.FC<CalendarProps> = () => {
                         initialView="dayGridMonth"
                         eventAdd={handleEventAdd}
                         datesSet={handleDateSet}
-                        eventContent={renderEventContent} // Use eventContent for custom rendering
+                        eventContent={renderEventContent}
                         aspectRatio={2}
                         dayCellClassNames={(arg) => {
                             if (arg.date.getDay() === 0) { // 0 is Sunday
-                              return 'fc-sunday';
+                                return 'fc-sunday';
                             }
                             return '';
-                          }}
+                        }}
                         dayHeaderClassNames={(arg) => {
                             if (arg.dow === 0) { // 0 is Sunday
-                              return 'fc-sunday-header';
+                                return 'fc-sunday-header';
                             }
                             return '';
-                          }}
+                        }}
                     />
                 </div>
             </div>

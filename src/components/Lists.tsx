@@ -13,9 +13,10 @@ import { Link } from 'react-router-dom';
 
 const Lists = () => {
     const [users, setUsers] = useState([]);
+    const userId = localStorage.getItem('user')
 
     useEffect(() => {
-        axios.get('http://localhost:5001/api/calendar/get-users')
+        axios.get(`http://localhost:5001/api/calendar/get-users?id=${userId}`)
             .then(response => {
                 setUsers(response.data);
             })

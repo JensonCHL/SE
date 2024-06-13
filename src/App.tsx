@@ -12,42 +12,9 @@ import axios from 'axios';
 
 export default function App() {
 
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5001/api/calendar/create-event'); // Replace with your actual API endpoint
-        setData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-
-    const intervalId = setInterval(() => {
-      fetchData();
-    }, 60000); // Check every minute
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    if (data) {
-      const currentTime = new Date().getTime(); // Get current time in milliseconds
-      const databaseTime = new Date(data.time).getTime(); // Assuming 'time' is the property in your database
-
-      if (currentTime >= databaseTime) {
-        // Trigger the pop-up alert
-        alert('Alert: Time matched!');
-      }
-    }
-  }, [data]);
-
   return (
     <div className="max-h-screen flex flex-col">
-      {location.pathname !== '/login' && <Header />}
+      {!localStorage.getItem('user') !== '/login' && <Header />}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

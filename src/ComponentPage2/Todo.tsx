@@ -15,16 +15,21 @@ const Todo = () => {
         location: '',
     });
     const [modalOpen, setModalOpen] = useState(false);
+    const userId = localStorage.getItem('user');
 
-    useEffect(() => {
-        axios.get('http://localhost:5001/api/calendar/get-users')
-            .then(response => {
-                setUsers(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-            });
-    }, []);
+    if (userId) {
+        useEffect(() => {
+            axios.get(`http://localhost:5001/api/calendar/get-users?id=${userId}`)
+                .then(response => {
+                    setUsers(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching users:', error);
+                });
+        }, [userId]);
+    } else {
+        console.error('User ID not found in localStorage');
+    }
 
     const onGoingEvent = users
         .filter((user) => user.types === "todo")

@@ -67,11 +67,11 @@ router.post('/create-user', async (req, res) => {
     }
 });
 
-// Get events within a specific time range
 router.get('/get-events', async (req, res) => {
     try {
-        const { start, end } = req.query;
+        const { start, end, userId } = req.query;
         const events = await Event.find({
+            id: userId, // Use userId directly from req.query
             start: { $gte: new Date(start) },
             end: { $lte: new Date(end) }
         });
@@ -81,39 +81,13 @@ router.get('/get-events', async (req, res) => {
         res.status(500).send({ error: 'Failed to fetch events' });
     }
 });
-// Recommendation System
-router.get('/get-past-events', async (req, res) => {
-    try {
-        const { start, end } = req.query;
-        const events = await Event.find().sort({ "leadName": 1 });
-        // Code buat sort based on frequent
-
-        const mostFrequentTitle = await Event.aggregate([
-            { $match: { types: { $in: ["todo", "habit"] } } },
-            { $group: { _id: "$title", count: { $sum: 1 }, firstEvent: { $first: "$$ROOT" } } },
-            { $sort: { count: -1 } },
-            { $limit: 1 }
-        ]);
-        // const events = await Event.findOne()
-        console.log(events)
-        if (mostFrequentTitle.length > 0) {
-            // res.json({ title: mostFrequentTitle[0]._id, location: mostFrequentTitle[0].location,
-            //  });
-            res.json(mostFrequentTitle[0].firstEvent)
-        } else {
-            res.status(404).send({ error: 'No events found' });
-        }
-        // res.json(mostFrequentTitle);
-    } catch (error) {
-        console.error('Error fetching events:', error);
-        res.status(500).send({ error: 'Failed to fetch events' });
-    }
-});
 
 // Get all users
 router.get('/get-users', async (req, res) => {
     try {
-        const users = await Event.find().sort({ name: 'asc' });
+        const userId = req.query.id; // Extract userId from query parameters
+        console.log('Received userId:', userId);
+        const users = await Event.find({ id: userId }).sort({ name: 'asc' });
         res.json(users);
     } catch (error) {
         console.error('Error fetching users:', error);

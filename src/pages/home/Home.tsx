@@ -19,6 +19,7 @@ const Calendar: React.FC<CalendarProps> = () => {
     const calendarRef = useRef<FullCalendar>(null);
     const [events, setEvents] = useState<any[]>([]);
     const [selectedType, setSelectedType] = useState<number>(1);
+    const userID = localStorage.getItem('user');
 
     // Function to handle adding an event locally
     const onEventAdded = (event: EventData) => {
