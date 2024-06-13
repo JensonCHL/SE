@@ -29,6 +29,8 @@ const CalendarPage: React.FC<CalendarProps> = () => {
                 location: data.location,
                 types: data.types,
                 color: data.color,
+                reminder: data.reminder,
+                repeat: data.repeat
             };
             console.log("Event data to be sent to backend:", eventData);
             await axios.post("http://localhost:5001/api/calendar/create-event", eventData);
@@ -66,7 +68,7 @@ const CalendarPage: React.FC<CalendarProps> = () => {
         if (calendarRef.current) {
             let calendarApi = calendarRef.current.getApi();
             const currentDate = calendarApi.getDate();
-            handleDateSet({ start: moment(currentDate).startOf('month').toDate(), end: moment(currentDate).endOf('month').toDate() });
+            handleDateSet({start: moment(currentDate).startOf('month').toDate(), end: moment(currentDate).endOf('month').toDate() });
         }
     }, []);
 

@@ -7,11 +7,6 @@ interface reminder {
 
 const Dropdown = (props:reminder) => {
 
-    // const [value, setValue] = useState<number>(options[0].value);
-    // const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    //     setValue(Number(event.target.value));
-    // }
-
 
     // ganti Checkbox alert 10min sebelum event selesai
     return (

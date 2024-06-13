@@ -69,12 +69,18 @@ router.post('/create-user', async (req, res) => {
 
 router.get('/get-events', async (req, res) => {
     try {
-        const { start, end, userId } = req.query;
+        const { start, end, id } = req.query;
+
+        if (!start || !end || id) {
+            return res.status(400).send({ error: 'Missing required query parameters' });
+        }
+
         const events = await Event.find({
-            id: userId, // Use userId directly from req.query
+            id,
             start: { $gte: new Date(start) },
             end: { $lte: new Date(end) }
         });
+
         res.json(events);
     } catch (error) {
         console.error('Error fetching events:', error);
@@ -134,7 +140,7 @@ router.put('/update-event/:id', async (req, res) => {
         res.status(500).send({ error: 'Failed to update event' });
     }
 });
-//Recomendation
+
 router.get('/get-past-events', async (req, res) => {
     // try {
     //     const events = await Event.find().sort({ "leadName": 1 });
