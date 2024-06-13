@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { useHistory } from "react-router-dom";
 import { Link, useNavigate } from 'react-router-dom';
 
 
@@ -11,15 +10,11 @@ const System: React.FC = () => {
     { label: 'Habit', value: 3 },
   ];
   const [value, setValue] = useState<number>(options[0].value);
-  //   const history = useHistory();
 
   const handleLogout = () => {
-    // Clear localStorage
     localStorage.removeItem('user');
-
-    // Navigate to login page
-    navigate('/login'); // Redirect to login page on successful registration
-
+    navigate('/login'); 
+    window.location.reload(); 
   };
 
   return (
