@@ -203,8 +203,8 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
 
                             {/* Save & Cancel */}
                             <div className="flex flex-row gap-4 justify-center">
-                                <button className='bg-[#3A86FF] w-full px-5 py-1 rounded-md' type='submit'>Save</button>
-                                <button className='text-red-700 w-full border border-[#E54B49] px-4 py-1 rounded-md' type='button' onClick={() => setSelectedType(0)}>Cancel</button>
+                                <button className='bg-[#3A86FF] hover:bg-blue-800 text-white w-full px-5 py-1 rounded-md transition duration-200 ease-in-out' type='submit'>Save</button>
+                                <button className='text-red-700 hover:text-white hover:bg-red-600 w-full border border-[#E54B49] px-4 py-1 rounded-md transition duration-200 ease-in-out ' type='button' onClick={() => setSelectedType(0)}>Cancel</button>
                             </div>
                         </div>
                     </div>

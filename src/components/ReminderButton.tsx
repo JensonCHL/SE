@@ -10,10 +10,10 @@ const Dropdown: React.FC = () => {
         { label: 'Reminder', value: 1 },
     ];
 
-    const [value, setValue] = useState<number>(options[0].value);
-    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setValue(Number(event.target.value));
-    }
+    // const [value, setValue] = useState<number>(options[0].value);
+    // const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //     setValue(Number(event.target.value));
+    // }
 
     const [selectedValues, setSelectedValues] = useState<number[]>([]);
 
@@ -40,13 +40,7 @@ const Dropdown: React.FC = () => {
                 </label>
             ))}
         </div>
-        // <select className='form-select w-full bg-gray-300 px-2 py-1 rounded-md items-center ' onChange={handleSelect} value={value}>
-        //     {options.map(option => (
-        //         <option key={option.value} value={option.value}>
-        //             {option.label}
-        //         </option>
-        //     ))}
-        // </select>
+        
     );
 }
 
