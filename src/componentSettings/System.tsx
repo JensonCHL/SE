@@ -4,14 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 const System: React.FC = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
   const options = [
     { label: 'Event', value: 1 },
     { label: 'To-Do', value: 2 },
     { label: 'Habit', value: 3 },
   ];
   const [value, setValue] = useState<number>(options[0].value);
-//   const history = useHistory();
+  //   const history = useHistory();
 
   const handleLogout = () => {
     // Clear localStorage
@@ -52,15 +52,19 @@ const System: React.FC = () => {
               </select>
             </div>
           </div>
-          {/* Logout button */}
-          <button
-            className="text-blue-500 hover:text-blue-700 focus:outline-none"
-            onClick={handleLogout}
-          >
-            Log Out
-          </button>
+
         </div>
+
       </div>
+      <div className="flex justify-end m-6" >
+        <button
+          className="text-white bg-[#A8A8A8] font-bold py-2 px-5 rounded transition duration-300 ease-in-out hover:bg-gray-700 hover:text-white focus:outline-none focus:bg-gray-700"
+          onClick={handleLogout}
+        >
+          Log Out
+        </button>
+      </div>
+
     </div>
   );
 };
