@@ -75,10 +75,10 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
 
         onEventAdded({
             title,
-            start: new Date(start),
-            end: new Date(end),
-            location,
+            start,
+            end,
             desc,
+            location,
             timeType,
             types,
             color

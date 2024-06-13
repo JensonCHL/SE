@@ -16,18 +16,19 @@ const CalendarPage: React.FC<CalendarProps> = () => {
     const [selectedType, setSelectedType] = useState<number>(1);
     const userId = localStorage.getItem('user');
 
-    const handleEventAdd = async (data: { event: any }) => {
+    const handleEventAdd = async (data: any ) => {
+        console.log("Received data:", data); // Debugging line
         try {
             const eventData = {
+                start: moment(data.start).toISOString(),
                 id: userId,
-                title: data.event.title,
-                start: moment(data.event.start).toISOString(),
-                end: moment(data.event.end).toISOString(),
-                description: data.event.extendedProps.description,
-                priority: data.event.extendedProps.priority,
-                location: data.event.extendedProps.location,
-                types: data.event.extendedProps.types,
-                color: data.event.extendedProps.color,
+                title: data.title,
+                end: moment(data.end).toISOString(),
+                description: data.description,
+                priority: data.priority,
+                location: data.location,
+                types: data.types,
+                color: data.color,
             };
             console.log("Event data to be sent to backend:", eventData);
             await axios.post("http://localhost:5001/api/calendar/create-event", eventData);

@@ -4,8 +4,6 @@ import DateTime from 'react-datetime';
 import { CiLocationOn } from 'react-icons/ci';
 import Event from '../ComponentPage2/Event';
 
-
-
 interface Event {
     types: string;
     title: string;
@@ -17,7 +15,6 @@ interface Event {
     color: string;
     __v: number;
     _id: string;
-
 }
 
 const Recomendation = () => {
@@ -39,9 +36,7 @@ const Recomendation = () => {
         fetchEvents();
     }, []);
 
-
     // OnSubmit function
-
     const handleSave = async () => {
 
         try {
