@@ -8,8 +8,6 @@ interface Option {
 const Dropdown: React.FC = () => {
     const options: Option[] = [
         { label: 'Reminder', value: 1 },
-        { label: 'To-Do', value: 2 },
-        { label: 'Habit', value: 3 },
     ];
 
     const [value, setValue] = useState<number>(options[0].value);
@@ -17,7 +15,7 @@ const Dropdown: React.FC = () => {
         setValue(Number(event.target.value));
     }
 
-    const [selectedValues, setSelectedValues] = useState<number[]>([options[0].value]);
+    const [selectedValues, setSelectedValues] = useState<number[]>([]);
 
     const handleCheckboxChange = (value: number) => {
         if (selectedValues.includes(value)) {
