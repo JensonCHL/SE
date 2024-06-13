@@ -8,13 +8,25 @@ import CalenderPage from './pages/Calender/CalenderPage';
 import Activity from './pages/Activity/Activity';
 import Settings from './pages/settings/Settings';
 import axios from 'axios';
-// import Home from './app2'; // Assuming Home is renamed to app2.js or app2.tsx
 
 export default function App() {
+  // const isLoggedIn = !!localStorage.getItem('user');
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'));
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem('user')); // Update state when local storage changes
+    };
 
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
   return (
     <div className="max-h-screen flex flex-col">
-      {!localStorage.getItem('user') !== '/login' && <Header />}
+      {/* {!localStorage.getItem('user') !== '/login' && <Header />} */}
+      {isLoggedIn && <Header />}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
