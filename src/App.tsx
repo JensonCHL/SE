@@ -15,9 +15,7 @@ export default function App() {
     const handleStorageChange = () => {
       setIsLoggedIn(!!localStorage.getItem('user'));
     };
-
     window.addEventListener('storage', handleStorageChange);
-
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
