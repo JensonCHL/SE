@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login: React.FC = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string>(''); // State to handle error messages
   const navigate = useNavigate();
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,14 +14,13 @@ const Login: React.FC = () => {
     try {
       const response = await axios.post('http://localhost:5001/api/calendar/loginUser', { email, password });
       console.log(response.data);
-      // const session = JSON.parse(localStorage.getItem('user'));
       localStorage.setItem('user', JSON.stringify(response.data.user._id));
-      console.log(localStorage.getItem('user'))
+      console.log(localStorage.getItem('user'));
 
       if (response.data.message === 'Login successful') {
-        // localStorage.setItem('user', JSON.stringify(response.data.id));
-
+        setIsLoggedIn(true); // Update login state
         navigate('/home'); // Navigate to home route on successful login
+        window.location.reload(); // Refresh the page
       } else {
         setError('Incorrect email or password'); // Set error message if login fails
       }

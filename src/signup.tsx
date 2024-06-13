@@ -18,8 +18,6 @@ const SignUp: React.FC = () => {
       navigate('/login'); // Redirect to login page on successful registration
     } catch (error) {
       console.error('Error registering user:', error);
-      // Handle registration error (e.g., show error message to user)
-      setError(error.response?.data?.error || 'Failed to register user');
     }
 
     console.log('Name:', name);
