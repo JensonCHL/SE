@@ -8,8 +8,6 @@ interface Option {
 const Dropdown: React.FC = () => {
     const options: Option[] = [
         { label: 'Repeat', value: 1 },
-        { label: 'To-Do', value: 2 },
-        { label: 'Habit', value: 3 },
     ];
 
     const [value, setValue] = useState<number>(options[0].value);
@@ -18,14 +16,35 @@ const Dropdown: React.FC = () => {
         setValue(Number(event.target.value));
     }
     // Repeat event 5 menit sebelum event selesai repeat event 
+    const [selectedValues, setSelectedValues] = useState<number[]>([]);
+
+    const handleCheckboxChange = (value: number) => {
+        if (selectedValues.includes(value)) {
+            setSelectedValues(selectedValues.filter(val => val !== value));
+        } else {
+            setSelectedValues([...selectedValues, value]);
+        }
+    };
+    const handleRepeatEvent = () => {
+        // Logic to repeat event 5 minutes before it ends
+        console.log('Repeating event 5 minutes before it ends');
+        // Implement your logic for repeating the event here
+    };
     return (
-        <select className='form-select w-full bg-gray-300 px-2 py-1 rounded-md items-center ' onChange={handleSelect} value={value}>
+        <div className='flex flex-col space-y-2'>
             {options.map(option => (
-                <option key={option.value} value={option.value}>
-                    {option.label}
-                </option>
+                <label key={option.value} className='flex items-center space-x-2'>
+                    <input
+                        type='checkbox'
+                        value={option.value}
+                        checked={selectedValues.includes(option.value)}
+                        onChange={() => handleCheckboxChange(option.value)}
+                        className='form-checkbox h-4 w-4 text-gray-700 rounded-md'
+                    />
+                    <span>{option.label}</span>
+                </label>
             ))}
-        </select>
+        </div>
     );
 }
 

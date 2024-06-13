@@ -158,7 +158,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                             </div>
 
                             {/* Repeat Reminder */}
-                            <div className="flex flex-row gap-4 justify-center">
+                            <div className="flex flex-row gap-4 justify-center items-center">
                                 <RepeatButton />
                                 <ReminderButton />
                             </div>
