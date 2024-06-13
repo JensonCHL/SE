@@ -21,25 +21,25 @@ router.post('/create-event', async (req, res) => {
 // Login user
 router.post('/loginUser', async (req, res) => {
     try {
-      const { email, password } = req.body;
-      const user = await Register.findOne({ email });
-  
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-  
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Incorrect password' });
-      }
-  
-      res.json({ message: 'Login successful', user });
+        const { email, password } = req.body;
+        const user = await Register.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Incorrect password' });
+        }
+
+        res.json({ message: 'Login successful', user });
     } catch (error) {
-      console.error('Error logging in:', error);
-      res.status(500).send({ message: 'Failed to login' });
+        console.error('Error logging in:', error);
+        res.status(500).send({ message: 'Failed to login' });
     }
-  });
+});
 
 // Create user
 router.post('/create-user', async (req, res) => {
@@ -136,29 +136,48 @@ router.put('/update-event/:id', async (req, res) => {
 });
 //Recomendation
 router.get('/get-past-events', async (req, res) => {
+    // try {
+    //     const events = await Event.find().sort({ "leadName": 1 });
+
+    //     const mostFrequentTitle = await Event.aggregate([
+    //         { $match: { types: { $in: ["todo", "habit"] } } },
+    //         { $group: { _id: "$title", count: { $sum: 1 }, firstEvent: { $first: "$$ROOT" } } },
+    //         { $sort: { count: -1 } },
+    //         { $limit: 1 }
+    //     ]);
+    //     console.log(events)
+    //     if (mostFrequentTitle.length > 0) {
+    //         // res.json({ title: mostFrequentTitle[0]._id, location: mostFrequentTitle[0].location,
+    //         //  });
+    //         res.json(mostFrequentTitle[0].firstEvent)
+    //     } else {
+    //         res.status(404).send({ error: 'No events found' });
+    //     }
+    // } catch (error) {
+    //     console.error('Error fetching events:', error);
+    //     res.status(500).send({ error: 'Failed to fetch events' });
+    // }
     try {
-        // const { start, end } = req.query;
-        // const userId = req.user._id; // Assuming user ID is stored in the JWT
-        // const events = await Event.find({ userId }).sort({ leadName: 1 });
-        const events = await Event.find().sort({ "leadName": 1 });
-        // Code buat sort based on frequent
+        const { excludeTitle } = req.query;
+
+        // Construct the match condition to exclude the specified title if provided
+        const matchCondition = { types: { $in: ["todo", "habit"] } };
+        if (excludeTitle) {
+            matchCondition.title = { $ne: excludeTitle };
+        }
 
         const mostFrequentTitle = await Event.aggregate([
-            { $match: { types: { $in: ["todo", "habit"] } } },
+            { $match: matchCondition },
             { $group: { _id: "$title", count: { $sum: 1 }, firstEvent: { $first: "$$ROOT" } } },
             { $sort: { count: -1 } },
             { $limit: 1 }
         ]);
-        // const events = await Event.findOne()
-        console.log(events)
+
         if (mostFrequentTitle.length > 0) {
-            // res.json({ title: mostFrequentTitle[0]._id, location: mostFrequentTitle[0].location,
-            //  });
-            res.json(mostFrequentTitle[0].firstEvent)
+            res.json(mostFrequentTitle[0].firstEvent);
         } else {
             res.status(404).send({ error: 'No events found' });
         }
-        // res.json(mostFrequentTitle);
     } catch (error) {
         console.error('Error fetching events:', error);
         res.status(500).send({ error: 'Failed to fetch events' });

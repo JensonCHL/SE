@@ -167,7 +167,7 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
                                 <div className='w-full' >
                                     <RepeatButton />
                                 </div>
-                                <div className='w-full' >
+                                <div className='w-full items-center ' >
                                     <ReminderButton />
                                 </div>
                             </div>

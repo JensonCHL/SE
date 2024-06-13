@@ -23,7 +23,7 @@ const Dropdown = (props:reminder) => {
                     onChange={() => props.setReminder((prev:any)=>!prev)}
                     className='form-checkbox h-4 w-4 text-gray-700 rounded-md'
                 />
-                <span>Reminder</span>
+                <span className='text-gray-800 font-small' >Reminder</span>
             </label>
 
         </div>
