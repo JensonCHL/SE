@@ -29,6 +29,8 @@ interface EventData {
     timeType: string;
     types: string;
     color: string;
+    reminder: boolean;
+    repeat: number;
 }
 
 const getTypeString = (types: number) => {
@@ -66,6 +68,9 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
     const [timeType, setTimeType] = useState<string>('');
     const [types, setTypes] = useState<string>(getTypeString(selectedType));
     const [color, setColor] = useState<string>(getEventColor(selectedType));
+    const [reminder, setReminder] = useState<boolean>(false)
+    const [repeat, setRepeat] = useState<number>(-1);
+
 
     // Update types and color when selectedType changes
     useEffect(() => {
@@ -76,7 +81,7 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Call onEventAdded with the current state values
-        onEventAdded({
+        const eventData: EventData = {
             title,
             start,
             end,
@@ -85,7 +90,11 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
             timeType,
             types, // Use the updated state value here
             color, // Use the updated state value here
-        });
+            reminder,
+            repeat
+        };
+
+        onEventAdded(eventData);
 
         // Clear form inputs after submission
         setTitle('');
@@ -94,6 +103,7 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
         setLocation('');
         setDesc('');
         setTimeType('');
+        setRepeat(-1)
     };
 
     return (
@@ -165,10 +175,10 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
                             {/* Repeat Reminder */}
                             <div className="flex flex-row gap-4 justify-center">
                                 <div className='w-full' >
-                                    <RepeatButton />
+                                <RepeatButton repeat={repeat} setRepeat={setRepeat} />
                                 </div>
                                 <div className='w-full' >
-                                    <ReminderButton />
+                                    <ReminderButton reminder={reminder} setReminder={setReminder} />
                                 </div>
                             </div>
 

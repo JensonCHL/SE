@@ -28,6 +28,7 @@ const Calendar: React.FC<CalendarProps> = () => {
             if (calendarRef.current) {
                 let calendarApi = calendarRef.current.getApi();
                 calendarApi.addEvent({
+                    id: event.userID,
                     title: event.title,
                     start: event.start,
                     end: event.end,
@@ -37,6 +38,8 @@ const Calendar: React.FC<CalendarProps> = () => {
                         priority: event.timeType,
                         types: event.types,
                         color: event.color,
+                        reminder: event.reminder,
+                        repeat: event.repeat
                     },
                     color: event.color,
                 });
@@ -53,6 +56,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                 throw new Error("Invalid event data. Missing required properties.");
             }
             const eventData = {
+                id: userID,
                 title: data.title,
                 start: moment(data.start).toISOString(),
                 end: moment(data.end).toISOString(),
@@ -61,6 +65,8 @@ const Calendar: React.FC<CalendarProps> = () => {
                 location: data.location,
                 types: data.types,
                 color: data.color,
+                reminder: data.reminder,
+                repeat: data.repeat
             };
             console.log("Event data to be sent to backend:", eventData);
             await axios.post("http://localhost:5001/api/calendar/create-event", eventData);
@@ -76,7 +82,7 @@ const Calendar: React.FC<CalendarProps> = () => {
     // Function to handle fetching events from backend based on date range
     async function handleDateSet(data: DateSelectArg) {
         try {
-            const response = await axios.get(`http://localhost:5001/api/calendar/get-events?start=${moment(data.start).toISOString()}&end=${moment(data.end).toISOString()}`);
+            const response = await axios.get(`http://localhost:5001/api/calendar/get-events?id=${userID}&start=${moment(data.start).toISOString()}&end=${moment(data.end).toISOString()}`);
             console.log("Fetched events:", response.data);
             const eventsWithColors = response.data.map((event: any) => ({
                 ...event,

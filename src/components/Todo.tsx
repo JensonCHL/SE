@@ -24,9 +24,12 @@ interface EventData {
     end: Date;
     desc: string;
     location: string;
-    timeType: string;
+    // timeType: string;
     types: string;
     color: string;
+    reminder: boolean;
+    repeat: number;
+
 }
 
 const getTypeString = (types: number) => {
@@ -61,9 +64,11 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
     const [end, setEnd] = useState<Date>(new Date());
     const [desc, setDesc] = useState<string>('');
     const [location, setLocation] = useState<string>('');
-    const [timeType, setTimeType] = useState<string>('');
+    // const [timeType, setTimeType] = useState<string>('');
     const [types, setTypes] = useState<string>(getTypeString(selectedType)); // State to hold types
     const [color, setColor] = useState<string>(getEventColor(selectedType)); // State to hold color
+    const [reminder, setReminder] = useState<boolean>(false)
+    const [repeat, setRepeat] = useState<number>(-1);
 
     useEffect(() => {
         // Update types and color based on selectedType
@@ -80,9 +85,12 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
             end: new Date(end),
             location,
             desc,
-            timeType,
+            // timeType,
             types, // Use current types state
             color, // Use current color state
+            reminder,
+            repeat
+
         };
         // Call onEventAdded with eventData
         onEventAdded(eventData);
@@ -93,7 +101,8 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
         setEnd(new Date());
         setLocation('');
         setDesc('');
-        setTimeType('');
+        setRepeat(-1);
+
     };
 
     return (
@@ -163,8 +172,8 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
 
                             {/* Repeat Reminder */}
                             <div className="flex flex-col gap-y-1 w-full justify-center items-center">
-                                <RepeatButton />
-                                <ReminderButton />
+                            <RepeatButton repeat={repeat} setRepeat={setRepeat} />
+                            <ReminderButton reminder={reminder} setReminder={setReminder} />
                             </div>
 
                             {/* Description */}

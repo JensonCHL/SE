@@ -10,7 +10,9 @@ const eventSchema = mongoose.Schema({
     description: {type: String},
     location: {type: String},
     priority: {type: String},
-    color: {type: String}
+    color: {type: String},
+    reminder: {type: Boolean},
+    repeat: {type: Number}
 });
 
 const Event = mongoose.model('Event', eventSchema);

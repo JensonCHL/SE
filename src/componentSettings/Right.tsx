@@ -1,5 +1,7 @@
 import { TbDoorExit } from "react-icons/tb";
 
+
+
 const Right = () => {
     return (
         <div className="flex flex-col bg-white w-full h-full rounded-[15px]" >
@@ -18,14 +20,7 @@ const Right = () => {
                             <input className="border border-[2px] border-grey-900 w-full p-1 rounded-lg" type="text" placeholder="Bily John" />
                         </div>
                     </div>
-                    <div className="flex flex-col gap-y-1" >
-                        <div>
-                            <span className="font-bold text-lg" >DisplayName</span>
-                        </div>
-                        <div className="w-full" >
-                            <input className="border border-[2px] border-grey-900 w-full p-1 rounded-lg" type="text" placeholder="User Name" />
-                        </div>
-                    </div>
+
                     <div className="flex flex-col gap-y-1" >
                         <div>
                             <span className="font-bold text-lg" >Email</span>

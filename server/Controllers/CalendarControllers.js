@@ -69,12 +69,18 @@ router.post('/create-user', async (req, res) => {
 
 router.get('/get-events', async (req, res) => {
     try {
-        const { start, end, userId } = req.query;
+        const { start, end, id } = req.query;
+
+        if (!start || !end || id) {
+            return res.status(400).send({ error: 'Missing required query parameters' });
+        }
+
         const events = await Event.find({
-            id: userId, // Use userId directly from req.query
+            id,
             start: { $gte: new Date(start) },
             end: { $lte: new Date(end) }
         });
+
         res.json(events);
     } catch (error) {
         console.error('Error fetching events:', error);
@@ -134,14 +140,10 @@ router.put('/update-event/:id', async (req, res) => {
         res.status(500).send({ error: 'Failed to update event' });
     }
 });
-//Recomendation
+
 router.get('/get-past-events', async (req, res) => {
     try {
-        // const { start, end } = req.query;
-        // const userId = req.user._id; // Assuming user ID is stored in the JWT
-        // const events = await Event.find({ userId }).sort({ leadName: 1 });
         const events = await Event.find().sort({ "leadName": 1 });
-        // Code buat sort based on frequent
 
         const mostFrequentTitle = await Event.aggregate([
             { $match: { types: { $in: ["todo", "habit"] } } },
@@ -149,16 +151,14 @@ router.get('/get-past-events', async (req, res) => {
             { $sort: { count: -1 } },
             { $limit: 1 }
         ]);
-        // const events = await Event.findOne()
+
         console.log(events)
         if (mostFrequentTitle.length > 0) {
-            // res.json({ title: mostFrequentTitle[0]._id, location: mostFrequentTitle[0].location,
-            //  });
+
             res.json(mostFrequentTitle[0].firstEvent)
         } else {
             res.status(404).send({ error: 'No events found' });
         }
-        // res.json(mostFrequentTitle);
     } catch (error) {
         console.error('Error fetching events:', error);
         res.status(500).send({ error: 'Failed to fetch events' });

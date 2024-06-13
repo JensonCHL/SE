@@ -9,7 +9,8 @@ const Settings = () => {
                 <Left></Left>
             </div>
             <div className="w-3/4"  >
-                <System></System>
+                {/* <System></System> */}
+                <Right></Right>
             </div>
 
 

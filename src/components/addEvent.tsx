@@ -27,6 +27,8 @@ interface EventData {
     timeType: string;
     types: string;
     color: string;
+    reminder: boolean;
+    repeat: number;
 }
 
 const getTypeString = (types: number) => {
@@ -64,7 +66,8 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
     const [timeType, setTimeType] = useState<string>('fixed');
     const [types, setTypes] = useState<string>(getTypeString(selectedType));
     const [color, setColor] = useState<string>(getEventColor(selectedType));
-    const [reminder, setReminder] = useState<boolean>(false)
+    const [reminder, setReminder] = useState<boolean>(false);
+    const [repeat, setRepeat] = useState<number>(-1);
 
     useEffect(() => {
         setTypes(getTypeString(selectedType));
@@ -74,16 +77,19 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        onEventAdded({
+        const eventData: EventData = {
             title,
-            start,
-            end,
+            start: new Date(start),
+            end: new Date(start),
             desc,
             location,
             timeType,
             types,
-            color
-        });
+            color,
+            reminder,
+            repeat
+        };
+        onEventAdded(eventData);
 
         // Clear the form after submission
         setTitle('');
@@ -92,6 +98,8 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
         setDesc('');
         setLocation('');
         setTimeType('fixed');
+        setReminder(false);
+        setRepeat(-1);
     };
 
     return (
@@ -160,7 +168,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
 
                             {/* Repeat Reminder */}
                             <div className="flex flex-row gap-4 justify-center items-center">
-                                <RepeatButton />
+                                <RepeatButton repeat={repeat} setRepeat={setRepeat} />
                                 <ReminderButton reminder={reminder} setReminder={setReminder} />
                             </div>
 
@@ -195,11 +203,6 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                                     onChange={e => setTimeType(e.target.value)}
                                 />
                                 <div>Flexible</div>
-                            </div>
-
-                            {/* Recommendation */}
-                            <div className="flex flex-row gap-1 bg-[#F4F4F4] rounded-full">
-                                
                             </div>
 
                             {/* Save & Cancel */}
