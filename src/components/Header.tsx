@@ -44,9 +44,9 @@ const Header = () => {
                 <div className="rounded-full bg-[#F4F4F4] px-2 py-2">
                     <FaRegBell />
                 </div>
-                <div className="rounded-full bg-[#F4F4F4] px-2 py-2">
+                <a href="/Settings" className="rounded-full bg-[#F4F4F4] px-2 py-2">
                     <CgProfile size="1.3em" />
-                </div>
+                </a>
             </div>
         </div>
     )

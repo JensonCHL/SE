@@ -162,7 +162,7 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
                             </div>
 
                             {/* Repeat Reminder */}
-                            <div className="flex flex-col gap-y-1 justify-center">
+                            <div className="flex flex-col gap-y-1 w-full justify-center items-center">
                                 <RepeatButton />
                                 <ReminderButton />
                             </div>
