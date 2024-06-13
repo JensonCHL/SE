@@ -13,7 +13,6 @@ const Dropdown: React.FC = () => {
         { label: '3', value: 3 },
     ];
     // Repeat event 5 menit sebelum event selesai repeat event 
-    const [selectedValues, setSelectedValues] = useState<number[]>([]);
 
     const [value, setValue] = useState<number>(options[0].value);
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {

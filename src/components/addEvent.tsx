@@ -64,6 +64,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
     const [timeType, setTimeType] = useState<string>('fixed');
     const [types, setTypes] = useState<string>(getTypeString(selectedType));
     const [color, setColor] = useState<string>(getEventColor(selectedType));
+    const [reminder, setReminder] = useState<boolean>(false)
 
     useEffect(() => {
         setTypes(getTypeString(selectedType));
@@ -160,7 +161,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                             {/* Repeat Reminder */}
                             <div className="flex flex-row gap-4 justify-center items-center">
                                 <RepeatButton />
-                                <ReminderButton />
+                                <ReminderButton reminder={reminder} setReminder={setReminder} />
                             </div>
 
                             {/* Description */}
