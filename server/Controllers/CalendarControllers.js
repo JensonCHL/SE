@@ -135,4 +135,32 @@ router.put('/update-event/:id', async (req, res) => {
     }
 });
 
+router.get('/get-past-events', async (req, res) => {
+    try {
+        const { start, end } = req.query;
+        const events = await Event.find().sort({ "leadName": 1 });
+        // Code buat sort based on frequent
+
+        const mostFrequentTitle = await Event.aggregate([
+            { $match: { types: { $in: ["todo", "habit"] } } },
+            { $group: { _id: "$title", count: { $sum: 1 }, firstEvent: { $first: "$$ROOT" } } },
+            { $sort: { count: -1 } },
+            { $limit: 1 }
+        ]);
+        // const events = await Event.findOne()
+        console.log(events)
+        if (mostFrequentTitle.length > 0) {
+            // res.json({ title: mostFrequentTitle[0]._id, location: mostFrequentTitle[0].location,
+            //  });
+            res.json(mostFrequentTitle[0].firstEvent)
+        } else {
+            res.status(404).send({ error: 'No events found' });
+        }
+        // res.json(mostFrequentTitle);
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        res.status(500).send({ error: 'Failed to fetch events' });
+    }
+});
+
 module.exports = router;
