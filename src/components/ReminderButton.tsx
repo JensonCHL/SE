@@ -13,19 +13,42 @@ const Dropdown: React.FC = () => {
     ];
 
     const [value, setValue] = useState<number>(options[0].value);
-
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setValue(Number(event.target.value));
     }
 
+    const [selectedValues, setSelectedValues] = useState<number[]>([options[0].value]);
+
+    const handleCheckboxChange = (value: number) => {
+        if (selectedValues.includes(value)) {
+            setSelectedValues(selectedValues.filter(val => val !== value));
+        } else {
+            setSelectedValues([...selectedValues, value]);
+        }
+    };
+    // ganti Checkbox alert 10min sebelum event selesai
     return (
-        <select className='form-select w-full bg-gray-300 px-2 py-1 rounded-md items-center ' onChange={handleSelect} value={value}>
+        <div className='flex flex-col space-y-2'>
             {options.map(option => (
-                <option key={option.value} value={option.value}>
-                    {option.label}
-                </option>
+                <label key={option.value} className='flex items-center space-x-2'>
+                    <input
+                        type='checkbox'
+                        value={option.value}
+                        checked={selectedValues.includes(option.value)}
+                        onChange={() => handleCheckboxChange(option.value)}
+                        className='form-checkbox h-4 w-4 text-gray-700 rounded-md'
+                    />
+                    <span>{option.label}</span>
+                </label>
             ))}
-        </select>
+        </div>
+        // <select className='form-select w-full bg-gray-300 px-2 py-1 rounded-md items-center ' onChange={handleSelect} value={value}>
+        //     {options.map(option => (
+        //         <option key={option.value} value={option.value}>
+        //             {option.label}
+        //         </option>
+        //     ))}
+        // </select>
     );
 }
 

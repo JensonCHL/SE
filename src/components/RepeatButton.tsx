@@ -17,7 +17,7 @@ const Dropdown: React.FC = () => {
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setValue(Number(event.target.value));
     }
-
+    // Repeat event 5 menit sebelum event selesai repeat event 
     return (
         <select className='form-select w-full bg-gray-300 px-2 py-1 rounded-md items-center ' onChange={handleSelect} value={value}>
             {options.map(option => (

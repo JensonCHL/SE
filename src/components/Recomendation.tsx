@@ -28,7 +28,7 @@ const Recomendation = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/api/calendar/get-past-events');
+                const response = await axios.get('http://localhost:5001/api/calendar/get-past-events')
                 console.log(response)
                 setEvents(response.data); // Assuming API returns an array of Event objects
             } catch (error) {

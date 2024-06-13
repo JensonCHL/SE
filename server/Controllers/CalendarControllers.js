@@ -134,10 +134,12 @@ router.put('/update-event/:id', async (req, res) => {
         res.status(500).send({ error: 'Failed to update event' });
     }
 });
-
+//Recomendation
 router.get('/get-past-events', async (req, res) => {
     try {
-        const { start, end } = req.query;
+        // const { start, end } = req.query;
+        // const userId = req.user._id; // Assuming user ID is stored in the JWT
+        // const events = await Event.find({ userId }).sort({ leadName: 1 });
         const events = await Event.find().sort({ "leadName": 1 });
         // Code buat sort based on frequent
 
