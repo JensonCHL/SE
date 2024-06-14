@@ -66,7 +66,7 @@ router.post('/create-user', async (req, res) => {
         res.status(500).send({ error: 'Failed to create user' });
     }
 });
-
+// Get events
 router.get('/get-events', async (req, res) => {
     try {
         const { start, end, id} = req.query;

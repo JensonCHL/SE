@@ -7,9 +7,31 @@ import Header from './components/Header';
 import CalenderPage from './pages/Calender/CalenderPage';
 import Activity from './pages/Activity/Activity';
 import Settings from './pages/settings/Settings';
+import axios from 'axios';
+
+
+interface Event {
+  types: string;
+  title: string;
+  start: string; // Use string here to match the ISO date string from the API
+  end: string;   // Use string here to match the ISO date string from the API
+  description: string;
+  location: string;
+  priority: string;
+  color: string;
+  __v: number;
+  _id: string;
+}
+
+interface User {
+  id: string;
+  // Add other user properties as needed
+}
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('user'));
+  const [events, setEvents] = useState<Event[]>([]);
+
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -20,6 +42,55 @@ export default function App() {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      if (!isLoggedIn) return;
+
+      const userString = localStorage.getItem('user');
+      const user: User | null = userString ? JSON.parse(userString) : null;
+
+      if (!user) return;
+
+      try {
+        const response = await axios.get('http://localhost:5001/api/calendar/get-events', {
+          params: {
+            start: new Date().toISOString(),
+            end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString(),
+            id: user,
+          },
+        });
+
+        setEvents(response.data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+
+    const intervalId = setInterval(fetchEvents, 5 * 60 * 1000); // Refresh events every 5 minutes
+    return () => clearInterval(intervalId);
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    const checkForUpcomingEvents = () => {
+      const now = new Date().getTime();
+      const tenMinutesFromNow = now + 10 * 60 * 1000;
+
+      events.forEach(event => {
+        const eventStartTime = new Date(event.start).getTime();
+
+        if (eventStartTime > now && eventStartTime <= tenMinutesFromNow) {
+          alert(`Event "${event.title}" is starting in less than 10 minutes!`);
+        }
+      });
+    };
+
+    const intervalId = setInterval(checkForUpcomingEvents, 60 * 1000); // Check every minute
+    return () => clearInterval(intervalId);
+  }, [events]);
+
 
   return (
     <div className="max-h-screen flex flex-col">
