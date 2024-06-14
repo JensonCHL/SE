@@ -188,7 +188,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                         />
                     </div>
                 </div>
-                <div style={{ position: 'relative', zIndex: 0 }} className="w-[23%] flex flex-col m-auto gap-4 h-auto">
+                <div style={{ position: 'relative', zIndex: 0 }} className="w-[23%] flex flex-col mx-auto gap-4 h-full">
                     <div className="flex flex-col  w-auto h-full" >
                         {/* Pass handleEventAdd function to AddEvent component */}
                         <AddEvent onEventAdded={handleEventAdd} selectedType={selectedType} setSelectedType={setSelectedType} />
