@@ -10,8 +10,8 @@ const Event = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '', // Updated to match backend field
-        start: '',
-        end: '',
+        start: null,
+        end: null,
         location: '',
     });
     const [modalOpen, setModalOpen] = useState(false);
@@ -39,7 +39,7 @@ const Event = () => {
         }));
 
     // Modal open and close functions
-    const openModal = (event) => {
+    const openModal = (event: any) => {
         setSelectedEvent(event);
         setFormData({
             title: event.title,
@@ -72,13 +72,13 @@ const Event = () => {
         });
     };
 
-    // Handle date/time changes
     const handleDateChange = (name, value) => {
         setFormData({
             ...formData,
-            [name]: value.toDate(), // Ensure we are converting moment object to Date
+            [name]: value.toDate(), // Convert moment object to Date
         });
     };
+    
 
     // Handle form submission to update event
     const handleUpdateEvent = async (e) => {
@@ -188,7 +188,7 @@ const Event = () => {
                                 <input type="text" name="location" value={formData.location} onChange={handleChange} required className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Start *</label>
+                                <label className="block text-sm font-medium text-gray-700">Start: {moment(formData.start).format("YYYY-MM-DD HH:mm")}</label>
                                 <Datetime
                                     name="start"
                                     value={formData.start}
@@ -197,12 +197,13 @@ const Event = () => {
                                     timeFormat="HH:mm"
                                     inputProps={{
                                         className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+                                        placeholder: "Select end date and time", // Placeholder 
                                         required: true
-                                    }}
+                                      }}
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">End *</label>
+                                <label className="block text-sm font-medium text-gray-700">End: {moment(formData.end).format("YYYY-MM-DD HH:mm")}</label>
                                 <Datetime
                                     name="end"
                                     value={moment(formData.end)}
@@ -211,8 +212,9 @@ const Event = () => {
                                     timeFormat="HH:mm"
                                     inputProps={{
                                         className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+                                        placeholder: "Select end date and time", // Placeholder text
                                         required: true
-                                    }}
+                                      }}
                                 />
                             </div>
                             <div className="flex justify-end">

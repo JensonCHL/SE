@@ -190,8 +190,9 @@ const Todo = () => {
                                     timeFormat="HH:mm"
                                     inputProps={{
                                         className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+                                        placeholder: "Select end date and time", // Placeholder text
                                         required: true
-                                    }}
+                                      }}
                                 />
                             </div>
                             <div className="mb-4">
@@ -204,8 +205,9 @@ const Todo = () => {
                                     timeFormat="HH:mm"
                                     inputProps={{
                                         className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+                                        placeholder: "Select end date and time", // Placeholder text
                                         required: true
-                                    }}
+                                      }}
                                 />
                             </div>
                             <div className="flex justify-end">

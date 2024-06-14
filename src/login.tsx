@@ -14,13 +14,13 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const response = await axios.post('http://localhost:5001/api/calendar/loginUser', { email, password });
       console.log(response.data);
-      localStorage.setItem('user', JSON.stringify(response.data.user._id));
-      console.log(localStorage.getItem('user'));
-
+      localStorage.setItem('user', response.data.user._id);
       if (response.data.message === 'Login successful') {
         setIsLoggedIn(true); // Update login state
         navigate('/home'); // Navigate to home route on successful login
         window.location.reload(); // Refresh the page
+        console.log(localStorage.getItem('user'));
+
       } else {
         setError('Incorrect email or password'); // Set error message if login fails
       }

@@ -88,6 +88,55 @@ router.get('/get-events', async (req, res) => {
     }
 });
 
+router.post('/get-profile', async (req, res) => {
+    const userId = req.body.id; // Extract userId from request body
+    
+    try {
+        // Find user by _id
+        const user = await Register.findOne({ _id: userId });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Return user data
+        res.json({ username: user.name, email: user.email });
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: 'Failed to fetch user' });
+    }
+});
+
+router.post('/change-password', async (req, res) => {
+    const { userId, currentPassword, newPassword, reNewPassword } = req.body;
+
+    if (newPassword !== reNewPassword) {
+        return res.status(400).json({ error: 'New passwords do not match' });
+    }
+
+    try {
+        const user = await Register.findOne( {_id: userId} );
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: 'Current password is incorrect' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 // Get all users
 router.get('/get-users', async (req, res) => {
     try {

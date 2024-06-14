@@ -7,5 +7,4 @@ const eventReg = mongoose.Schema({
 });
 
 const Register = mongoose.model('Register', eventReg)
-
 module.exports = Register;
