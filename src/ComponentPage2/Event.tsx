@@ -145,7 +145,7 @@ const Event = () => {
                 <span className="items-center m-4 text-lg font-bold text-[#8338EC]">Event</span>
             </div>
             {/* Event list */}
-            <div className="flex flex-col gap-3 px-4 py-4 bg-[#E6D7FE] w-full h-[75%]  rounded-b-[10px] bg-opacity-45 overflow-y-scroll">
+            <div className="flex flex-col gap-3 px-4 py-4 bg-[#E6D7FE] w-full h-full  rounded-b-[10px] bg-opacity-45 overflow-y-scroll">
                 {onGoingEvent.length === 0 ? (
                     <div>No ongoing events</div>
                 ) : (

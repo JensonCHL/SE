@@ -137,7 +137,7 @@ const Todo = () => {
             <div className="flex items-center justify-center bg-[#FFCCE2] rounded-t-[20px] overflow-hidden">
                 <span className="items-center m-4 text-lg font-bold text-[#FF006E]">To-do</span>
             </div>
-            <div className="flex flex-col h-[75%] gap-3 px-4 py-4 bg-[#FFCCE2] w-full rounded-b-[10px] bg-opacity-40 overflow-y-scroll">
+            <div className="flex flex-col h-full gap-3 px-4 py-4 bg-[#FFCCE2] w-full rounded-b-[10px] bg-opacity-40 overflow-y-scroll">
                 {onGoingEvent.length === 0 ? (
                     <div>No ongoing events</div>
                 ) : (

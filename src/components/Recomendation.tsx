@@ -19,6 +19,8 @@ interface Event {
 
 const Recomendation = () => {
     
+    
+
     const [event, setEvent] = useState<Event | null>(null);
     const [excludeTitle, setExcludeTitle] = useState<string | null>(null);
 
@@ -38,14 +40,21 @@ const Recomendation = () => {
         fetchEvent(excludeTitle);
     }, [excludeTitle]);
 
+    const incrementDate = (date: Date, days: number): Date => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
     const handleSave = async () => {
 
         try {
             handleNext()
             if (event) {
-                // Check if event is not null
-                // Remove _id and __v fields from the event object
-                const { _id, __v, ...eventData } = event;
+                const Event = {
+                    ...event,
+                    start: incrementDate(event.start, 1) // Increment start date by 1 day
+                };
+                const { _id, __v, ...eventData } = Event;
                 console.log(eventData)
                 const response = await axios.post('http://localhost:5001/api/calendar/create-event', eventData);
                 console.log('Event saved:', response.data);

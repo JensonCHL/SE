@@ -31,6 +31,7 @@ const DailySummary = () => {
                 <Habit />
             </div>
         </div>
+        
     );
 }
 
