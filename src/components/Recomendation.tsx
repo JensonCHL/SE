@@ -18,22 +18,6 @@ interface Event {
 }
 
 const Recomendation = () => {
-    // const [event, setEvents] = useState<{ title: string, location: string, types: string; } | null>(null);
-    // const [event, setEvents] = useState<Event | null>(null);
-    // // 
-    // useEffect(() => {
-    //     const fetchEvents = async () => {
-    //         try {
-    //             const response = await axios.get('http://localhost:5001/api/calendar/get-past-events')
-    //             console.log(response)
-    //             setEvents(response.data); // Assuming API returns an array of Event objects
-    //         } catch (error) {
-    //             console.error('Error fetching events:', error);
-    //         }
-    //     };
-
-    //     fetchEvents();
-    // }, []);
     
     const [event, setEvent] = useState<Event | null>(null);
     const [excludeTitle, setExcludeTitle] = useState<string | null>(null);
@@ -89,7 +73,7 @@ const Recomendation = () => {
             </div>
             {/* Time */}
             <div>
-                <span>20/13/204 14:00 - 15:00 </span>
+                <span>{event?.start.toLocaleString()}</span>
             </div>
             {/* Location */}
             <div className='flex items-center gap-1'>
