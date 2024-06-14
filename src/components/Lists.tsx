@@ -29,6 +29,8 @@ const Lists = () => {
         try {
             await axios.delete(`http://localhost:5001/api/calendar/delete-user/${userId}`);
             setUsers(users.filter(user => user._id !== userId));
+            window.location.reload(); // Refresh the page
+
         } catch (error) {
             console.error('Error deleting user:', error);
         }
