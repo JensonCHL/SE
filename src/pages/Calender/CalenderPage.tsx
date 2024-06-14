@@ -21,10 +21,10 @@ const CalendarPage: React.FC<CalendarProps> = () => {
         try {
             const eventData = {
                 start: moment(data.start).toISOString(),
-                id: userId,
+                user_id: userId,
                 title: data.title,
                 end: moment(data.end).toISOString(),
-                description: data.description,
+                description: data.desc,
                 priority: data.priority,
                 location: data.location,
                 types: data.types,
@@ -45,11 +45,14 @@ const CalendarPage: React.FC<CalendarProps> = () => {
                 const response = await axios.get(
                     `http://localhost:5001/api/calendar/get-events?id=${userId}&start=${moment(data.start).toISOString()}&end=${moment(data.end).toISOString()}`
                 );
+                console.log(userId)
+                console.log(response)
                 const eventsWithColors = response.data.map((event: any) => ({
                     ...event,
                     color: event.color
                 }));
                 setEvents(eventsWithColors);
+                console.log(eventsWithColors)
             }
         } catch (error) {
             console.error("Error fetching events:", error);

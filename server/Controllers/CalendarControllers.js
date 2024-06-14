@@ -69,18 +69,15 @@ router.post('/create-user', async (req, res) => {
 
 router.get('/get-events', async (req, res) => {
     try {
-        const { start, end, id } = req.query;
-
-        if (!start || !end || id) {
+        const { start, end, id} = req.query;
+        if (!start || !end) {
             return res.status(400).send({ error: 'Missing required query parameters' });
         }
-
         const events = await Event.find({
-            id,
+            user_id: id,
             start: { $gte: new Date(start) },
             end: { $lte: new Date(end) }
         });
-
         res.json(events);
     } catch (error) {
         console.error('Error fetching events:', error);
@@ -109,11 +106,9 @@ router.post('/get-profile', async (req, res) => {
 
 router.post('/change-password', async (req, res) => {
     const { userId, currentPassword, newPassword, reNewPassword } = req.body;
-
     if (newPassword !== reNewPassword) {
         return res.status(400).json({ error: 'New passwords do not match' });
     }
-
     try {
         const user = await Register.findOne( {_id: userId} );
         if (!user) {
@@ -124,12 +119,9 @@ router.post('/change-password', async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ error: 'Current password is incorrect' });
         }
-
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-
         user.password = hashedPassword;
         await user.save();
-
         res.json({ message: 'Password changed successfully' });
     } catch (error) {
         console.error('Error changing password:', error);
@@ -140,10 +132,12 @@ router.post('/change-password', async (req, res) => {
 // Get all users
 router.get('/get-users', async (req, res) => {
     try {
-        const userId = req.query.id; // Extract userId from query parameters
+        const userId = req.query.user_id; // Extract userId from query parameters
+        console.log(userId, "a")
         console.log('Received userId:', userId);
-        const users = await Event.find({ id: userId }).sort({ name: 'asc' });
+        const users = await Event.find({ user_id: userId }).sort({ name: 'asc' });
         res.json(users);
+        console.log(users);
     } catch (error) {
         console.error('Error fetching users:', error);
         res.status(500).send({ error: 'Failed to fetch users' });
@@ -191,27 +185,6 @@ router.put('/update-event/:id', async (req, res) => {
 });
 
 router.get('/get-past-events', async (req, res) => {
-    // try {
-    //     const events = await Event.find().sort({ "leadName": 1 });
-
-    //     const mostFrequentTitle = await Event.aggregate([
-    //         { $match: { types: { $in: ["todo", "habit"] } } },
-    //         { $group: { _id: "$title", count: { $sum: 1 }, firstEvent: { $first: "$$ROOT" } } },
-    //         { $sort: { count: -1 } },
-    //         { $limit: 1 }
-    //     ]);
-    //     console.log(events)
-    //     if (mostFrequentTitle.length > 0) {
-    //         // res.json({ title: mostFrequentTitle[0]._id, location: mostFrequentTitle[0].location,
-    //         //  });
-    //         res.json(mostFrequentTitle[0].firstEvent)
-    //     } else {
-    //         res.status(404).send({ error: 'No events found' });
-    //     }
-    // } catch (error) {
-    //     console.error('Error fetching events:', error);
-    //     res.status(500).send({ error: 'Failed to fetch events' });
-    // }
     try {
         const { excludeTitle } = req.query;
 

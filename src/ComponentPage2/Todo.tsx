@@ -19,9 +19,10 @@ const Todo = () => {
 
     if (userId) {
         useEffect(() => {
-            axios.get(`http://localhost:5001/api/calendar/get-users?id=${userId}`)
-                .then(response => {
+            axios.get(`http://localhost:5001/api/calendar/get-users?user_id=${userId}`)
+            .then(response => {
                     setUsers(response.data);
+                    console.log(response)
                 })
                 .catch(error => {
                     console.error('Error fetching users:', error);
@@ -40,15 +41,16 @@ const Todo = () => {
             end: moment(user.end).add(7, "hours").format("HH:mm"),
         }));
 
-    const openModal = (event) => {
+    const openModal = (event: any) => {
         setSelectedEvent(event);
         setFormData({
             title: event.title,
-            description: event.description,
+            description: event.desc,
             start: moment(event.start).toDate(),
             end: moment(event.end).toDate(),
             location: event.location,
         });
+        console.log(selectedEvent)
         setModalOpen(true);
     };
 

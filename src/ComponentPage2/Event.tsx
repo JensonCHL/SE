@@ -19,7 +19,7 @@ const Event = () => {
 
     // Fetch users from API on component mount
     useEffect(() => {
-        axios.get(`http://localhost:5001/api/calendar/get-users?id=${userId}`)
+        axios.get(`http://localhost:5001/api/calendar/get-users?user_id=${userId}`)
             .then(response => {
                 setUsers(response.data);
             })

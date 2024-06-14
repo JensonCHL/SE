@@ -28,7 +28,7 @@ const Calendar: React.FC<CalendarProps> = () => {
             if (calendarRef.current) {
                 let calendarApi = calendarRef.current.getApi();
                 calendarApi.addEvent({
-                    id: event.userID,
+                    user_id: event.userID,
                     title: event.title,
                     start: event.start,
                     end: event.end,
@@ -56,7 +56,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                 throw new Error("Invalid event data. Missing required properties.");
             }
             const eventData = {
-                id: userID,
+                user_id: userID,
                 title: data.title,
                 start: moment(data.start).toISOString(),
                 end: moment(data.end).toISOString(),
@@ -71,7 +71,6 @@ const Calendar: React.FC<CalendarProps> = () => {
             console.log("Event data to be sent to backend:", eventData);
             await axios.post("http://localhost:5001/api/calendar/create-event", eventData);
 
-            // Update local events state to reflect the newly added event
             setEvents(prevEvents => [...prevEvents, eventData]);
 
         } catch (error) {
@@ -79,7 +78,6 @@ const Calendar: React.FC<CalendarProps> = () => {
         }
     }
 
-    // Function to handle fetching events from backend based on date range
     async function handleDateSet(data: DateSelectArg) {
         try {
             const response = await axios.get(`http://localhost:5001/api/calendar/get-events?id=${userID}&start=${moment(data.start).toISOString()}&end=${moment(data.end).toISOString()}`);
@@ -94,7 +92,6 @@ const Calendar: React.FC<CalendarProps> = () => {
         }
     }
 
-    // Function to render event content in FullCalendar
     const renderEventContent = (eventContent: EventContentArg) => {
         return (
             <div className="flex flex-col">
@@ -103,10 +100,8 @@ const Calendar: React.FC<CalendarProps> = () => {
         );
     };
 
-    // Initial state for today's date
     const [today, setToday] = useState(new Date());
     const navigate = useNavigate()
-    // Effect to fetch initial events when component mounts
     useEffect(() => {
 
         if (!localStorage.getItem('user')){
@@ -116,12 +111,9 @@ const Calendar: React.FC<CalendarProps> = () => {
         if (calendarRef.current) {
             let calendarApi = calendarRef.current.getApi();
             const currentDate = calendarApi.getDate();
-            // Fetch events for the current month initially
             handleDateSet({ start: moment(currentDate).startOf('month').toDate(), end: moment(currentDate).endOf('month').toDate() });
         }
     }, []);
-
-    
 
         return (
             <section className="flex m-3 md:flex-row h-full overflow-hidden">

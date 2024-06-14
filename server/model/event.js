@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const eventSchema = mongoose.Schema({
     // user_id: { type: String, required: true},
-    id: {type: String},
+    user_id: {type: String},
     types: { type: String },
     title: { type: String, required: true },
     start: { type: Date, required: true },

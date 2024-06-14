@@ -16,7 +16,7 @@ const Lists = () => {
     const userId = localStorage.getItem('user')
 
     useEffect(() => {
-        axios.get(`http://localhost:5001/api/calendar/get-users?id=${userId}`)
+        axios.get(`http://localhost:5001/api/calendar/get-users?user_id=${userId}`)
             .then(response => {
                 setUsers(response.data);
             })
@@ -42,7 +42,6 @@ const Lists = () => {
             start: moment(user.start).add(7, "hours").format("HH:mm"),
             date: moment(user.end).add(7, "hours").format("YYYY-MM-DD"),
             end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
-
         }));
 
     const upComingEvent = users
@@ -71,15 +70,13 @@ const Lists = () => {
         .map((user) => ({
             ...user,
             end: moment(user.end).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
-
             start: moment(user.start).add(7, "hours").format("HH:mm"), // Convert to GMT+7 and format time
             date: moment(user.end).add(7, "hours").format("YYYY-MM-DD"), // Convert to GMT+7 and format date only
-
         }));
 
     return (
         <div className="h-auto w-auto">
-            <div className="h-35 w-50 bg-white rounded-2xl pl-5 pr-5 pt-2 pb-2 border border-[2px]">
+            <div className="h-36 w-50 bg-white rounded-2xl pl-5 pr-5 pt-2 pb-2 border border-[2px]">
                 {onGoingEvent.length === 0 ? (
                     <div className="flex items-center justify-center text-center">You don't even have anything to do?</div>
                 ) : (
@@ -113,7 +110,7 @@ const Lists = () => {
 
             </div>
             <div className="flex flex-row mt-4 ">
-                <div className=" bg-white rounded-2xl pt-1  pl-2 border border-[2px] mr-2 w-52 h-auto">
+                <div className=" bg-white rounded-2xl pt-1  pl-2 border border-[2px] mr-2 w-52 h-32">
                     <h2 className="text-bold">Dont forget to do:  </h2>
                     <form>
                         {filteredTodo.length === 0 ? (
@@ -140,7 +137,7 @@ const Lists = () => {
                     {filteredTodo.length >= 2 && <Link to="/Activity" className="view-more text-right text-bold">VIEW MORE</Link>}
                 </div>
 
-                <div className=" bg-white rounded-2xl pt-1 pl-2 border border-[2px] ml-2 w-52 h-auto">
+                <div className=" bg-white rounded-2xl pt-1 pl-2 border border-[2px] ml-2 w-52 h-32">
                     <h2 className="text-bold ">Daily Habits: </h2>
                     <form >
                         {filteredHabit.length === 0 ? (

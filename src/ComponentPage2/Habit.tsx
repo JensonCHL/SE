@@ -19,7 +19,7 @@ const Habit = () => {
     const userId = localStorage.getItem('user')
 
     useEffect(() => {
-        axios.get(`http://localhost:5001/api/calendar/get-users?id=${userId}`)
+        axios.get(`http://localhost:5001/api/calendar/get-users?user_id=${userId}`)
             .then(response => {
                 setUsers(response.data);
             })
