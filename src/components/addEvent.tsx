@@ -120,6 +120,27 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
         setRepeat(-1);
     };
 
+    const checkForConflicts = (): boolean => {
+        // Convert start and end times to timestamps for easier comparison
+        const newEventStart = start.getTime();
+        const newEventEnd = end.getTime();
+
+        for (const existingEvent of events) {
+            const existingEventStart = new Date(existingEvent.start).getTime();
+            const existingEventEnd = new Date(existingEvent.end).getTime();
+
+            // Check for overlap in time intervals
+            if (
+                (newEventStart >= existingEventStart && newEventStart < existingEventEnd) || // New event starts within existing event
+                (existingEventStart >= newEventStart && existingEventStart < newEventEnd) // Existing event starts within new event
+            ) {
+                return true; // Conflict detected
+            }
+        }
+
+        return false; // No conflicts found
+    };
+
     return (
         <div>
             {selectedType === 1 && (
