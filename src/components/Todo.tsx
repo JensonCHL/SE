@@ -76,24 +76,42 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
         setColor(getEventColor(selectedType));
     }, [selectedType]);
 
+    const incrementDate = (date: Date, days: number): Date => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
+
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Create EventData object with current state values
-        const eventData: EventData = {
-            title,
-            start: new Date(start),
-            end: new Date(end),
-            location,
-            desc,
-            // timeType,
-            types, // Use current types state
-            color, // Use current color state
-            reminder,
-            repeat
+        // Create EventData object1 with current state values
+        let currentStart = new Date(start);
+        let currentEnd = new Date(end);
+        const eventDuration = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24); // duration in days
 
-        };
-        // Call onEventAdded with eventData
-        onEventAdded(eventData);
+        for (let i = 0; i < (repeat > 0 ? repeat : 1); i++) {
+            const eventData: EventData = {
+                title,
+                start: new Date(currentStart),
+                end: new Date(currentEnd),
+                location,
+                desc,
+                // timeType,
+                types, // Use current types state
+                color, // Use current color state
+                reminder,
+                repeat
+
+            };
+            // Call onEventAdded with eventData
+            onEventAdded(eventData);
+
+            // Increment currentStart to the day after the current end
+            currentStart = incrementDate(currentEnd, 1);
+            // Increment currentEnd to the new start date plus the original duration
+            currentEnd = incrementDate(currentStart, eventDuration);
+        }
+
 
         // Clear form fields after submission
         setTitle('');
@@ -172,8 +190,8 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
 
                             {/* Repeat Reminder */}
                             <div className="flex flex-col gap-y-1 w-full justify-center items-center">
-                            <RepeatButton repeat={repeat} setRepeat={setRepeat} />
-                            <ReminderButton reminder={reminder} setReminder={setReminder} />
+                                <RepeatButton repeat={repeat} setRepeat={setRepeat} />
+                                <ReminderButton reminder={reminder} setReminder={setReminder} />
                             </div>
 
                             {/* Description */}
@@ -189,7 +207,7 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
 
                             {/* Recommendation */}
                             <div className="flex flex-row gap-1 bg-[#F4F4F4] rounded-full">
-                                
+
                             </div>
 
                             {/* Save & Cancel */}

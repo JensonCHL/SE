@@ -74,22 +74,40 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
         setColor(getEventColor(selectedType));
     }, [selectedType]);
 
+    const incrementDate = (date: Date, days: number): Date => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
+
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const eventData: EventData = {
-            title,
-            start: new Date(start),
-            end: new Date(end),
-            desc,
-            location,
-            timeType,
-            types,
-            color,
-            reminder,
-            repeat
-        };
-        onEventAdded(eventData);
+        let currentStart = new Date(start);
+        let currentEnd = new Date(end);
+        const eventDuration = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24); // duration in days
+
+        for (let i = 0; i<(repeat>0?repeat:1); i++){
+            const eventData: EventData = {
+                title,
+                start: new Date(currentStart),
+                end: new Date(currentEnd),
+                desc,
+                location,
+                timeType,
+                types,
+                color,
+                reminder,
+                repeat
+            };
+            onEventAdded(eventData);
+
+           // Increment currentStart to the day after the current end
+           currentStart = incrementDate(currentEnd, 1);
+           // Increment currentEnd to the new start date plus the original duration
+           currentEnd = incrementDate(currentStart, eventDuration);
+            
+        }
 
         // Clear the form after submission
         setTitle('');

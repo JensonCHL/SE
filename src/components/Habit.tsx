@@ -78,32 +78,50 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
         setColor(getEventColor(selectedType));
     }, [selectedType]);
 
+    const incrementDate = (date: Date, days: number): Date => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
+
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Call onEventAdded with the current state values
-        const eventData: EventData = {
-            title,
-            start,
-            end,
-            location,
-            desc,
-            timeType,
-            types, // Use the updated state value here
-            color, // Use the updated state value here
-            reminder,
-            repeat
-        };
 
-        onEventAdded(eventData);
+        let currentStart = new Date(start);
+        let currentEnd = new Date(end);
+        const eventDuration = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24); // duration in days
 
-        // Clear form inputs after submission
+        for (let i = 0; i<(repeat>0?repeat:1); i++){
+            const eventData: EventData = {
+                title,
+                start: new Date(currentStart),
+                end: new Date(currentEnd),
+                desc,
+                location,
+                timeType,
+                types,
+                color,
+                reminder,
+                repeat
+            };
+            onEventAdded(eventData);
+
+        //    /Increment currentStart to the day after the current end
+           currentStart = incrementDate(currentEnd, 1);
+           // Increment currentEnd to the new start date plus the original duration
+           currentEnd = incrementDate(currentStart, eventDuration);
+            
+        }
+
+        // Clear the form after submission
         setTitle('');
         setStart(new Date());
         setEnd(new Date());
-        setLocation('');
         setDesc('');
-        setTimeType('');
-        setRepeat(-1)
+        setLocation('');
+        setTimeType('fixed');
+        setReminder(false);
+        setRepeat(-1);
     };
 
     return (
