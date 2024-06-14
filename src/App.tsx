@@ -45,52 +45,71 @@ export default function App() {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      if (!isLoggedIn) return;
+        if (!isLoggedIn) return;
 
-      const userString = localStorage.getItem('user');
-      const user: User | null = userString ? JSON.parse(userString) : null;
+        const userString = localStorage.getItem('user');
+        const userId = userString; // Assuming userString is directly the ID string
 
-      if (!user) return;
+        if (!userId) return;
 
-      try {
-        const response = await axios.get('http://localhost:5001/api/calendar/get-events', {
-          params: {
-            start: new Date().toISOString(),
-            end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString(),
-            id: user,
-          },
-        });
+        try {
+            const response = await axios.get('http://localhost:5001/api/calendar/closest-event', {
+                params: {
+                    userId, // Ensure 'userId' is passed correctly
+                },
+            });
 
-        setEvents(response.data);
-      } catch (error) {
-        console.error('Error fetching events:', error);
-      }
+            console.log('API Response:', response.data);
+            if (!response.data) {
+                console.warn('Empty response received');
+                return;
+            }
+            setEvents([response.data]); // Assuming response.data is the closest event object
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
     };
 
     fetchEvents();
 
     const intervalId = setInterval(fetchEvents, 5 * 60 * 1000); // Refresh events every 5 minutes
     return () => clearInterval(intervalId);
-  }, [isLoggedIn]);
+}, [isLoggedIn]);
 
-  useEffect(() => {
+useEffect(() => {
     const checkForUpcomingEvents = () => {
-      const now = new Date().getTime();
-      const tenMinutesFromNow = now + 10 * 60 * 1000;
+        const now = new Date().getTime();
+        const tenMinutesFromNow = now + 10 * 60 * 1000;
 
-      events.forEach(event => {
-        const eventStartTime = new Date(event.start).getTime();
+        events.forEach(event => {
+            const eventStartTime = new Date(event.start).getTime();
 
-        if (eventStartTime > now && eventStartTime <= tenMinutesFromNow) {
-          alert(`Event "${event.title}" is starting in less than 10 minutes!`);
-        }
-      });
+            if (eventStartTime > now && eventStartTime <= tenMinutesFromNow) {
+                alert(`Event "${event.title}" is starting in less than 10 minutes!`);
+            }
+        });
     };
 
     const intervalId = setInterval(checkForUpcomingEvents, 60 * 1000); // Check every minute
     return () => clearInterval(intervalId);
-  }, [events]);
+}, [events]);
 
+useEffect(() => {
+    const checkForCurrentEvents = () => {
+        const now = new Date().getTime();
+
+        events.forEach(event => {
+            const eventStartTime = new Date(event.start).getTime();
+            const eventEndTime = new Date(event.end).getTime();
+
+            if (eventStartTime <= now && now <= eventEndTime) {
+                alert(`Event "${event.title}" is starting now!`);
+            }
+        });
+    };
+
+    checkForCurrentEvents(); // Check for current events immediately after fetching events
+}, [events]);
 
   return (
     <div className="max-h-screen flex flex-col">

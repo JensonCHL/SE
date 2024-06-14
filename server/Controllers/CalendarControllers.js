@@ -69,7 +69,7 @@ router.post('/create-user', async (req, res) => {
 // Get events
 router.get('/get-events', async (req, res) => {
     try {
-        const { start, end, id} = req.query;
+        const { start, end, id } = req.query;
         if (!start || !end) {
             return res.status(400).send({ error: 'Missing required query parameters' });
         }
@@ -84,10 +84,37 @@ router.get('/get-events', async (req, res) => {
         res.status(500).send({ error: 'Failed to fetch events' });
     }
 });
+// Closest events
+router.get('/closest-event', async (req, res) => {
+    try {
+        const { userId } = req.query;
+
+        if (!userId) {
+            return res.status(400).json({ error: 'User ID is required' });
+        }
+
+        const now = new Date();
+
+        // Query to find the closest upcoming event for the user
+        const closestEvent = await Event.findOne({
+            user_id: userId,
+            start: { $gte: now }, // Events starting from now onwards
+        }).sort({ start: 1 }); // Sort by start time in ascending order to get the closest one
+
+        if (!closestEvent) {
+            return res.status(404).json({ error: 'No upcoming event found for the user' });
+        }
+
+        res.json(closestEvent);
+    } catch (error) {
+        console.error('Error fetching closest event:', error);
+        res.status(500).json({ error: 'Failed to fetch closest event' });
+    }
+});
 
 router.post('/get-profile', async (req, res) => {
     const userId = req.body.id; // Extract userId from request body
-    
+
     try {
         // Find user by _id
         const user = await Register.findOne({ _id: userId });
@@ -110,7 +137,7 @@ router.post('/change-password', async (req, res) => {
         return res.status(400).json({ error: 'New passwords do not match' });
     }
     try {
-        const user = await Register.findOne( {_id: userId} );
+        const user = await Register.findOne({ _id: userId });
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
