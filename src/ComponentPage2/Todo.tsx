@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import Datetime from 'react-datetime'
+import Datetime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
 
 const Todo = () => {
-
     const [users, setUsers] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [formData, setFormData] = useState({
@@ -17,20 +17,19 @@ const Todo = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const userId = localStorage.getItem('user');
 
-    if (userId) {
-        useEffect(() => {
+    useEffect(() => {
+        if (userId) {
             axios.get(`http://localhost:5001/api/calendar/get-users?user_id=${userId}`)
-            .then(response => {
+                .then(response => {
                     setUsers(response.data);
-                    console.log(response)
                 })
                 .catch(error => {
                     console.error('Error fetching users:', error);
                 });
-        }, [userId]);
-    } else {
-        console.error('User ID not found in localStorage');
-    }
+        } else {
+            console.error('User ID not found in localStorage');
+        }
+    }, [userId]);
 
     const onGoingEvent = users
         .filter((user) => user.types === "todo")
@@ -41,16 +40,15 @@ const Todo = () => {
             end: moment(user.end).add(7, "hours").format("HH:mm"),
         }));
 
-    const openModal = (event: any) => {
+    const openModal = (event) => {
         setSelectedEvent(event);
         setFormData({
             title: event.title,
-            description: event.desc,
+            description: event.description, // Ensure the field name matches the backend expectation
             start: moment(event.start).toDate(),
             end: moment(event.end).toDate(),
             location: event.location,
         });
-        console.log(selectedEvent)
         setModalOpen(true);
     };
 
@@ -135,18 +133,15 @@ const Todo = () => {
     };
 
     return (
-        <div className="flex flex-col  w-[30%] h-full rounded-b-full" >
-            {/* header Habit container */}
-            <div className="flex items-center justify-center bg-[#FFCCE2] rounded-t-[20px] overflow-hidden" >
+        <div className="flex flex-col w-[30%] h-full rounded-b-full">
+            <div className="flex items-center justify-center bg-[#FFCCE2] rounded-t-[20px] overflow-hidden">
                 <span className="items-center m-4 text-lg font-bold text-[#FF006E]">To-do</span>
             </div>
-            {/* Checkbox */}
             <div className="flex flex-col h-[75%] gap-3 px-4 py-4 bg-[#FFCCE2] w-full rounded-b-[10px] bg-opacity-40 overflow-y-scroll">
-
                 {onGoingEvent.length === 0 ? (
                     <div>No ongoing events</div>
                 ) : (
-                    onGoingEvent.map((event, index) => (
+                    onGoingEvent.map((event) => (
                         <li key={event._id} className="list-none flex flex-row justify-between items-center">
                             <div>
                                 <div className='text-bold text-medium'>{event.title}</div>
@@ -154,10 +149,8 @@ const Todo = () => {
                             </div>
                             <div className='flex flex-row gap-2'>
                                 <input type="button" value="Detail " onClick={() => openModal(event)} />
-
                                 <label>
-                                    <input type="checkbox" name="todo" value={event._id}
-                                        onChange={() => handleCheckboxChange(event._id)} />
+                                    <input type="checkbox" name="todo" value={event._id} onChange={() => handleCheckboxChange(event._id)} />
                                 </label>
                             </div>
                         </li>
@@ -192,9 +185,9 @@ const Todo = () => {
                                     timeFormat="HH:mm"
                                     inputProps={{
                                         className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
-                                        placeholder: "Select end date and time", // Placeholder text
+                                        placeholder: "Select end date and time",
                                         required: true
-                                      }}
+                                    }}
                                 />
                             </div>
                             <div className="mb-4">
@@ -207,26 +200,21 @@ const Todo = () => {
                                     timeFormat="HH:mm"
                                     inputProps={{
                                         className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
-                                        placeholder: "Select end date and time", // Placeholder text
+                                        placeholder: "Select end date and time",
                                         required: true
-                                      }}
+                                    }}
                                 />
                             </div>
                             <div className="flex justify-end">
-                                <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Update Event
-                                </button>
-                                <button type="button" onClick={closeModal} className="ml-3 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Cancel
-                                </button>
+                                <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-md">Update</button>
+                                <button type="button" onClick={closeModal} className="ml-2 px-4 py-2 bg-gray-500 text-white rounded-md">Cancel</button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
         </div>
-    )
-
-}
+    );
+};
 
 export default Todo;

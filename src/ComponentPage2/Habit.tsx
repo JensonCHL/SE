@@ -5,28 +5,31 @@ import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 
 const Habit = () => {
-
     const [users, setUsers] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
-        description: '', 
+        description: '',
         start: '',
         end: '',
         location: '',
     });
     const [modalOpen, setModalOpen] = useState(false);
-    const userId = localStorage.getItem('user')
+    const userId = localStorage.getItem('user');
 
     useEffect(() => {
-        axios.get(`http://localhost:5001/api/calendar/get-users?user_id=${userId}`)
-            .then(response => {
-                setUsers(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-            });
-    }, [userId]); 
+        if (userId) {
+            axios.get(`http://localhost:5001/api/calendar/get-users?user_id=${userId}`)
+                .then(response => {
+                    setUsers(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching users:', error);
+                });
+        } else {
+            console.error('User ID not found in localStorage');
+        }
+    }, [userId]);
 
     const onGoingEvent = users
         .filter((user) => user.types === "habit")
@@ -41,9 +44,9 @@ const Habit = () => {
         setSelectedEvent(event);
         setFormData({
             title: event.title,
-            description: event.description, 
-            start: moment(event.start).toDate(), 
-            end: moment(event.end).toDate(), 
+            description: event.description,
+            start: moment(event.start).toDate(),
+            end: moment(event.end).toDate(),
             location: event.location,
         });
         setModalOpen(true);
@@ -53,7 +56,7 @@ const Habit = () => {
         setSelectedEvent(null);
         setFormData({
             title: '',
-            description: '', 
+            description: '',
             start: '',
             end: '',
             location: '',
@@ -83,7 +86,7 @@ const Habit = () => {
             formData.title === '' ||
             formData.start === '' ||
             formData.end === '' ||
-            formData.description ==='' || 
+            formData.description === '' ||
             formData.location === ''
         ) {
             console.error('Please fill out all required fields.');
@@ -92,7 +95,7 @@ const Habit = () => {
 
         if (
             selectedEvent.title === formData.title &&
-            selectedEvent.description === formData.description && 
+            selectedEvent.description === formData.description &&
             moment(selectedEvent.start).toISOString() === moment(formData.start).toISOString() &&
             moment(selectedEvent.end).toISOString() === moment(formData.end).toISOString() &&
             selectedEvent.location === formData.location
@@ -114,7 +117,7 @@ const Habit = () => {
             await axios.put(`http://localhost:5001/api/calendar/update-event/${selectedEvent._id}`, updatedEvent);
             const updatedUsers = users.map(user => user._id === selectedEvent._id ? updatedEvent : user);
             setUsers(updatedUsers);
-            closeModal(); 
+            closeModal();
         } catch (error) {
             console.error('Error updating event:', error);
         }
@@ -129,17 +132,16 @@ const Habit = () => {
         }
     };
 
-
     return (
-        <div className="flex flex-col w-[30%] h-full rounded-b-full" >
-            <div className="flex items-center justify-center bg-[#FFF2CE] rounded-t-[20px] overflow-hidden bg-opacity-95" >
-                <span className="items-center m-4 text-lg font-bold text-[#FFBE0B]" >Habit</span>
+        <div className="flex flex-col w-[30%] h-full rounded-b-full">
+            <div className="flex items-center justify-center bg-[#FFF2CE] rounded-t-[20px] overflow-hidden bg-opacity-95">
+                <span className="items-center m-4 text-lg font-bold text-[#FFBE0B]">Habit</span>
             </div>
             <div className="flex flex-col h-[75%] gap-3 px-4 py-4 bg-[#FFF2CE] bg-opacity-45 w-full rounded-b-[10px] overflow-y-scroll">
-            {onGoingEvent.length === 0 ? (
+                {onGoingEvent.length === 0 ? (
                     <div>No ongoing events</div>
                 ) : (
-                    onGoingEvent.map((event, index) => (
+                    onGoingEvent.map((event) => (
                         <li key={event._id} className="list-none flex flex-row justify-between items-center">
                             <div>
                                 <div className='text-bold text-medium'>{event.title}</div>
@@ -147,19 +149,15 @@ const Habit = () => {
                             </div>
                             <div className='flex flex-row gap-2'>
                                 <input type="button" value="Detail " onClick={() => openModal(event)} />
-
                                 <label>
-                                    <input type="checkbox" name="todo" value={event._id}
-                                        onChange={() => handleCheckboxChange(event._id)} />
+                                    <input type="checkbox" name="todo" value={event._id} onChange={() => handleCheckboxChange(event._id)} />
                                 </label>
                             </div>
                         </li>
                     ))
                 )}
-
             </div>
-
-            {selectedEvent && (
+            {modalOpen && selectedEvent && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
                     <div className="bg-white p-6 rounded-lg z-10">
@@ -217,10 +215,8 @@ const Habit = () => {
                     </div>
                 </div>
             )}
-
         </div>
-    )
-
-}
+    );
+};
 
 export default Habit;
