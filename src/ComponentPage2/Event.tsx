@@ -9,13 +9,13 @@ const Event = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
-        description: '', // Updated to match backend field
+        description: '',
         start: null,
         end: null,
         location: '',
     });
     const [modalOpen, setModalOpen] = useState(false);
-    const userId = localStorage.getItem('user')
+    const userId = localStorage.getItem('user');
 
     // Fetch users from API on component mount
     useEffect(() => {
@@ -26,7 +26,7 @@ const Event = () => {
             .catch(error => {
                 console.error('Error fetching users:', error);
             });
-    }, [userId]); // Fetch users whenever userId changes
+    }, [userId]);
 
     // Filter and format ongoing events
     const onGoingEvent = users
@@ -39,13 +39,13 @@ const Event = () => {
         }));
 
     // Modal open and close functions
-    const openModal = (event: any) => {
+    const openModal = (event) => {
         setSelectedEvent(event);
         setFormData({
             title: event.title,
-            description: event.description, // Updated to match backend field
-            start: moment(event.start).toDate(), // Convert to JavaScript Date object
-            end: moment(event.end).toDate(), // Convert to JavaScript Date object
+            description: event.description,
+            start: moment(event.start).toDate(),
+            end: moment(event.end).toDate(),
             location: event.location,
         });
         setModalOpen(true);
@@ -55,9 +55,9 @@ const Event = () => {
         setSelectedEvent(null);
         setFormData({
             title: '',
-            description: '', // Updated to match backend field
-            start: '',
-            end: '',
+            description: '',
+            start: null,
+            end: null,
             location: '',
         });
         setModalOpen(false);
@@ -75,33 +75,30 @@ const Event = () => {
     const handleDateChange = (name, value) => {
         setFormData({
             ...formData,
-            [name]: value.toDate(), // Convert moment object to Date
+            [name]: value, // No need to convert to date, keep as moment object
         });
     };
-    
 
     // Handle form submission to update event
     const handleUpdateEvent = async (e) => {
         e.preventDefault();
 
-        // Check if any form field is empty or unchanged
         if (
             formData.title === '' ||
-            formData.start === '' ||
-            formData.end === '' ||
-            formData.description ==='' || // Updated to match backend field
+            formData.start === null ||
+            formData.end === null ||
+            formData.description === '' ||
             formData.location === ''
         ) {
             console.error('Please fill out all required fields.');
             return;
         }
 
-        // Check if form data is unchanged
         if (
             selectedEvent.title === formData.title &&
-            selectedEvent.description === formData.description && // Updated to match backend field
-            moment(selectedEvent.start).toISOString() === moment(formData.start).toISOString() &&
-            moment(selectedEvent.end).toISOString() === moment(formData.end).toISOString() &&
+            selectedEvent.description === formData.description &&
+            moment(selectedEvent.start).toISOString() === formData.start.toISOString() &&
+            moment(selectedEvent.end).toISOString() === formData.end.toISOString() &&
             selectedEvent.location === formData.location
         ) {
             console.log('No changes detected.');
@@ -113,16 +110,15 @@ const Event = () => {
             const updatedEvent = {
                 ...selectedEvent,
                 title: formData.title,
-                description: formData.description, // Updated to match backend field
-                start: moment(formData.start).toISOString(),
-                end: moment(formData.end).toISOString(),
+                description: formData.description,
+                start: formData.start.toISOString(),
+                end: formData.end.toISOString(),
                 location: formData.location,
             };
             await axios.put(`http://localhost:5001/api/calendar/update-event/${selectedEvent._id}`, updatedEvent);
-            // Update the event in the state or refetch events
             const updatedUsers = users.map(user => user._id === selectedEvent._id ? updatedEvent : user);
             setUsers(updatedUsers);
-            closeModal(); // Close the modal after successful update
+            closeModal();
         } catch (error) {
             console.error('Error updating event:', error);
         }
@@ -140,24 +136,21 @@ const Event = () => {
 
     return (
         <div className="flex flex-col w-[30%] h-full rounded-b-full">
-            {/* Header Event container */}
             <div className="flex items-center justify-center bg-[#E6D7FE] rounded-t-[20px]">
                 <span className="items-center m-4 text-lg font-bold text-[#8338EC]">Event</span>
             </div>
-            {/* Event list */}
             <div className="flex flex-col gap-3 px-4 py-4 bg-[#E6D7FE] w-full h-full  rounded-b-[10px] bg-opacity-45 overflow-y-scroll">
                 {onGoingEvent.length === 0 ? (
                     <div>No ongoing events</div>
                 ) : (
-                    onGoingEvent.map((event, index) => (
+                    onGoingEvent.map((event) => (
                         <li key={event._id} className="list-none flex flex-row justify-between items-center">
                             <div>
                                 <div className='text-bold text-medium'>{event.title}</div>
                                 <div className='text-normal text-xs'>Start: {event.start}, {event.date}</div>
                             </div>
                             <div className='flex flex-row gap-2'>
-                                <input className='cursor-pointer'  type="button" value="Detail" onClick={() => openModal(event)} />
-                                
+                                <input className='cursor-pointer' type="button" value="Detail" onClick={() => openModal(event)} />
                                 <label>
                                     <input type="checkbox" name="todo" value={event._id}
                                         onChange={() => handleCheckboxChange(event._id)} />
@@ -168,8 +161,7 @@ const Event = () => {
                 )}
             </div>
 
-            {/* Modal for updating event */}
-            {selectedEvent && (
+            {modalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
                     <div className="bg-white p-6 rounded-lg z-10">
@@ -188,7 +180,7 @@ const Event = () => {
                                 <input type="text" name="location" value={formData.location} onChange={handleChange} required className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Start: {moment(formData.start).format("YYYY-MM-DD HH:mm")}</label>
+                                <label className="block text-sm font-medium text-gray-700">Start: {formData.start ? moment(formData.start).format("YYYY-MM-DD HH:mm") : ''}</label>
                                 <Datetime
                                     name="start"
                                     value={formData.start}
@@ -197,24 +189,24 @@ const Event = () => {
                                     timeFormat="HH:mm"
                                     inputProps={{
                                         className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
-                                        placeholder: "Select end date and time", // Placeholder 
+                                        placeholder: "Select start date and time",
                                         required: true
-                                      }}
+                                    }}
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">End: {moment(formData.end).format("YYYY-MM-DD HH:mm")}</label>
+                                <label className="block text-sm font-medium text-gray-700">End: {formData.end ? moment(formData.end).format("YYYY-MM-DD HH:mm") : ''}</label>
                                 <Datetime
                                     name="end"
-                                    value={moment(formData.end)}
+                                    value={formData.end}
                                     onChange={value => handleDateChange('end', value)}
                                     dateFormat="YYYY-MM-DD"
                                     timeFormat="HH:mm"
                                     inputProps={{
                                         className: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
-                                        placeholder: "Select end date and time", // Placeholder text
+                                        placeholder: "Select end date and time",
                                         required: true
-                                      }}
+                                    }}
                                 />
                             </div>
                             <div className="flex justify-end">

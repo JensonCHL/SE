@@ -112,7 +112,7 @@ const Lists = () => {
 
             </div>
             <div className="flex flex-row mt-4 ">
-                <div className=" bg-white rounded-2xl pt-1  pl-2 border border-[2px] mr-2 w-52 h-32">
+                <div className=" bg-white rounded-2xl pt-1  pl-2 border border-[2px] mr-2 w-52 h-36">
                     <h2 className="text-bold">Dont forget to do:  </h2>
                     <form>
                         {filteredTodo.length === 0 ? (
@@ -139,7 +139,7 @@ const Lists = () => {
                     {filteredTodo.length >= 2 && <Link to="/Activity" className="view-more text-right text-bold">VIEW MORE</Link>}
                 </div>
 
-                <div className=" bg-white rounded-2xl pt-1 pl-2 border border-[2px] ml-2 w-52 h-32">
+                <div className=" bg-white rounded-2xl pt-1 pl-2 border border-[2px] ml-2 w-52 h-36">
                     <h2 className="text-bold ">Daily Habits: </h2>
                     <form >
                         {filteredHabit.length === 0 ? (
