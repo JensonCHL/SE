@@ -84,6 +84,29 @@ router.get('/get-events', async (req, res) => {
         res.status(500).send({ error: 'Failed to fetch events' });
     }
 });
+// Get collision && Find any 
+
+router.get('/get-collision', async (req, res) => {
+    try {
+        const { id } = req.query;
+
+        // Fetch events from database based on user_id, truncated start, and truncated end parameters
+        const events = await Event.find({
+            user_id: id,                     // Filter events by user_id
+
+        });
+
+        // Respond with JSON array of events
+        res.json(events);
+    } catch (error) {
+        // Handle errors if any occur during event fetching
+        console.error('Error fetching events:', error);
+        res.status(500).send({ error: 'Failed to fetch events' });
+    }
+});
+
+module.exports = router;
+
 // Closest events
 router.get('/closest-event', async (req, res) => {
     try {

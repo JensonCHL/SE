@@ -11,6 +11,7 @@ import DateTime from 'react-datetime';
 import Toggle from './Toggle';
 import Todo from './Todo';
 import Habit from './Habit';
+import axios from 'axios';
 
 interface AddEventProps {
     selectedType: number;
@@ -32,7 +33,7 @@ interface EventData {
 }
 
 const getTypeString = (types: number) => {
-    switch(types) {
+    switch (types) {
         case 1:
             return 'event';
         case 2:
@@ -45,7 +46,7 @@ const getTypeString = (types: number) => {
 }
 
 const getEventColor = (types: number) => {
-    switch(types) {
+    switch (types) {
         case 1:
             return '#E6D7FB';
         case 2:
@@ -56,6 +57,7 @@ const getEventColor = (types: number) => {
             return 'unknown';
     }
 }
+
 
 const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventAdded }) => {
     const [title, setTitle] = useState<string>('');
@@ -68,26 +70,97 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
     const [color, setColor] = useState<string>(getEventColor(selectedType));
     const [reminder, setReminder] = useState<boolean>(false);
     const [repeat, setRepeat] = useState<number>(-1);
+    const [events, setEvents] = useState<EventData[]>([]);
+
 
     useEffect(() => {
         setTypes(getTypeString(selectedType));
         setColor(getEventColor(selectedType));
+        fetchEvents();
     }, [selectedType]);
 
+    const userString = localStorage.getItem('user');
+    const userId = userString;
+
+    const fetchEvents = async () => {
+        try {
+            const response = await axios.get('http://localhost:5001/api/calendar/get-collision', {
+                params: {
+                    id: userId
+                }
+            });
+            console.log(response.data)
+            setEvents(response.data);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
+
     const incrementDate = (date: Date, days: number): Date => {
+        console.log("Increment happen")
         const result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
     };
+    const incrementHour = (date: Date, hour:number): Date => {
+        const incrementedDate = new Date(date);
+        incrementedDate.setHours(date.getHours() + hour);  // Increment hours by 1
+        return incrementedDate;
+    };
+    // Ignoring second
+    const truncateSeconds = (date: Date) => {
+        // return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
+        const truncatedDate = new Date(date);
+        truncatedDate.setSeconds(0);
+        truncatedDate.setMilliseconds(0); 
+        // console.log(truncatedDate)
+        return truncatedDate;
+
+    };
+    // Conflict check
+    const isConflict = (events: EventData[], start: Date) => {
+        const newStartEvent = truncateSeconds(start);
+        console.log("is conflict run")
+        console.log('new start date:', newStartEvent.getTime());
+        for (const event of events) {
+            const eventStart = truncateSeconds(event.start);
+            console.log('event start date:', eventStart.getTime());
+            if (newStartEvent.getTime() === eventStart.getTime()) {
+                console.log('Conflict detected');
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const findNextAvailableSlot = (start: Date, end: Date) => {
+        let newStart = new Date(start);
+        let newEnd = new Date(end);
+
+        while (isConflict(events, newStart)) {
+            newStart = incrementHour(newStart, 1);
+            newEnd = incrementHour(newEnd, 1);
+        }
+
+        return { newStart, newEnd };
+    };
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        console.log("On submit button is pressed")
         let currentStart = new Date(start);
         let currentEnd = new Date(end);
         const eventDuration = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24); // duration in days
 
-        for (let i = 0; i<(repeat>0?repeat:1); i++){
+        for (let i = 0; i < (repeat > 0 ? repeat : 1); i++) {
+
+            if (isConflict(events, currentStart)) {
+                console.log("Conflict detected for start date:", currentStart);
+                // alert("Collision detected event will be reschedule")
+                const { newStart, newEnd } = findNextAvailableSlot(currentStart, currentEnd);
+                currentStart = newStart;
+                currentEnd = newEnd;
+            }
             const eventData: EventData = {
                 title,
                 start: new Date(currentStart),
@@ -99,14 +172,19 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                 color,
                 reminder,
                 repeat
+
             };
             onEventAdded(eventData);
-
-           // Increment currentStart to the day after the current end
-           currentStart = incrementDate(currentEnd, 1);
-           // Increment currentEnd to the new start date plus the original duration
-           currentEnd = incrementDate(currentStart, eventDuration);
+            fetchEvents();
             
+            if (repeat > 1) {
+                // Increment currentStart to the day after the current end
+                currentStart = incrementDate(currentEnd, 1);
+                // Increment currentEnd to the new start date plus the original duration
+                currentEnd = incrementDate(currentStart, eventDuration);
+            }
+
+
         }
 
         // Clear the form after submission
@@ -118,27 +196,6 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
         setTimeType('fixed');
         setReminder(false);
         setRepeat(-1);
-    };
-
-    const checkForConflicts = (): boolean => {
-        // Convert start and end times to timestamps for easier comparison
-        const newEventStart = start.getTime();
-        const newEventEnd = end.getTime();
-
-        for (const existingEvent of events) {
-            const existingEventStart = new Date(existingEvent.start).getTime();
-            const existingEventEnd = new Date(existingEvent.end).getTime();
-
-            // Check for overlap in time intervals
-            if (
-                (newEventStart >= existingEventStart && newEventStart < existingEventEnd) || // New event starts within existing event
-                (existingEventStart >= newEventStart && existingEventStart < newEventEnd) // Existing event starts within new event
-            ) {
-                return true; // Conflict detected
-            }
-        }
-
-        return false; // No conflicts found
     };
 
     return (
@@ -174,7 +231,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                             </div>
 
                             {/* Starts */}
-                            <div className="flex flex-row gap-4">
+                            <div className="flex flex-row gap-4 justify-between">
                                 <div className='font-bold'>Starts</div>
                                 <DateTime
                                     value={start}
@@ -183,7 +240,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                             </div>
 
                             {/* Ends */}
-                            <div className="flex flex-row gap-4">
+                            <div className="flex flex-row gap-4 justify-between ">
                                 <div className='font-bold'>Ends</div>
                                 <DateTime
                                     value={end}

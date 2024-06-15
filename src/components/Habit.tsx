@@ -159,7 +159,7 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
                             </div>
 
                             {/* Starts */}
-                            <div className="flex flex-row gap-4">
+                            <div className="flex flex-row gap-4 justify-between ">
                                 <div className='font-bold'>Starts</div>
                                 <DateTime
                                     value={start}
@@ -168,7 +168,7 @@ const Habit: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEvent
                             </div>
 
                             {/* Ends */}
-                            <div className="flex flex-row gap-4">
+                            <div className="flex flex-row gap-4 justify-between ">
                                 <div className='font-bold'>Ends</div>
                                 <DateTime
                                     value={end}
