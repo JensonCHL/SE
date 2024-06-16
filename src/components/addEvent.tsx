@@ -102,9 +102,14 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
         result.setDate(result.getDate() + days);
         return result;
     };
-    const incrementHour = (date: Date, hour:number): Date => {
+    const incrementHour = (date: Date, hour: number): Date => {
         const incrementedDate = new Date(date);
         incrementedDate.setHours(date.getHours() + hour);  // Increment hours by 1
+        return incrementedDate;
+    };
+    const incrementMinutes = (date: Date, minutes: number): Date => {
+        const incrementedDate = new Date(date);
+        incrementedDate.setMinutes(date.getMinutes() + minutes);  // Increment hours by 1
         return incrementedDate;
     };
     // Ignoring second
@@ -112,20 +117,27 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
         // return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
         const truncatedDate = new Date(date);
         truncatedDate.setSeconds(0);
-        truncatedDate.setMilliseconds(0); 
+        truncatedDate.setMilliseconds(0);
         // console.log(truncatedDate)
         return truncatedDate;
 
     };
     // Conflict check
+    const [existEnd, setexistEnd] = useState<Date>(new Date());
+    const [existStart, setexistStart] = useState<Date>(new Date());
     const isConflict = (events: EventData[], start: Date) => {
+
         const newStartEvent = truncateSeconds(start);
         console.log("is conflict run")
         console.log('new start date:', newStartEvent.getTime());
         for (const event of events) {
+            setexistEnd(event.end)
+            setexistStart(event.start)
             const eventStart = truncateSeconds(event.start);
             console.log('event start date:', eventStart.getTime());
             if (newStartEvent.getTime() === eventStart.getTime()) {
+                setexistEnd(event.end)
+                setexistStart(event.start)
                 console.log('Conflict detected');
                 return true;
             }
@@ -134,12 +146,18 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
     };
 
     const findNextAvailableSlot = (start: Date, end: Date) => {
-        let newStart = new Date(start);
-        let newEnd = new Date(end);
+        let duration = existEnd.getTime() - existStart.getTime(); // Duration in milliseconds
+        let durationInMinutes = duration / (1000 * 60); // Convert duration to hours
+        let newStart = new Date(incrementMinutes(existEnd, 1));
+        let newEnd = new Date(incrementMinutes(end, durationInMinutes));
+        // let newStart = new Date(start)
+        // let newEnd = new Date(end)
 
         while (isConflict(events, newStart)) {
+            duration = existEnd.getTime() - existStart.getTime();
+            durationInMinutes = duration / (1000 * 60);
             newStart = incrementHour(newStart, 1);
-            newEnd = incrementHour(newEnd, 1);
+            newEnd = incrementMinutes(end,durationInMinutes);
         }
 
         return { newStart, newEnd };
@@ -151,15 +169,18 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
         let currentStart = new Date(start);
         let currentEnd = new Date(end);
         const eventDuration = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24); // duration in days
-
+        let confirmReschedule;
         for (let i = 0; i < (repeat > 0 ? repeat : 1); i++) {
-
+            confirmReschedule = false
             if (isConflict(events, currentStart)) {
                 console.log("Conflict detected for start date:", currentStart);
-                // alert("Collision detected event will be reschedule")
-                const { newStart, newEnd } = findNextAvailableSlot(currentStart, currentEnd);
-                currentStart = newStart;
-                currentEnd = newEnd;
+                if (confirmReschedule = window.confirm("Collision detected. Do you want to automatically reschedule the event?")) {
+                    const { newStart, newEnd } = findNextAvailableSlot(currentStart, currentEnd);
+                    currentStart = newStart;
+                    currentEnd = newEnd;
+                } else {
+                    break;
+                }
             }
             const eventData: EventData = {
                 title,
@@ -174,16 +195,19 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                 repeat
 
             };
-            onEventAdded(eventData);
-            fetchEvents();
-            
-            if (repeat > 1) {
-                // Increment currentStart to the day after the current end
-                currentStart = incrementDate(currentEnd, 1);
-                // Increment currentEnd to the new start date plus the original duration
-                currentEnd = incrementDate(currentStart, eventDuration);
-            }
 
+            setEvents((prevEvents) => [...prevEvents, eventData]);
+            console.log(events)
+            onEventAdded(eventData);
+
+
+
+            // Increment currentStart to the day after the current end
+            currentStart = incrementDate(currentEnd, 1);
+            // Increment currentEnd to the new start date plus the original duration
+            currentEnd = incrementDate(currentStart, eventDuration);
+
+            fetchEvents();
 
         }
 
