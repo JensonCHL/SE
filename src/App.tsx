@@ -111,6 +111,25 @@ export default function App() {
     checkForCurrentEvents(); // Check for current events immediately after fetching events
   }, [events]);
 
+  const sendUserIdToFlask = async () => {
+    const userString = localStorage.getItem('user');
+    const userId = userString; // Assuming userString is directly the ID string
+
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/process_garmin_data', {
+        user_id: userId,
+      });
+      console.log('Sent user ID to Flask:', response.data);
+    } catch (error) {
+      console.error('Error sending user ID to Flask:', error);
+    }
+  };
+
+  // Call sendUserIdToFlask whenever userId changes or on component mount
+  useEffect(() => {
+    sendUserIdToFlask();
+  }, [isLoggedIn]);
+
   return (
     <div className="max-h-screen flex flex-col">
       {isLoggedIn && <Header />}
