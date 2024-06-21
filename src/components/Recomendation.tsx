@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { CiLocationOn } from 'react-icons/ci';
 import EventComponent from '../ComponentPage2/Event'; // Assuming this is used somewhere
 import moment from 'moment';
+import { getRecommendation } from './openaiService'; // the function we created above
+
 
 interface Event {
     types: string;

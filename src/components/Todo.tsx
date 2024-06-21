@@ -226,7 +226,7 @@ const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventA
             {selectedType === 2 && (
                 <form onSubmit={onSubmit}>
                     <div className='bg-white w-auto h-auto px-10 py-4 rounded-xl'>
-                        <div className="flex flex-col gap-y-2.5">
+                        <div className="flex flex-col gap-y-1.5">
                             {/* Add event */}
                             <div className="flex flex-row gap-2 items-center m-1">
                                 <div className='font-bold'>Add New</div>

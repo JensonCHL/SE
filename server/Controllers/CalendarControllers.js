@@ -234,6 +234,7 @@ router.put('/update-event/:id', async (req, res) => {
     }
 });
 
+
 router.get('/get-past-events', async (req, res) => {
     try {
         const { excludeTitle } = req.query;
