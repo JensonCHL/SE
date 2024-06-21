@@ -116,7 +116,7 @@ export default function App() {
     const userId = userString; // Assuming userString is directly the ID string
 
     try {
-      const response = await axios.post('http://127.0.0.1:5000/process_garmin_data', {
+      const response = await axios.post('http://127.0.0.1:5000/process_garmin_data/', {
         user_id: userId,
       });
       console.log('Sent user ID to Flask:', response.data);

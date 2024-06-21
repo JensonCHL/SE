@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const moment = require('moment');
 const Event = require('../model/event');
 const Register = require('../model/register');
+const Health = require('../model/health')
 
 // Create event
 router.post('/create-event', async (req, res) => {
@@ -11,6 +12,34 @@ router.post('/create-event', async (req, res) => {
         console.log('Received event data:', req.body);
         const event = new Event(req.body);
         const savedEvent = await event.save();
+        res.status(201).send(savedEvent);
+    } catch (error) {
+        console.error('Error creating event:', error);
+        res.status(500).send({ error: 'Failed to create event' });
+    }
+});
+
+// GET health data for a specific user
+router.get('/get-health', async (req, res) => {
+    try {
+        const userId = req.query.user_id; // Extract userId from query parameters
+        console.log('Received userId:', userId);
+
+        // Fetch health data based on user_id
+        const healthData = await Health.findOne({'user_id': userId});
+        console.log('Fetched health data:', healthData);
+
+        res.json(healthData);
+    } catch (error) {
+        console.error('Error fetching health data:', error);
+        res.status(500).send({ error: 'Failed to fetch health data' });
+    }
+});
+
+router.post('/create-health', async (req, res) => {
+    try {
+        const health = new Health(req.body);
+        const savedEvent = await health.save();
         res.status(201).send(savedEvent);
     } catch (error) {
         console.error('Error creating event:', error);
