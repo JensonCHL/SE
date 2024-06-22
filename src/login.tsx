@@ -16,9 +16,8 @@ const Login = ({ setIsLoggedIn }) => {
       console.log(response.data);
       localStorage.setItem('user', response.data.user._id);
       if (response.data.message === 'Login successful') {
-        setIsLoggedIn(true); // Update login state
-        navigate('/home'); // Navigate to home route on successful login
-        window.location.reload(); // Refresh the page
+        setIsLoggedIn(true); 
+        navigate('/home'); 
         console.log(localStorage.getItem('user'));
 
       } else {

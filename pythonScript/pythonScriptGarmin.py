@@ -7,8 +7,15 @@ import garminconnect
 import time
 import threading
 from flask_cors import CORS, cross_origin
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
+mongo_uri = 'mongodb+srv://kenzieharsanto:tv5TQh4f9xLjH2PV@cluster0.ptdxnpm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+client = MongoClient(mongo_uri)
+db = client['test']
+healthCollection = db['healths']
+userCollection = db['registers']
+
 
 cors = CORS(app, resources={
     r"/*":{
@@ -18,12 +25,41 @@ cors = CORS(app, resources={
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+def check(user_id):
+    object_id = ObjectId(user_id)
+    document = healthCollection.find_one({'user_id': user_id})
+    document2 = userCollection.find_one({'_id': object_id})
+    print(document2)
+    if document:
+        print(user_id)
+        print(document['_id'])
+        return True
+    else:
+        return False
+    
+def getEmail(user_id):
+    object_id = ObjectId(user_id)
+    document2 = userCollection.find_one({'_id': object_id})
+    # print(document2)
+    return (document2.get('garmin', None))
+
+def getPassword(user_id):
+    object_id = ObjectId(user_id)
+    document2 = userCollection.find_one({'_id': object_id})
+    # print(document2)
+    return (document2.get('passwordGarmin', None))
+
 def job1(user_id):
     try:
         email = 'farihmuhammad45@gmail.com'
         password = 'gikmohwavtikdyfXi1'
-
-        garmin = garminconnect.Garmin(email, password)
+        
+        email2 = getEmail(user_id)
+        print("test11111: ", email2)
+        password2 = getPassword(user_id)
+        print("test 2222: ", password2)
+        
+        garmin = garminconnect.Garmin(email2, password2)
         garmin.login()
 
         GARTH_HOME = os.getenv("GARTH_HOME", "~/.garth")
@@ -50,11 +86,9 @@ def job1(user_id):
         print('calories burned: ', calories)
         print('sleep patterns: ', sleep_duration_str)
         print('stress level: ', stressLevel)
+        
+        print(check(user_id))
 
-        mongo_uri = 'mongodb+srv://kenzieharsanto:tv5TQh4f9xLjH2PV@cluster0.ptdxnpm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-        client = MongoClient(mongo_uri)
-        db = client['test']
-        collection = db['healths']
         document = {
             'user_id': user_id,
             'date': date.today().isoformat(),
@@ -65,9 +99,13 @@ def job1(user_id):
             'sleep_duration': sleep_duration_str,
             'stress_level': stressLevel
         }
-
-        collection.insert_one(document)
-        print("Data inserted into MongoDB successfully.")
+        
+        if(check(user_id)):
+            healthCollection.update_one({'user_id': user_id}, {"$set": document})
+            print("data updated into mongoDB")
+        else:
+            healthCollection.insert_one(document)
+            print("Data inserted into MongoDB successfully.")
         
     except Exception as e:
         print(f"Error in job1: {str(e)}")
@@ -75,12 +113,9 @@ def job1(user_id):
 @app.route('/process_garmin_data/', methods=['POST', 'OPTIONS'])
 @cross_origin()
 def process_garmin_data():
-    print("di luar try catch")
     try:
-        print("masuk try")
         data = request.json
         user_id = data.get('user_id')
-        print(data)
         
         if user_id:
             threading.Thread(target=job1, args=(user_id,), daemon=True).start()
@@ -89,7 +124,6 @@ def process_garmin_data():
             return jsonify({'error': 'User ID not provided.'}), 400
     
     except Exception as e:
-        print("error")
         return jsonify({'error': str(e)}), 500
 
 
@@ -98,10 +132,7 @@ def periodic_job(interval_seconds):
     while True:
         try:
             data = request.json
-            print(data)
             user_id = data.get('user_id')
-            print(user_id)
-            # userId = 'test' 
             response = requests.post('http://127.0.0.1:5000/process_garmin_data', json={'user_id': user_id})
             print(response.json())
 

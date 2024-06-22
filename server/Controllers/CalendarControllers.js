@@ -19,13 +19,11 @@ router.post('/create-event', async (req, res) => {
     }
 });
 
-// GET health data for a specific user
 router.get('/get-health', async (req, res) => {
     try {
-        const userId = req.query.user_id; // Extract userId from query parameters
+        const userId = req.query.user_id;
         console.log('Received userId:', userId);
 
-        // Fetch health data based on user_id
         const healthData = await Health.findOne({'user_id': userId});
         console.log('Fetched health data:', healthData);
 
@@ -35,6 +33,27 @@ router.get('/get-health', async (req, res) => {
         res.status(500).send({ error: 'Failed to fetch health data' });
     }
 });
+
+router.get('/get-credential', async (req, res) => {
+    try {
+        const userId = req.query.user_id;
+        console.log('Received userId:', userId);
+
+        const user = await Register.findOne({ _id: userId });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const { garmin, passwordGarmin } = user;
+
+        res.json({ garmin, passwordGarmin });
+    } catch (error) {
+        console.error('Error fetching credentials:', error);
+        res.status(500).send({ error: 'Failed to fetch credentials' });
+    }
+});
+
 
 router.post('/create-health', async (req, res) => {
     try {
@@ -47,7 +66,6 @@ router.post('/create-health', async (req, res) => {
     }
 });
 
-// Login user
 router.post('/loginUser', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -70,13 +88,11 @@ router.post('/loginUser', async (req, res) => {
     }
 });
 
-// Create user
 router.post('/create-user', async (req, res) => {
     try {
         const { email, password, ...otherUserData } = req.body;
         console.log('Received user data:', req.body);
 
-        // Check if a user with the same email already exists
         const existingUser = await Register.findOne({ email });
         console.log(email)
         if (existingUser) {
@@ -263,6 +279,24 @@ router.put('/update-event/:id', async (req, res) => {
     }
 });
 
+router.post('/update-register/:id', async (req, res) => {
+    const { garmin, passwordGarmin } = req.body;
+    try {
+        const updatedRegister = await Register.findByIdAndUpdate(req.params.id, {
+            garmin,
+            passwordGarmin
+        }, { new: true });
+
+        if (!updatedRegister) {
+            return res.status(404).send({ error: 'Register entry not found' });
+        }
+
+        res.json({ message: 'Register entry updated successfully', updatedRegister });
+    } catch (error) {
+        console.error('Error updating register entry:', error);
+        res.status(500).send({ error: 'Failed to update register entry' });
+    }
+});
 
 router.get('/get-past-events', async (req, res) => {
     try {

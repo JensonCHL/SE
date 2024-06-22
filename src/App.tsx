@@ -33,7 +33,7 @@ export default function App() {
   const [events, setEvents] = useState<Event[]>([]);
 
 
-  useEffect(() => {
+  useEffect(() => {    
     const handleStorageChange = () => {
       setIsLoggedIn(!!localStorage.getItem('user'));
     };
@@ -41,7 +41,7 @@ export default function App() {
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const fetchEvents = async () => {
