@@ -63,14 +63,16 @@ const AIRecom = () => {
                 {healthData && (
                     <div className="border border-[1px] border-red-500 rounded-[10px] p-2">
                         {/* Reminder section */}
+                        
                         <span className="text-red-500">
                             Reminder: {reminder}
                         </span>
                     </div>
                 )}
                 <div className="flex flex-col rounded-[10px] bg-[#D9D9D9] bg-opacity-40 w-full h-auto p-5 gap-y-2">
-                    <div className="flex flex-row justify-center">
-                        <span className='font-bold text-lg' >{healthData ? healthData.date : 'Loading...'}</span>
+                    <div className="flex flex-col justify-center items-center pt-[-3]" style={{ marginTop: '-1 rem' }} >
+                        <span className='font-bold text-lg' >Health Integration</span>
+                        <span className='font-bold text-md' >{healthData ? healthData.date : 'Loading...'}</span>
                     </div>
                     <div className="flex flex-row justify-between">
                         <span className="font-bold">Steps</span>
