@@ -70,7 +70,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                     className="w-full border rounded-md mt-2 px-3 py-2 focus:outline-none focus:border-blue-500"
                 />
             </div>
-            <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Update</button>
+            <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Connect</button>
         </form>
     );
 };

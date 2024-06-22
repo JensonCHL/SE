@@ -51,8 +51,6 @@ def getPassword(user_id):
 
 def job1(user_id):
     try:
-        email = 'farihmuhammad45@gmail.com'
-        password = 'gikmohwavtikdyfXi1'
         
         email2 = getEmail(user_id)
         print("test11111: ", email2)
@@ -68,7 +66,7 @@ def job1(user_id):
         today = date.today().isoformat()
         yesterday = date.today() - timedelta(days=1)
 
-        activities = garmin.get_stats(yesterday)
+        activities = garmin.get_stats(today)
 
         heartRate = activities['restingHeartRate']
         stepsTaken = garmin.get_daily_steps(yesterday, today)[0]['totalSteps']
