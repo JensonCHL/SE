@@ -78,13 +78,13 @@ const CalendarPage: React.FC<CalendarProps> = () => {
     }, []);
 
     return (
-        <section className="overflow-hidden">
-            <div style={{ position: 'relative', zIndex: 0 }} className="flex">
-                <div className="flex flex-col m-4 gap-y-4 w-30" >
+        <section className="flex flex-col w-full h-full overflow-hidden ">
+            <div style={{ position: 'relative', zIndex: 0 }} className="flex m-5 gap-4">
+                <div className="flex flex-col gap-y-4 w-30" >
                     <Recomendation />
                     <AddEvent onEventAdded={handleEventAdd} selectedType={selectedType} setSelectedType={setSelectedType} />
                 </div>
-                <div className="w-9/12 bg-white m-4 pt-4 pb-6 pr-6 pl-6 rounded-lg">
+                <div className= " flex flex-col w-full h-full bg-white pt-4 pb-6 pr-6 pl-6 rounded-lg">
                     <FullCalendar
                         ref={calendarRef}
                         events={events}
@@ -112,6 +112,7 @@ const CalendarPage: React.FC<CalendarProps> = () => {
                         datesSet={handleDateSet}
                         eventContent={renderEventContent}
                         aspectRatio={2}
+                        height={560}
                         dayCellClassNames={(arg) => {
                             if (arg.date.getDay() === 0) { // 0 is Sunday
                                 return 'fc-sunday';

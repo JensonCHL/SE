@@ -36,7 +36,7 @@ const Activity = () => {
     return (
         <div className="flex flex-row gap-5 h-screen m-5">
             <DailySummary />
-            <div className="w-1/3 h-2/3">
+            <div className="w-1/3 h-full">
                 {isLoggedIn ? <AIRecom /> : <AILogin onLogin={handleLogin} />}
             </div>
         </div>

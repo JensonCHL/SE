@@ -9,6 +9,7 @@ const healthSchema = mongoose.Schema({
     calories_burned: { type: Number },
     sleep_duration: { type: String },
     stress_level: { type: Number }
+    
 });
 
 const Health = mongoose.model('Healths', healthSchema);
