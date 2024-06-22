@@ -1,3 +1,87 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.fc-toolbar {
+    margin-top: 0 !important;
+}
+
+.fc-header-toolbar{
+    padding: 0 !important;
+    margin-bottom: 1em!important;
+}
+
+.fc .fc-button-primary { 
+    color: #D9D9D9; 
+    background-color: #F4F4F4 !important;
+    border: none;
+}
+
+.fc-dayGridMonth-button-active, .fc-timeGridWeek-button-active{ 
+    color: #D9D9D9; 
+    background-color: #F4F4F4 !important;
+    border: none;
+}
+
+
+.fc-button-primary.fc-button-active { 
+    color: #FFFFFF; 
+    background-color: #3485FF !important; 
+}
+
+.fc-dayGridMonth-button-active, .fc-timeGridWeek-button-active, .fc-button-acive{ 
+    color: #FFFFFF; 
+    background-color: #3485FF !important;
+}
+
+.fc-toolbar-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: black; 
+}
+
+.fc-icon-chevron-left, .fc-icon-chevron-right {
+    color: black;
+}
+
+.fc-event-main{
+    margin-left: 0.5em;
+}
+
+.fc-day-today {
+    background-color: transparent !important;
+    color: darkgreen;
+    font-weight: bold; 
+    border: 2px solid #3182ce;
+    border-radius: 50%; 
+    padding: 4px; 
+    box-sizing: border-box;
+}
+
+.fc-sunday .fc-daygrid-day-number {
+    color: red;
+  }
+  
+  .fc-sunday-header {
+    color: red;
+  }
+.fc-today-button.fc-button.fc-button-primary {
+    color: black;
+    font-weight:bold;
+}
+
+.view-more{
+    font-size: 12px;
+}
+
+/* custom-calendar.css */
+
+/* Hide the day grid lines */
+.fc-daygrid-body .fc-row .fc-bg {
+    border: none !important;
+}
+
+/* Hide the time grid lines in timeline view */
+.fc-timeline-body .fc-divider {
+    display: none !important;
+}

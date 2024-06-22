@@ -9,8 +9,8 @@ import ReminderButton from './ReminderButton';
 import 'react-datetime/css/react-datetime.css';
 import DateTime from 'react-datetime';
 import Toggle from './Toggle';
-import Todo from './Todo';
 import Habit from './Habit';
+import AddEvent from './addEvent';
 import axios from 'axios';
 
 interface AddEventProps {
@@ -25,11 +25,12 @@ interface EventData {
     end: Date;
     desc: string;
     location: string;
-    timeType: string;
+    // timeType: string;
     types: string;
     color: string;
     reminder: boolean;
     repeat: number;
+
 }
 
 const getTypeString = (types: number) => {
@@ -43,7 +44,7 @@ const getTypeString = (types: number) => {
         default:
             return 'unknown';
     }
-}
+};
 
 const getEventColor = (types: number) => {
     switch (types) {
@@ -56,29 +57,30 @@ const getEventColor = (types: number) => {
         default:
             return 'unknown';
     }
-}
+};
 
 
-const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventAdded }) => {
+
+const Todo: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEventAdded }) => {
     const [title, setTitle] = useState<string>('');
     const [start, setStart] = useState<Date>(new Date());
     const [end, setEnd] = useState<Date>(new Date());
     const [desc, setDesc] = useState<string>('');
     const [location, setLocation] = useState<string>('');
-    const [timeType, setTimeType] = useState<string>('fixed');
-    const [types, setTypes] = useState<string>(getTypeString(selectedType));
-    const [color, setColor] = useState<string>(getEventColor(selectedType));
-    const [reminder, setReminder] = useState<boolean>(false);
+    // const [timeType, setTimeType] = useState<string>('');
+    const [types, setTypes] = useState<string>(getTypeString(selectedType)); // State to hold types
+    const [color, setColor] = useState<string>(getEventColor(selectedType)); // State to hold color
+    const [reminder, setReminder] = useState<boolean>(false)
     const [repeat, setRepeat] = useState<number>(-1);
     const [events, setEvents] = useState<EventData[]>([]);
 
 
     useEffect(() => {
+        // Update types and color based on selectedType
         setTypes(getTypeString(selectedType));
         setColor(getEventColor(selectedType));
         fetchEvents();
     }, [selectedType]);
-
     const userString = localStorage.getItem('user');
     const userId = userString;
 
@@ -165,11 +167,12 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log("On submit button is pressed")
+        // Create EventData object1 with current state values
         let currentStart = new Date(start);
         let currentEnd = new Date(end);
         const eventDuration = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24); // duration in days
         let confirmReschedule;
+
         for (let i = 0; i < (repeat > 0 ? repeat : 1); i++) {
             confirmReschedule = false
             if (isConflict(events, currentStart)) {
@@ -186,47 +189,43 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                 title,
                 start: new Date(currentStart),
                 end: new Date(currentEnd),
-                desc,
                 location,
-                timeType,
-                types,
-                color,
+                desc,
+                // timeType,
+                types, // Use current types state
+                color, // Use current color state
                 reminder,
                 repeat
 
             };
-
+            // Call onEventAdded with eventData
             setEvents((prevEvents) => [...prevEvents, eventData]);
-            console.log(events)
             onEventAdded(eventData);
-
-
 
             // Increment currentStart to the day after the current end
             currentStart = incrementDate(currentEnd, 1);
             // Increment currentEnd to the new start date plus the original duration
             currentEnd = incrementDate(currentStart, eventDuration);
-
             fetchEvents();
-
         }
 
-        // Clear the form after submission
+
+        // Clear form fields after submission
         setTitle('');
         setStart(new Date());
         setEnd(new Date());
-        setDesc('');
         setLocation('');
-        setTimeType('fixed');
-        setReminder(false);
+        setDesc('');
         setRepeat(-1);
+
     };
 
     return (
         <div>
-            {selectedType === 1 && (
+            {selectedType === 1 && <AddEvent onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
+            {selectedType === 2 && (
                 <form onSubmit={onSubmit}>
-                    <div className='bg-white h-full w-auto px-10 py-4 rounded-xl'>
+                    <div className='bg-white w-auto h-auto px-10 py-4 rounded-xl'>
                         <div className="flex flex-col gap-y-1.5">
                             {/* Add event */}
                             <div className="flex flex-row gap-2 items-center m-1">
@@ -255,7 +254,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                             </div>
 
                             {/* Starts */}
-                            <div className="flex flex-row gap-4 justify-between">
+                            <div className="flex flex-row gap-4 justify-between ">
                                 <div className='font-bold'>Starts</div>
                                 <DateTime
                                     value={start}
@@ -287,7 +286,7 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                             </div>
 
                             {/* Repeat Reminder */}
-                            <div className="flex flex-row gap-4 justify-center items-center">
+                            <div className="flex flex-col gap-y-1 w-full justify-center items-center">
                                 <RepeatButton repeat={repeat} setRepeat={setRepeat} />
                                 <ReminderButton reminder={reminder} setReminder={setReminder} />
                             </div>
@@ -303,41 +302,23 @@ const AddEvent: React.FC<AddEventProps> = ({ selectedType, setSelectedType, onEv
                                 />
                             </div>
 
-                            {/* Radio Buttons */}
-                            <div className="flex flex-row gap-2 items-center justify-center">
-                                <input
-                                    className='rounded-full'
-                                    type="radio"
-                                    name="timeType"
-                                    value="fixed"
-                                    checked={timeType === 'fixed'}
-                                    onChange={e => setTimeType(e.target.value)}
-                                />
-                                <div>Fixed</div>
-                                <input
-                                    className='ml-2 focus:outline-none focus:border-none'
-                                    type="radio"
-                                    name="timeType"
-                                    value="flexible"
-                                    checked={timeType === 'flexible'}
-                                    onChange={e => setTimeType(e.target.value)}
-                                />
-                                <div>Flexible</div>
+                            {/* Recommendation */}
+                            <div className="flex flex-row gap-1 bg-[#F4F4F4] rounded-full">
+
                             </div>
 
                             {/* Save & Cancel */}
-                            <div className="flex flex-row gap-4 justify-center">
-                                <button className='bg-[#3A86FF] hover:bg-blue-800 text-white w-full px-5 py-1 rounded-md transition duration-200 ease-in-out' type='submit'>Save</button>
-                                <button className='text-red-700 hover:text-white hover:bg-red-600 w-full border border-[#E54B49] px-4 py-1 rounded-md transition duration-200 ease-in-out ' type='button' onClick={() => setSelectedType(0)}>Cancel</button>
+                            <div className="flex flex-row gap-4 justify-center mt-2">
+                                <button className='bg-[#3A86FF] w-full px-5 py-1 rounded-md' type='submit'>Save</button>
+                                <button className='text-red-700 w-full border border-[#E54B49] px-4 py-1 rounded-md' type='button' onClick={() => setSelectedType(0)}>Cancel</button>
                             </div>
                         </div>
                     </div>
                 </form>
             )}
-            {selectedType === 2 && <Todo onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
             {selectedType === 3 && <Habit onEventAdded={onEventAdded} selectedType={selectedType} setSelectedType={setSelectedType} />}
         </div>
     );
-}
+};
 
-export default AddEvent;
+export default Todo;

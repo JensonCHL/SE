@@ -5,6 +5,7 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+    {/* {cookie === udah login } ? <App/> : <SignUp/> */}
     <App />
   </React.StrictMode>,
 )

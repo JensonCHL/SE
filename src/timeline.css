@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.fc .fc-daygrid-day-frame {
+    background: none;
+    border: none;
+}
+
+/* Customize the header cell to only show the date */
+.fc .fc-col-header-cell {
+    background: none;
+    border: none;
+    padding: 0;
+    text-align: center;
+}
+
+/* Remove padding and margins */
+.fc .fc-daygrid-day-top {
+    margin: 0;
+    padding: 0;
+}
+
+/* Customize the event appearance to only show the title */
+.fc-event-title, .fc-event-time {
+    display: none;
+}
+
+.fc-event .fc-event-title {
+    display: block;
+    text-align: center;
+}

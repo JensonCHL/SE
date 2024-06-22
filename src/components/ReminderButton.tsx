@@ -1,31 +1,28 @@
 import React, { useState } from 'react';
 
-interface Option {
-    label: string;
-    value: number;
+interface reminder {
+    reminder: boolean;
+    setReminder: (prev:any)=>void;
 }
 
-const Dropdown: React.FC = () => {
-    const options: Option[] = [
-        { label: 'Reminder', value: 1 },
-        { label: 'To-Do', value: 2 },
-        { label: 'Habit', value: 3 },
-    ];
+const Dropdown = (props:reminder) => {
 
-    const [value, setValue] = useState<number>(options[0].value);
 
-    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setValue(Number(event.target.value));
-    }
-
+    // ganti Checkbox alert 10min sebelum event selesai
     return (
-        <select className='form-select bg-gray-300 px-2 py-1 rounded-md items-center ' onChange={handleSelect} value={value}>
-            {options.map(option => (
-                <option key={option.value} value={option.value}>
-                    {option.label}
-                </option>
-            ))}
-        </select>
+        <div className='flex flex-col space-y-2'>
+            <label  className='flex items-center space-x-2'>
+                <input
+                    type='checkbox'
+                    checked={props.reminder}
+                    onChange={() => props.setReminder((prev:any)=>!prev)}
+                    className='form-checkbox h-4 w-4 text-gray-700 rounded-md'
+                />
+                <span className='text-gray-800 font-small' >Reminder</span>
+            </label>
+
+        </div>
+
     );
 }
 

@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 
-interface Option {
-    label: string;
-    value: number;
+interface RepeatButtonProps {
+    repeat: number;
+    setRepeat: (value: number) => void;
 }
 
-const Dropdown: React.FC = () => {
-    const options: Option[] = [
-        { label: 'Repeat', value: 1 },
-        { label: 'To-Do', value: 2 },
-        { label: 'Habit', value: 3 },
+const RepeatButton: React.FC<RepeatButtonProps> = ({ repeat, setRepeat }) => {
+    const options = [
+        { label: 'Repeat', value: -1 },
+        { label: '0', value: 0 },
+        { label: '1', value: 1 },
+        { label: '2', value: 2 },
+        { label: '3', value: 3 },
     ];
 
-    const [value, setValue] = useState<number>(options[0].value);
-
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setValue(Number(event.target.value));
-    }
+        const selectedValue = Number(event.target.value);
+        setRepeat(selectedValue);
+    };
 
     return (
-        <select className='form-select bg-gray-300 px-2 py-1 rounded-md items-center ' onChange={handleSelect} value={value}>
+        <select value={repeat} onChange={handleSelect} className="form-select w-full bg-gray-300 px-2 py-1 rounded-md">
             {options.map(option => (
                 <option key={option.value} value={option.value}>
                     {option.label}
@@ -29,4 +30,4 @@ const Dropdown: React.FC = () => {
     );
 }
 
-export default Dropdown;
+export default RepeatButton;
