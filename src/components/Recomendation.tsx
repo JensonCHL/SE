@@ -19,14 +19,23 @@ interface Event {
     _id: string;
 }
 
+
+
 const Recomendation = () => {
     const [event, setEvent] = useState<Event | null>(null);
     const [excludeTitle, setExcludeTitle] = useState<string | null>(null);
 
-    const fetchEvent = async (excludeTitle: string | null) => {
+
+    const userString = localStorage.getItem('user');
+    // const userId = userString ? JSON.parse(userString)._id : null; // Ensure this correctly extracts userId
+
+    const userId = userString;
+
+    const fetchEvent = async (excludeTitle: string | null, userId: string) => {
+        console.log('Fetching events for user:', userId, 'excluding title:', excludeTitle);
         try {
             const response = await axios.get('http://localhost:5001/api/calendar/get-past-events', {
-                params: { excludeTitle }
+                params: { excludeTitle, userId }
             });
             console.log(response);
             setEvent(response.data); // Assuming API returns an Event object
@@ -36,8 +45,12 @@ const Recomendation = () => {
     };
 
     useEffect(() => {
-        fetchEvent(excludeTitle);
-    }, [excludeTitle]);
+        if (userId) {
+            fetchEvent(excludeTitle, userId);
+        }
+    }, [excludeTitle, userId]);
+
+    
 
     const incrementDate = (date: Date, days: number): Date => {
         const result = new Date(date);
@@ -45,9 +58,9 @@ const Recomendation = () => {
         return result;
     };
 
+    
     const handleSave = async () => {
         try {
-            handleNext();
             if (event) {
                 const updatedEvent = {
                     ...event,
@@ -56,8 +69,11 @@ const Recomendation = () => {
                 const { _id, __v, ...eventData } = updatedEvent;
                 console.log(eventData);
                 const response = await axios.post('http://localhost:5001/api/calendar/create-event', eventData);
+                // window.location.reload();
                 console.log('Event saved:', response.data);
             }
+            handleNext();
+            alert("event successfully added")
         } catch (error) {
             console.error('Error saving event:', error);
         }

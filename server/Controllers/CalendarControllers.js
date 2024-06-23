@@ -24,7 +24,7 @@ router.get('/get-health', async (req, res) => {
         const userId = req.query.user_id;
         console.log('Received userId:', userId);
 
-        const healthData = await Health.findOne({'user_id': userId});
+        const healthData = await Health.findOne({ 'user_id': userId });
         console.log('Fetched health data:', healthData);
 
         res.json(healthData);
@@ -299,14 +299,18 @@ router.post('/update-register/:id', async (req, res) => {
 });
 
 router.get('/get-past-events', async (req, res) => {
-    try {
-        const { excludeTitle } = req.query;
-
-        // Construct the match condition to exclude the specified title if provided
-        const matchCondition = { types: { $in: ["todo", "habit"] } };
-        if (excludeTitle) {
-            matchCondition.title = { $ne: excludeTitle };
+    try { 
+        const { excludeTitle, userId } = req.query;
+        if (!userId) {
+            return res.status(400).send({ error: 'User ID is required' });
         }
+        // Construct the match condition to exclude the specified title if provided
+        const matchCondition = { types: { $in: ["todo", "habit"] }, user_id: userId };
+
+        matchCondition.title = { $ne: excludeTitle };
+
+
+        console.log('Match Condition:', matchCondition);
 
         const mostFrequentTitle = await Event.aggregate([
             { $match: matchCondition },
@@ -314,10 +318,11 @@ router.get('/get-past-events', async (req, res) => {
             { $sort: { count: -1 } },
             { $limit: 1 }
         ]);
-
+        console.log('Aggregation Result:', mostFrequentTitle);
         if (mostFrequentTitle.length > 0) {
             res.json(mostFrequentTitle[0].firstEvent);
         } else {
+            console.log(matchCondition)
             res.status(404).send({ error: 'No events found' });
         }
     } catch (error) {
