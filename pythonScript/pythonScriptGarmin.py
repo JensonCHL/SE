@@ -50,12 +50,9 @@ def getPassword(user_id):
     return (document2.get('passwordGarmin', None))
 
 def job1(user_id):
-    try:
-        
+    try:        
         email2 = getEmail(user_id)
-        print("test11111: ", email2)
         password2 = getPassword(user_id)
-        print("test 2222: ", password2)
         
         garmin = garminconnect.Garmin(email2, password2)
         garmin.login()
