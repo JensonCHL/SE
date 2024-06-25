@@ -34,7 +34,7 @@ const CalendarPage: React.FC<CalendarProps> = () => {
             };
             console.log("Event data to be sent to backend:", eventData);
             await axios.post("http://localhost:5001/api/calendar/create-event", eventData);
-            window.location.reload(); // Refresh the page
+            // window.location.reload(); // Refresh the page
 
         } catch (error) {
             console.error("Error adding event:", error);

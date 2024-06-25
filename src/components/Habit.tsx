@@ -12,7 +12,6 @@ import Toggle from './Toggle';
 import Todo from './Todo';
 import AddEvent from './addEvent';
 import axios from 'axios';
-// import Habit from './Habit';
 
 
 interface AddEventProps {
