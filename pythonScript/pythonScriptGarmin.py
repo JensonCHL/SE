@@ -142,6 +142,6 @@ def periodic_job(interval_seconds):
         time.sleep(interval_seconds)
 
 if __name__ == '__main__':
-    interval_seconds = 900
+    interval_seconds = 2000
     threading.Thread(target=periodic_job, args=(interval_seconds,), daemon=True).start()
     app.run(debug=True, use_reloader=False)
