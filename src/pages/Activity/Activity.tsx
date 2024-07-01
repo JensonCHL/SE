@@ -24,13 +24,14 @@ const Activity = () => {
                 console.error('Error fetching Garmin credentials:', error);
             }
         };
-
         fetchGarminCredentials();
+
     }, []);
 
     const handleLogin = (username: string) => {
         console.log(`User logged in: ${username}`);
         setIsLoggedIn(true);
+        window.location.reload(); // Refresh the page
     };
 
     return (
